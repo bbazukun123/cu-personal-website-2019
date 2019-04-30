@@ -1,3 +1,4 @@
 node_modules
-gulpfile.js
+src/scss/bootstrap/
+src/js/ext_modules/
 .cache/
