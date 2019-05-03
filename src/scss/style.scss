@@ -1,0 +1,52 @@
+@import "config";
+@import "utilities";
+
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    font-family: 'VT323', monospace;
+    font-size: 1rem;
+    letter-spacing: 0.1rem;
+    text-transform: uppercase;
+    color: $dark-color;
+}
+
+a{
+    color: $light-color;
+    text-decoration: none;
+
+    &:hover{
+        color: darken($light-color, 50%);
+    }
+
+    &:active,
+    &:visited{
+        color: $light-color;
+        text-decoration: inherit;
+    }
+
+}
+
+h1{
+    font-size: $large;
+}
+
+h2{
+    font-size: $medium;
+}
+
+h3{
+    font-size: $small;
+}
+
+h5{
+    font-size: 0.8rem;
+}
+
+object{
+    pointer-events: none;
+}

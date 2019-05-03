@@ -184,23 +184,77 @@ function reloadCSS() {
 }
 
 module.exports = reloadCSS;
-},{"./bundle-url":"../node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"scss/bootstrap/bootstrap.scss":[function(require,module,exports) {
+},{"./bundle-url":"../node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"scss/style.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"scss/style.scss":[function(require,module,exports) {
-var reloadCSS = require('_css_loader');
+},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"js/generateBG.js":[function(require,module,exports) {
+"use strict";
 
-module.hot.dispose(reloadCSS);
-module.hot.accept(reloadCSS);
-},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"js/router.js":[function(require,module,exports) {
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = generateBG;
+
+function generateBG() {
+  document.querySelectorAll(".container .room-bg").forEach(function (bg) {
+    var column = bg.getAttribute("column"); //Generate Wallpaper
+
+    var wallpaperOutput = "";
+
+    for (var i = 0; i < column; i++) {
+      wallpaperOutput += "<div></div>";
+    }
+
+    var output = "<div class=\"wallpaper\">\n            ".concat(wallpaperOutput, "\n        </div>\n        <div class=\"baseboard\"></div>\n        <div class=\"floor\"></div>\n        ");
+    bg.innerHTML = output;
+  });
+}
+},{}],"js/updateNav.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = updateNav;
+
+function updateNav(pageName) {
+  var navElem = document.querySelector(".nav");
+  var navBtnElem = document.querySelectorAll(".nav-btn");
+  var navTextElem = document.querySelectorAll(".nav-text");
+  var pageNavData = {
+    desk: ["bottom", "logs", "about", "portfolio"],
+    logs: ["bottom", "null", "null", "desk"],
+    portfolio: ["bottom", "desk", "null", "null"],
+    about: ["top", "null", "desk", "null"]
+  };
+  var navItems = pageNavData[pageName.replace(".html", "")];
+  if (navItems[0] === "bottom") navElem.classList.remove("nav-top");else if (navItems[0] === "top") navElem.classList.add("nav-top");else throw "Error: Invalid nav position";
+
+  for (var i = 1; i < navItems.length; i++) {
+    if (navItems[i] != "null") {
+      navBtnElem[i - 1].classList.remove("hidden");
+      navBtnElem[i - 1].setAttribute("href", "#".concat(navItems[i]));
+      navTextElem[i - 1].innerText = navItems[i];
+    } else {
+      navBtnElem[i - 1].classList.add("hidden");
+    }
+  }
+}
+},{}],"js/router.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+
+var _generateBG = _interopRequireDefault(require("./generateBG"));
+
+var _updateNav = _interopRequireDefault(require("./updateNav"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -256,11 +310,13 @@ function () {
     key: "goToRoute",
     value: function goToRoute(htmlName) {
       (function (scope) {
-        console.log("views/".concat(htmlName));
+        console.log(htmlName);
         fetch("views/".concat(htmlName)).then(function (res) {
           return res.text();
         }).then(function (data) {
-          return scope.rootElem.innerHTML = data;
+          (0, _updateNav.default)(htmlName);
+          scope.rootElem.innerHTML = data;
+          (0, _generateBG.default)();
         }); //
       })(this);
     }
@@ -270,7 +326,7 @@ function () {
 }();
 
 exports.default = Router;
-},{}],"js/route.js":[function(require,module,exports) {
+},{"./generateBG":"js/generateBG.js","./updateNav":"js/updateNav.js"}],"js/route.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -310,8 +366,6 @@ exports.default = Route;
 },{}],"index.js":[function(require,module,exports) {
 "use strict";
 
-require("./scss/bootstrap/bootstrap.scss");
-
 require("./scss/style.scss");
 
 var _router = _interopRequireDefault(require("./js/router"));
@@ -324,7 +378,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
   var router = new _router.default([new _route.default("desk", "desk.html", true), new _route.default("about", "about.html"), new _route.default("portfolio", "portfolio.html"), new _route.default("logs", "logs.html")]);
   router.init();
 })();
-},{"./scss/bootstrap/bootstrap.scss":"scss/bootstrap/bootstrap.scss","./scss/style.scss":"scss/style.scss","./js/router":"js/router.js","./js/route":"js/route.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./scss/style.scss":"scss/style.scss","./js/router":"js/router.js","./js/route":"js/route.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -352,7 +406,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65489" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51338" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

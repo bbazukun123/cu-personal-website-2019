@@ -1,5 +1,4 @@
-import './scss/bootstrap/bootstrap.scss';
-import './scss/style.scss';
+import "./scss/style.scss";
 import Router from "./js/router";
 import Route from "./js/route";
 

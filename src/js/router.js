@@ -1,3 +1,6 @@
+import generateBG from "./generateBG";
+import updateNav from "./updateNav";
+
 export default class Router{
 
     constructor(routes){
@@ -52,12 +55,14 @@ export default class Router{
     goToRoute(htmlName){
 
         (scope => {
-            console.log(`views/${htmlName}`);
+            console.log(htmlName);
             fetch(`views/${htmlName}`)
                 .then(res => res.text())
-                .then(data => scope.rootElem.innerHTML = data);
-            
-                
+                .then(data => {
+                    updateNav(htmlName);
+                    scope.rootElem.innerHTML = data;
+                    generateBG();
+                });    
             //
 
         })(this);

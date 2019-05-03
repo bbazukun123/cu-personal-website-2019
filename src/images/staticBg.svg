@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="360" height="740" viewBox="0 0 360 740">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#e38e2c"/>
+      <stop offset="0.48" stop-color="#6d3214"/>
+      <stop offset="1" stop-color="#380909"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#000f33"/>
+      <stop offset="1" stop-color="#28d1dd"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-7" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#5d5d5d"/>
+      <stop offset="1" stop-color="#cde3ba"/>
+    </linearGradient>
+    <filter id="Rectangle_70" x="0" y="441" width="360" height="21" filterUnits="userSpaceOnUse">
+      <feOffset dy="-2" input="SourceAlpha"/>
+      <feGaussianBlur result="blur"/>
+      <feFlood flood-color="#c4c2c2"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <clipPath id="clip-custom_13">
+      <rect width="360" height="740"/>
+    </clipPath>
+  </defs>
+  <g id="custom_13" data-name="custom – 13" clip-path="url(#clip-custom_13)">
+    <rect width="360" height="740" fill="#303030"/>
+    <rect id="Rectangle_71" data-name="Rectangle 71" width="360" height="278" transform="translate(0 462)" fill="url(#linear-gradient)"/>
+    <rect id="Rectangle_65" data-name="Rectangle 65" width="41" height="443" fill="url(#linear-gradient-2)"/>
+    <rect id="Rectangle_69" data-name="Rectangle 69" width="41" height="443" transform="translate(159.5)" fill="url(#linear-gradient-2)"/>
+    <rect id="Rectangle_67" data-name="Rectangle 67" width="41" height="443" transform="translate(79.75)" fill="url(#linear-gradient-2)"/>
+    <rect id="Rectangle_73" data-name="Rectangle 73" width="41" height="443" transform="translate(239.25)" fill="url(#linear-gradient-2)"/>
+    <rect id="Rectangle_75" data-name="Rectangle 75" width="41" height="443" transform="translate(319)" fill="url(#linear-gradient-2)"/>
+    <rect id="Rectangle_66" data-name="Rectangle 66" width="41" height="443" transform="translate(41)" fill="url(#linear-gradient-7)"/>
+    <rect id="Rectangle_72" data-name="Rectangle 72" width="41" height="443" transform="translate(199.375)" fill="url(#linear-gradient-7)"/>
+    <rect id="Rectangle_68" data-name="Rectangle 68" width="41" height="443" transform="translate(119.625)" fill="url(#linear-gradient-7)"/>
+    <rect id="Rectangle_74" data-name="Rectangle 74" width="41" height="443" transform="translate(278)" fill="url(#linear-gradient-7)"/>
+    <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Rectangle_70)">
+      <rect id="Rectangle_70-2" data-name="Rectangle 70" width="360" height="19" transform="translate(0 443)" fill="#f3ddd7"/>
+    </g>
+    <rect id="Rectangle_91" data-name="Rectangle 91" width="360" height="740" fill="#1b423c" opacity="0.15"/>
+  </g>
+</svg>

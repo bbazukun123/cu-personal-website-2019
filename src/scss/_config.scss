@@ -1,0 +1,34 @@
+//Variables, Mixins & Functions-----------------------------------------------
+
+//Colour Variables
+$primary-color: #C8D7D8;
+/* $accent-colour: */
+$dark-color: #000F33;
+$light-color: #fff;
+$success-color: #298D94;
+$danger-color: #873F3F;
+$warning-color: #9B7D43;
+
+//Other Variables
+$x-large: 4rem;
+$large: 3.5rem;
+$medium: 1.5rem;
+$small: 1.3rem;
+$x-small: 1rem;
+
+
+//Set text colour based on inputted background colour
+@function set-text-color($color){
+    @if(lightness($color)>60){
+        @return $dark-color;
+    }
+    @else{
+        @return $light-color;
+    }
+}
+
+//Set colours for both background and text
+@mixin set-background($color){
+    background-color: $color;
+    color: set-text-color($color);
+}

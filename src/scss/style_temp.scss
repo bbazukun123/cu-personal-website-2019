@@ -1,0 +1,81 @@
+$primary: #000F33;
+$secondary: #834F21;
+$success: #298D94;
+$warning: #9B7D43;
+$danger: #873F3F;
+$white: #fff;
+$dark: #2D2D2D;
+
+@import "./bootstrap/bootstrap.scss";
+
+body{
+    font-family: 'VT323', monospace;
+    position: relative;
+}
+
+nav{
+    position: absolute;
+    text-transform: uppercase;
+    bottom: 0;
+
+    #upChev{
+        transform: rotate(-90deg);
+    }
+
+    #leftChev{
+        transform: rotate(180deg);
+    }
+
+    #downChev{
+        transform: rotate(90deg);
+    }
+
+    a{
+        color: #fff;
+    }
+}
+
+#topNavBar{
+    margin-top: 0.5em;
+    top: 0;
+}
+
+#name-banner{
+
+    width: 85%;
+    margin-top: 6vh;
+    box-shadow: 0 0.6em 0 #B8B8B8;
+
+    h3{
+        color: #000F33;
+        line-height: 0.9;
+        letter-spacing: 0.08em;
+    }
+
+    .inverted-banner{
+        letter-spacing: 0.03em;
+        color: #fff;
+        background: #000F33;
+    }
+
+}
+
+.action-text{
+    color: #fff;
+    text-shadow: 0 0.06em 0 #000000;
+}
+
+.modal-dialog{
+
+    width: 90%;
+    margin: auto;
+
+    .modal-content{
+        height: 80vh;
+    }
+
+}
+
+#desk-bg{
+    background: url(../images/staticBG.svg) no-repeat center / cover;
+}

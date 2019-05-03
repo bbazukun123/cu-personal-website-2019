@@ -4,18 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <title>Document</title>
 </head>
 <body>
-    <a href="#desk">Desk</a>
-    <a href="#about">About</a>
-    <a href="#portfolio">Portfolio</a>
-    <a href="#logs">Logs</a>
     <div id="app">
         
     </div>
-    <script src="/js/ext_modules/jquery.slim.min.js"></script>
-    <script src="/js/ext_modules/bootstrap.bundle.min.js"></script>
+    <div class="nav p-2">
+        <a href="#logs" class="nav-btn">
+            <div>
+                <object class="mb-1 text-left" type="image/svg+xml" data="./images/doubleChevron.svg"></object>
+                <h4 class= "nav-text mb-1">[Left]</h4>
+            </div>
+        </a>
+        <a href="#about" class="nav-btn">
+            <div>
+                <object class="mb-1 tr-n90" type="image/svg+xml" data="./images/doubleChevron.svg"></object>
+                <h4 class= "nav-text mb-1">[Middle]</h4>
+            </div>
+        </a>
+        <a href="#portfolio" class="nav-btn">
+            <div>
+                <object class="mb-1 tr-180 text-right" type="image/svg+xml" data="./images/doubleChevron.svg"></object>
+                <h4 class= "nav-text mb-1">[Right]</h4>
+            </div>
+        </a>
+    </div>
     <script src="index.js"></script>
 </body>
 </html>
