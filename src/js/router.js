@@ -1,13 +1,22 @@
 import generateBG from "./generateBG";
 import updateNav from "./updateNav";
+import ContentManager from "./ContentManager";
 
 export default class Router{
 
     constructor(routes){
 
+        //Set routes
         this.routes = routes;
-        this.rootElem = document.getElementById("app");
-        //init();
+
+        //Grab output & control elements
+        this.viewElem = document.querySelector(".view");
+        this.supViewElem = document.querySelector(".sup-view");
+        this.navElem = document.querySelector(".nav");
+
+        //Setup content manager & declare empty variables for content data
+        this.contentManager = new ContentManager();
+        this.contentData = [];
         
     }
 
@@ -15,58 +24,198 @@ export default class Router{
     init(){
 
         const r = this.routes;
-        ((scope,r) => {
+        this.renderViews(r);
 
-            window.addEventListener("hashchange", (e) => {
-                scope.hasChanged(this,r);
-            });
-        })(this,r);
-        this.hasChanged(this,r);
+        window.addEventListener("hashchange", (e) => {
+            this.hasChanged(r);
+        });
+
+        this.navElem.addEventListener("animationend", (e) => {
+            this.navElem.classList.remove("fade");
+        })
 
     }
 
-    hasChanged(scope,r){
+    //Setup all the selector & item buttons' actions
+    initButtons(){
 
-        if(window.location.hash.length > 0){
+        this.portfolioBtns = document.querySelector(".portfolio-selector-items");
+        this.logsBtns = document.querySelector(".logs-selector-items");
+        this.aboutBtns = document.querySelector(".about-selector-items");
+        this.toggleBtns = document.querySelectorAll(".toggle-btn");
 
-            for(let i = 0, length = r.length; i < length; i++){
+        Array.from(this.portfolioBtns.children).forEach(btn => {
+            btn.addEventListener("click", e => {
+                this.contentManager.updatePortfolio(e.target.id);
+                Array.from(this.portfolioBtns.children).forEach(btn => {
+                    if(btn.classList.contains("selected"))
+                        btn.classList.remove("selected");
+                })
+                e.target.classList.add("selected");
+                
+            })
+        })
 
-                const route = r[i];
-                if(route.isActiveRoute(window.location.hash.substr(1))){
+        Array.from(this.logsBtns.children).forEach(btn => {
+            btn.addEventListener("click", e => {
+                this.contentManager.updateLogs(e.target.id);
+                Array.from(this.logsBtns.children).forEach(btn => {
+                    if(btn.classList.contains("selected"))
+                        btn.classList.remove("selected");
+                })
+                e.target.classList.add("selected");
+                
+            })
+        })
 
-                    scope.goToRoute(route.htmlName);
+        Array.from(this.aboutBtns.children).forEach(btn => {
+            btn.addEventListener("click", e => {
+                this.contentManager.updateAbout(e.target.id);
+                Array.from(this.aboutBtns.children).forEach(btn => {
+                    if(btn.classList.contains("selected"))
+                        btn.classList.remove("selected");
+                })
+                e.target.classList.add("selected");
+                
+            })
+        })
+
+        this.toggleBtns.forEach(btn => {
+
+            btn.addEventListener("click", e => {
+
+                let outputElem = document.getElementById(e.target.id.replace("-btn",""));
+                //outputElem.style.maxHeight = outputElem.scrollHeight;
+                if(outputElem.classList.contains("hidden"))
+                    outputElem.classList.remove("hidden");
+                else
+                    outputElem.classList.add("hidden");
+
+            });
+        })
+
+    }
+
+    renderViews(r){
+
+        const orderedRoutes = r.sort((a,b) => a.viewPos - b.viewPos);
+        let fetchArray = [];
+
+        orderedRoutes.forEach(async route => {
+
+            if(Math.sign(route.viewPos) !== -1)
+            {
+                fetchArray.push(fetch(`views/${route.htmlName}`)
+                    .then(res => res.text())
+                    .then(data => {
+                        this.viewElem.innerHTML += data;
+                    }));
+            }
+            else{
+                fetchArray.push(fetch(`views/${route.htmlName}`)
+                    .then(res => res.text())
+                    .then(data => {
+                        this.supViewElem.innerHTML += data;
+                    }));
+            }
+        });
+
+        Promise.all(fetchArray)
+            .then(() => {
+                generateBG();
+                this.contentManager.initContent();
+                this.hasChanged(r);
+                Promise.all(this.contentManager.fetchArray).then(() => {
+                    this.initButtons();
+                });             
+            });
+        
+        
+    }
+
+    hasChanged(r){
+
+        if(window.location.hash.replace("#","") !== "about")
+        {
+            if(window.location.hash.length > 0){
+
+                for(let i = 0, length = r.length; i < length; i++){
+                    
+                    const route = r[i];
+                    
+                    if(route.isActiveRoute(window.location.hash.replace("#",""))){
+
+                        console.log(route.htmlName);
+                        this.updateView(route);
+
+                    }
 
                 }
-
+                
             }
-            
+            else{
+                
+
+                for (let i = 0, length = r.length; i < length; i++){
+
+                    const route = r[i];
+                    if(route.defaultRoute)
+                        this.updateView(route);
+
+                    console.log(route.htmlName);
+
+                }
+            }
         }
         else{
-
-            for (let i = 0, length = r.length; i < length; i++){
-
-                const route = r[i];
-                if(route.defaultRoute) scope.goToRoute(route.htmlName);
-
-            }
+            this.showAbout();
         }
     }
 
-    goToRoute(htmlName){
+    updateView(r){
 
-        (scope => {
-            console.log(htmlName);
-            fetch(`views/${htmlName}`)
-                .then(res => res.text())
-                .then(data => {
-                    updateNav(htmlName);
-                    scope.rootElem.innerHTML = data;
-                    generateBG();
-                });    
-            //
 
-        })(this);
+
+            if(!document.querySelector(".sup-view-active"))
+            {
+                console.log("In for others");
+                const viewClasses = this.viewElem.classList;
+                if(viewClasses[1] !== `view-${r.viewPos}`)
+                {
+                    viewClasses.replace(viewClasses[1],`view-${r.viewPos}`);      
+                }
+
+                if(!viewClasses.contains("animate"))
+                viewClasses.add("animate");
+            }
+            else{
+                console.log("Wrong");
+                document.querySelector(".sup-view-active").classList.remove("sup-view-active");
+                this.supViewElem.classList.remove("roll-in");
+                this.viewElem.classList.remove("disabled");
+            }
+
         
+
+        updateNav(r.htmlName);
+
+        
+
+    }
+
+    showAbout(){
+
+        const routeClasses = document.getElementById("about").classList;
+        if(!routeClasses.contains("sup-view-active"))
+        {
+            routeClasses.add("sup-view-active");
+            this.supViewElem.classList.add("roll-in");
+            this.viewElem.classList.add("disabled");
+        }
+            
+
+        updateNav("about.html");
+        console.log("showAbout");
     }
 
 }

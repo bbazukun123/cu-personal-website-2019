@@ -1,0 +1,44 @@
+[
+
+    {
+        "title": "Vue.js - Basics",
+        "status": "progress",
+        "id": "1"
+    },
+    {
+        "title": "React.js - Basics",
+        "status": "que",
+        "id": "2"
+    },
+    {
+        "title": "Node.js & Express.js",
+        "status": "completed",
+        "id": "3"
+    },
+    {
+        "title": "NoSQL Database & MongoDB",
+        "status": "que",
+        "id": "4"
+    },
+    {
+        "title": "MERN / MERV Stacks",
+        "status": "que",
+        "id": "5"
+    },
+    {
+        "title": "Sprite & SVG Animations",
+        "status": "progress",
+        "id": "6"
+    },
+    {
+        "title": "React Native",
+        "status": "que",
+        "id": "7"
+    },
+    {
+        "title": "ES6+ Vanilla JS",
+        "status": "completed",
+        "id": "8"
+    }
+
+]

@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "gulp syncViews && gulp syncImages && concurrently --kill-others \"parcel src/index.html\" \"gulp\"",
-    "build": "parcel build src/index.html && gulp buildViews && gulp syncImages"
+    "start": "gulp syncViews && gulp syncContent && gulp syncImages && concurrently --kill-others \"parcel src/index.html\" \"gulp\"",
+    "build": "parcel build src/index.html && gulp buildViews && gulp buildContent && gulp syncImages"
   },
   "repository": {
     "type": "git",
@@ -19,13 +19,17 @@
   "homepage": "https://github.com/bbazukun123/cu-personal-website-2019#readme",
   "devDependencies": {
     "@babel/core": "^7.4.4",
+    "@babel/plugin-transform-runtime": "^7.4.4",
     "autoprefixer": "^9.5.1",
     "concurrently": "^4.1.0",
     "gulp": "^4.0.1",
     "gulp-htmlmin": "^5.0.1",
     "gulp-imagemin": "^5.0.3",
+    "gulp-jsonminify": "^1.1.0",
     "parcel-bundler": "^1.12.3",
     "sass": "^1.19.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@babel/runtime": "^7.4.4"
+  }
 }

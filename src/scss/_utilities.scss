@@ -176,6 +176,7 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
     grid-template-columns: repeat(3,1fr); 
     width: 100vw;
     bottom: 0;
+    z-index: 10;
 
     .nav-btn{
         text-align: center;
@@ -215,6 +216,23 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
             
         }
     }
+
+    &.fade{
+        pointer-events: none;
+        animation: fade 0.25s 2 alternate ease-in-out; 
+    }
+
+    @keyframes fade{
+
+        0%{
+            opacity: 1;
+        }
+        100%{
+            opacity: 0;
+        }
+        
+    }
+
 }
 
 .container{
@@ -223,10 +241,19 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
     width: 100vw;
     height: 100vh;
     
+    &#about{
+        transition: opacity 0.35s ease-out;
+    }
+
+    &.sup-view-active{
+        z-index: 2;
+        opacity: 1;
+    }
+    
     .room-bg{
 
         position: absolute;
-        width: 100%;
+        width: 100vw;
         height: 100%;
         z-index: -1;
         
@@ -276,7 +303,7 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
 
     .main-content{
 
-        position: absolute;
+        position: relative;
         width: 100%;
         height: 100%;
         text-align: center;
@@ -522,6 +549,7 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
         }
 
         //Portfolio Page
+
         .content-card,
         .selector-card{
             width: 88%;
@@ -529,9 +557,27 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
             margin-right: auto;
         }
 
+        .about-fix{
+            width: 100%;
+            height:100%;
+            padding-top: 3%;
+        }
+
         .content-card{
+            $padding: 0.6rem;
             height: 60%;
-            padding: 0.6rem;
+            padding: $padding;
+            position: relative;
+
+            &::after{
+                content: "";
+                position: absolute;
+                left: $padding;
+                right: $padding;
+                bottom: $padding;
+                height: 3%;
+                background: linear-gradient(hsla(0,0,0,0),hsla(0,0,0,0.6))
+            }
 
             &.about-card{
                 margin-top: 22%;
@@ -541,32 +587,135 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
             & > div {
                 width: 100%;
                 height: 100%;
-                overflow: hidden;
+                /* overflow: scroll;
+                overscroll-behavior: contain; */
+                //overflow-style: hidden;
                 position: relative;
 
-                &::after{
-                    content: "";
-                    position: absolute;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    height: 3%;
-                    background: linear-gradient(hsla(0,0,0,0),hsla(0,0,0,0.6))
-                }
+                
             }
 
             .card-list{
                 width: 100%;
+                height: 100%;
                 margin: auto;
-                display: grid;
+                /* display: grid;
                 grid-template-columns: 1fr;
                 grid-gap: 0.6rem;
-                justify-items: center;
+                justify-items: center; */
+                position: relative;
+                overflow: scroll;
+                overscroll-behavior: contain;
                 
+                & > div{
+                    position: absolute;
+                    display: grid;
+                    grid-template-columns: 1fr;
+                    grid-gap: 0.6rem;
+                    justify-items: center;
+                    width: 100%;
+                    //transition: all 0.25s ease-out;
+
+                    &.hidden{
+                        /* opacity: 0;
+                        transform: scaleX(0.9); */
+                        display: none;
+                    }
+
+                    &.education-card{
+                        padding: 0.6rem;
+                        grid-template-columns: 1fr 4fr;
+                        grid-gap: 0.2rem 1rem;
+                        position: relative;
+                        
+                        .milestone{
+                            background-color: $warning-color;
+                            width: 35px;
+                            height: calc(35px + 6.4px);
+                            border-bottom: 0.4rem solid darken($warning-color,20%);
+                            margin-top: 0.3rem;
+                            position: relative;
+
+                            &::after{
+                                content: "";
+                                position: absolute;
+                                background-color: $dark-color;
+                                top: 25%;
+                                bottom: 25%;
+                                left: 25%;
+                                right: 25%
+                            }
+                        }
+
+                        .card-item{
+                            background-color: transparent;
+                            padding-right: 0.6rem;
+                            
+                            hr{
+                                width: 90%;
+                                border-width: 0.06rem;
+                            }
+
+                            button{
+                                padding: 0.3rem;
+                                padding-left: 1rem;
+                                padding-right: 1rem;
+                            }
+                        }
+
+                        &::before{
+                            content: "";
+                            position: absolute;
+                            width:4%;
+                            bottom: -4.5%;
+                            top: 5%;
+                            left: 10%;
+                            background: linear-gradient($dark-color, #F9E3E3);
+                        }
+                    }
+
+                    &.contact-card{
+                        grid-template-columns: 1fr;
+                        grid-gap: 0.2rem 1rem;
+                        text-align: center;
+
+                        h1{
+                            font-size: 2.5rem;
+                            padding: 1.8rem 1.5rem;
+                        }
+
+                        button{
+                            padding-top: 0.25rem;
+                            padding-bottom: 0.25rem;
+                        }
+
+                        a{
+                            color: $warning-color;
+                        }
+
+                        .avatar{
+                            //width: 100%;
+                            height: 35vh;
+                            background-color: pink;
+                            overflow: hidden;
+                            position: relative;
+
+                            object{
+                                position: absolute;
+                                width:115%;
+                            }
+                        }
+                    }
+                }
 
                 .card-item{
                     width: 100%;
                     @include set-background($primary-color);
+
+                    &.hidden{
+                        display: none;
+                        //Neeeeeeeeed Codeeee
+                    }
 
                     .card-photo{
                         height: 20vh;
@@ -595,6 +744,33 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
                     
                 }
             }
+
+            //Upgrade-specific card items
+            .upgrade-items{
+                width: 95%;
+                /* transform-origin: 50% 0;
+                transition: scaleY 0.25s ease-out; */
+                //transition: max-height 5s ease-out;
+
+                div{
+
+                    &:nth-child(odd){
+                        @include set-background($primary-color);
+                    }
+
+                    &:nth-child(even){
+                        @include set-background(darken($primary-color,15%));
+                    }
+                }
+
+                &.hidden{
+                    /* transform: scaleY(0); */
+                    max-height: 0;
+                }
+
+            }
+
+            //Contact-specific card
             
         }
 
@@ -610,10 +786,38 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
                 div{
                     display: inline-block;
                     cursor: pointer;
+                    pointer-events: inherit;
+                    position: relative;
+                    /* transform: scale(0);
+                    transition: scale 0.25s ease-out; */
+
+                    /* &::before{
+                        content:"";
+                        position: absolute;
+                        top: 0;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        @include set-background($dark-color);
+                        transform: scaleX(0);
+                        transition: scale 0.25s ease-out;
+
+                    }
+
+                    &::before .selected{
+                        @include set-background($dark-color);
+                        cursor: inherit;
+                        pointer-events: none;
+                        transform: scale(1);
+                    } */
 
                     &.selected{
+                        cursor: inherit;
+                        pointer-events: none;
                         @include set-background($dark-color);
+                        transform: scale(1);
                     }
+                    
                 }
 
                 &.portfolio-selector-items{
@@ -657,8 +861,23 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
             display: grid;
             align-items: center;
 
+            &.cta{
+
+                &-success{
+                    @include set-background($success-color);
+                }
+
+                &-warning{
+                    @include set-background($warning-color);
+                }
+
+                &-danger{
+                    @include set-background($danger-color);
+                }
+            }
+
             &.portfolio-panel{
-                grid-template-columns: 1fr 3fr 1fr 2fr;
+                grid-template-columns: 1fr 3fr 1fr 1.5fr;
             }
 
             &.adventure-panel{
@@ -666,11 +885,15 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
             }
 
             &.upgrade-panel{
-                grid-template-columns: 1fr 3fr 1fr 2fr;
+                grid-template-columns: 4fr 1fr;
             }
 
             &.experience-panel{
                 grid-template-columns: 3fr 2.5fr 2fr;
+            }
+
+            &.contact-panel{
+                grid-template-columns: 4fr 2fr;
             }
         }
     }
@@ -713,6 +936,10 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
         background-color: darken($light-color,10%);
     }
 
+    &:hover.btn-dark{
+        background-color: lighten($dark-color,10%);
+    }
+
     &:active{
         border-bottom-width: 0;
         transform: translateY(10%);
@@ -720,6 +947,11 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
 
     &:focus{
         background-color: $light-color;
+        outline: none;
+    }
+
+    &:focus.btn-dark{
+        background-color: $dark-color;
         outline: none;
     }
 
