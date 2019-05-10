@@ -1,30 +1,48 @@
 [
 
     {
+        "id":"1",
         "title": "London > Bruges",
         "desc": "Cycling my way to Belgium",
         "month": "APR 2019",
-        "img": "pixels8.gif",
+        "cover": "pixels8.gif",
         "diary": {
-
+            "media":[
+                {"type":"image","link":"pixels1.gif"},
+                {"type":"image","link":"pixels5.gif"},
+                {"type":"image","link":"pixels8.gif"}
+            ],
+            "text":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam quasi quo iure voluptate sint saepe unde explicabo repellendus, doloremque aspernatur."
         }
     },
     {
+        "id":"2",
         "title": "Dartmoor Exploration",
         "desc": "First-ever long distance cycle",
         "month": "MAR 2019",
-        "img": "pixels5.gif",
+        "cover": "pixels5.gif",
         "diary": {
-
+            "media":[
+                {"type":"image","link":"pixels1.gif"},
+                {"type":"image","link":"pixels5.gif"},
+                {"type":"image","link":"pixels8.gif"}
+            ],
+            "text":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam quasi quo iure voluptate sint saepe unde explicabo repellendus, doloremque aspernatur."
         }
     },
     {
+        "id":"3",
         "title": "Wondering in Morocco",
         "desc": "Backpacking trip",
         "month": "APR 2016",
-        "img": "pixels1.gif",
+        "cover": "pixels1.gif",
         "diary": {
-
+            "media":[
+                {"type":"image","link":"pixels1.gif"},
+                {"type":"image","link":"pixels5.gif"},
+                {"type":"image","link":"pixels8.gif"}
+            ],
+            "text":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam quasi quo iure voluptate sint saepe unde explicabo repellendus, doloremque aspernatur."
         }
     }
 

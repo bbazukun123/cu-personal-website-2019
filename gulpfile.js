@@ -39,7 +39,7 @@ function buildContent(){
 //Optimise & copy image resources to dist
 function syncImages(){
 
-    return gulp.src("src/images/*")
+    return gulp.src("src/images/**/*")
         .pipe(imagemin())
         .pipe(gulp.dest("dist/images"));
 
@@ -54,7 +54,7 @@ function watchContent(){
 }
 
 function watchImages(){
-    return gulp.watch("src/images/*", syncImages);
+    return gulp.watch("src/images/**/*", syncImages);
 }
 
 exports.syncViews = syncViews;

@@ -200,6 +200,10 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
 
     }
 
+    &.hidden{
+        display: none;
+    }
+
     &.nav-top{
         bottom: auto;
         top: 0;
@@ -241,9 +245,9 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
     width: 100vw;
     height: 100vh;
     
-    &#about{
+    /* &#about-t{
         transition: opacity 0.35s ease-out;
-    }
+    } */
 
     &.sup-view-active{
         z-index: 2;
@@ -569,6 +573,18 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
             padding: $padding;
             position: relative;
 
+            &::before{
+                content: "";
+                position: absolute;
+                left: $padding;
+                right: $padding;
+                top: $padding;
+                height: 3%;
+                background: linear-gradient(hsla(0,0,0,0.6),hsla(0,0,0,0));
+                transition: opacity 0.25s ease-out;
+                z-index: 1;
+            }
+
             &::after{
                 content: "";
                 position: absolute;
@@ -576,7 +592,16 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
                 right: $padding;
                 bottom: $padding;
                 height: 3%;
-                background: linear-gradient(hsla(0,0,0,0),hsla(0,0,0,0.6))
+                background: linear-gradient(hsla(0,0,0,0),hsla(0,0,0,0.6));
+                transition: opacity 0.25s ease-out;
+            }
+
+            &.no-scroll-shadow-top::before{
+                opacity: 0;
+            }
+
+            &.no-scroll-shadow-bottom::after{
+                opacity: 0;
             }
 
             &.about-card{
@@ -679,9 +704,13 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
                         grid-gap: 0.2rem 1rem;
                         text-align: center;
 
+                        div{
+                            margin-top: 0.25rem;
+                        }
+
                         h1{
                             font-size: 2.5rem;
-                            padding: 1.8rem 1.5rem;
+                            padding: 1.5rem 1.5rem;
                         }
 
                         button{
@@ -694,9 +723,9 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
                         }
 
                         .avatar{
-                            //width: 100%;
-                            height: 35vh;
-                            background-color: pink;
+                            width: 100%;
+                            height: 24vh;
+                            //background-color: pink;
                             overflow: hidden;
                             position: relative;
 
@@ -704,6 +733,22 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
                                 position: absolute;
                                 width:115%;
                             }
+                        }
+
+                        .social-media{
+                            width: 100%;
+                            display: grid;
+                            grid-template-columns: 1fr 1fr;
+                            grid-gap: 0.5rem; 
+
+
+                            button{
+                                padding: 0.9rem;
+                                padding-top: 0.6rem;
+                                padding-bottom: 0.6rem;
+                                margin-bottom: 0.5rem;
+                            }
+                            
                         }
                     }
                 }
@@ -855,52 +900,248 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
 
         }
 
-        .cta-panel{
-            width: 100%;
-            @include set-background($dark-color);
-            display: grid;
-            align-items: center;
-
-            &.cta{
-
-                &-success{
-                    @include set-background($success-color);
-                }
-
-                &-warning{
-                    @include set-background($warning-color);
-                }
-
-                &-danger{
-                    @include set-background($danger-color);
-                }
-            }
-
-            &.portfolio-panel{
-                grid-template-columns: 1fr 3fr 1fr 1.5fr;
-            }
-
-            &.adventure-panel{
-                grid-template-columns: 5fr 2fr;
-            }
-
-            &.upgrade-panel{
-                grid-template-columns: 4fr 1fr;
-            }
-
-            &.experience-panel{
-                grid-template-columns: 3fr 2.5fr 2fr;
-            }
-
-            &.contact-panel{
-                grid-template-columns: 4fr 2fr;
-            }
-        }
     }
     
 }
 
+.detail-card{
+    width: 100vw;
+    height: 100vh;
+    text-align: center;
+    overflow: scroll;
+
+    h1{
+        word-wrap: break-word;
+    }
+
+    .detail-badges{
+        //@include set-background($dark-color);
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        justify-items: center;
+        align-items: center;
+        width: 45%;
+        margin: auto;
+        margin-bottom: 2.5rem;
+        vertical-align: center;
+
+
+        h3,h5{
+            display: inline-block;
+            padding: 0.2rem;
+        }
+
+        div{
+            height: 100%;
+            border-left: 1px solid $dark-color;
+        }
+
+    }
+
+    hr{
+        margin-left: auto;
+        margin-right: auto;
+        width: 60%;
+    }
+
+    #key-learning,
+    #dissertation{
+        display: block;
+        margin: auto;
+        width: 90%;
+        background-color: $primary-color;
+        padding: 1.8rem 0.8rem;
+    }
+
+    .detail-content{
+        line-height: 1.6;
+    }
+
+    .list-content{
+
+        width: 82%;
+        margin: auto;
+        margin-bottom: 1.5rem;
+        text-align: left;
+
+        h4:nth-child(odd){
+            margin: 0.5rem 0;
+            padding: 0.8rem;
+            display: block;
+            width: 100%;
+            @include set-background($primary-color);
+        }
+
+        h4:nth-child(even){
+            margin: 0.5rem 0;
+            padding: 0.8rem;
+            display: block;
+            width: 100%;
+            @include set-background(darken($primary-color, 15%));
+        }
+    }
+
+    .detail-gallery{
+        margin: auto;
+        margin-bottom: 0.8rem;
+        //background-color: lighten($success-color, 50%);
+        width: 100%;
+        padding-bottom: 56.25%;
+        position: relative;
+
+        .media-container{
+            width: 100%;
+            height: 100%;
+            position: relative;     
+
+            .media-image{
+                pointer-events: none;
+                position: absolute;
+                width: 100%;
+                padding-bottom: 56.25%;
+                top: 0;
+                left: 0;
+                background-size: contain;
+                background-position: center;
+                background-repeat: no-repeat;
+                opacity: 0;
+                transition: opacity 0.25s ease-out;
+
+                &.active{
+                    opacity: 1;
+                    pointer-events: inherit;
+                }
+            }
+            
+            .media-video{
+                pointer-events: none;
+                position: absolute;
+                width: 100%;
+                padding-bottom: 56.25%;
+                top: 0;
+                left: 0;
+                opacity: 0;
+                transition: opacity 0.25s ease-out;
+
+                &.active{
+                    opacity: 1;
+                    pointer-events: inherit;
+                }
+
+                iframe{
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    border: 0;
+                }
+            }
+
+            .hidden{
+                display: none;
+            }
+        }
+        
+        
+    }
+
+    .media-control{
+        pointer-events: none;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .btn{
+            pointer-events: auto;
+        }
+
+
+    }
+
+    .height-filler{
+        height: 4.6rem;
+    }
+}
+
+.toolkit-card{
+    width: 85%;
+    height: 85%;
+    margin: 15% auto;
+    text-align: center;
+    background-color: $light-color;
+    border-bottom: 0.4rem solid #B8B8B8;
+    overflow: scroll;
+}
+
 //Other components
+.cta-panel{
+    width: 100%;
+    @include set-background($dark-color);
+    display: grid;
+    align-items: center;
+
+    &.cta{
+
+        &-success{
+            @include set-background($success-color);
+        }
+
+        &-warning{
+            @include set-background($warning-color);
+        }
+
+        &-danger{
+            @include set-background($danger-color);
+        }
+    }
+
+    &.portfolio-panel{
+        grid-template-columns: 1fr 3fr 1fr 1.5fr;
+    }
+
+    &.adventure-panel{
+        grid-template-columns: 5fr 2fr;
+    }
+
+    &.upgrade-panel{
+        grid-template-columns: 4fr 1fr;
+    }
+
+    &.experience-panel{
+        grid-template-columns: 3fr 2.5fr 2fr;
+    }
+
+    &.contact-panel{
+        grid-template-columns: 4fr 2fr;
+    }
+
+    &.challenges-panel,
+    &.tools-panel,
+    &.key-learning-panel,
+    &.dissertation-panel{
+        //padding: 1rem;
+        margin: 0.5rem auto;
+        width: 90%;
+        justify-items: start;
+        grid-template-columns: 1fr 6fr;
+
+        i{
+            padding-left: 1.2rem;
+            display: block;
+            width: 100%;
+        }
+
+    }
+
+    &.key-learning-panel,
+    &.dissertation-panel{
+        margin-bottom: 0;
+    }
+
+}
+
 .card{
     @include set-background($light-color);
     border-bottom: 0.4rem solid #B8B8B8;
@@ -930,6 +1171,7 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
 
     &.btn-dark{
         @include set-background($dark-color);
+        border-bottom: 0.4rem solid #516F8D;
     }
 
     &:hover{
@@ -955,6 +1197,65 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
         outline: none;
     }
 
+    &.toggle-btn{
+
+        i{
+            
+            transform: rotateZ(-90deg);
+        }
+        
+        &.toggled i{
+            
+                transform: rotateZ(0);
+
+        }
+    }
+
+    &#media-left-btn,
+    &#media-right-btn{
+        padding-left: 0.8rem;
+        padding-right: 0.8rem;
+    }
+
+}
+
+.back-btn{
+
+    position: absolute;
+    width: 3.5rem;
+    height: 3.9rem;
+    background-color: $danger-color;
+    bottom: 1.5rem;
+    right: 1rem;
+    border-bottom: 0.4rem solid darken($danger-color, 15%);
+    border-radius: 0.25rem;
+    box-shadow: 0 0.5rem 0.5rem hsla(0,0,0,0.3);
+    transition: opacity 0.25s ease-out;
+    transition: all 0.05s ease-out;
+
+    &.toolkit-btn{
+        bottom: 2rem;
+    }
+    
+    i{
+        width: 100%;
+        text-align: center;
+        line-height: 3.5rem;
+        top: 20rem;
+        color: $light-color;
+    }
+
+    .hidden{
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    &:active{
+        border-bottom-width: 0;
+        transform: translateY(2%);
+    }
+
+    
 }
 
 

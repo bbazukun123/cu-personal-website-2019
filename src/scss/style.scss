@@ -53,7 +53,9 @@ object{
 
 #app,
 .view,
-.sup-view{
+.sup-view,
+.detail-view,
+.toolkit-view{
     height: 100vh;
     width: 100vw;
     position: relative;
@@ -73,7 +75,7 @@ object{
     transition: opacity 0.25s ease-out;
 
     &.animate{
-        transition: transform 0.5s ease-in-out;
+        transition: transform 0.25s ease-out;
     }
 
     &.disabled{
@@ -97,18 +99,51 @@ object{
 .sup-view{
     position: absolute;
     /* transform: translateY(0); */
-    transform: scale(0.95);
-    opacity: 0;
-    transition: all 0.35s cubic-bezier(0.43, 0.04, 0.65, 1.54);
+    bottom: -100%;
+    opacity: 0.5;
+    transition: all 0.25s ease-in-out;
     pointer-events: none;
 
     &.roll-in{
         /* transform: translateY(0); */
-        transform: scale(1);
-        transform: translateY(-1%);
+        //transform: scale(1);
+        transform: translateY(-100%);
         opacity: 1;
-        pointer-events: inherit;
+        pointer-events: auto;
     }
+}
+
+.detail-view{
+    position: absolute;
+    pointer-events: none;
+    transform: scale(0.95);
+    //bottom: -100%;
+    opacity: 0;
+    background-color: $light-color;
+    transition: all 0.25s ease-in-out;
+
+    &.pop-up{
+        opacity: 1;
+        //transform: translateY(-100%);
+        transform: scale(1);
+        pointer-events: auto;
+    }
+}
+
+.toolkit-view{
+    position: absolute;
+    pointer-events: none;
+    transform: scale(0.9);
+    opacity: 0;
+    transition: all 0.25s ease-in-out;
+
+    &.pop-up{
+        opacity: 1;
+        //transform: translateY(-100%);
+        transform: scale(1);
+        pointer-events: auto;
+    }
+
 }
 
 i{

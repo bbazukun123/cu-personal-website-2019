@@ -1117,6 +1117,14 @@ function () {
         _this.contentData.push(data);
       }).catch(function (err) {
         throw err;
+      })); //Fetch toolkit content
+
+      this.fetchArray.push(fetch("content/toolkitContent.json").then(function (res) {
+        return res.json();
+      }).then(function (data) {
+        _this.contentData.push(data);
+      }).catch(function (err) {
+        throw err;
       }));
       /* -------------------------------------------------------------------- */
 
@@ -1124,14 +1132,20 @@ function () {
         //Grab all output elements
         _this.portfolioElem = document.getElementById("portfolio-card");
         _this.logsElem = document.getElementById("logs-card");
-        _this.aboutElem = document.getElementById("about-card"); //Render portfolio content---------------------------------
+        _this.aboutElem = document.getElementById("about-card");
+        _this.detailElem = document.querySelector(".detail-card");
+        _this.toolkitElem = document.querySelector(".toolkit-card"); //Render portfolio content---------------------------------
 
         var portfolioOutput = "<div>";
 
         _this.contentData[0].forEach(function (p) {
           return portfolioOutput += "<div class=\"card-item ".concat(p.field, "\">\n                        <div class=\"p-2\">\n                            <h2>").concat(p.title, " (").concat(p.year, ")</h2>\n                            <h4>").concat(p.desc, "</h4>\n                        </div>\n                        <div class=\"cta-panel portfolio-panel\">\n                            <h3 class=\"p-2 bg-").concat(function (field) {
             if (field === "UX") return "success";else if (field === "Design") return "warning";else if (field === "Web") return "danger";
-          }(p.field), "\">").concat(p.field, "</h3>\n                            <h5 class=\"px-2\">").concat(p.type.replace(" ", "<br>"), "</h5>\n                            <button class=\"btn btn-l btn-light\"><i class=\"fas fa-play\"></i></button>\n                            <button class=\"btn btn-l btn-light mx-1\"><i class=\"fas fa-info-circle\"></i></button>\n                        </div>\n                    </div>");
+          }(p.field), "\">").concat(p.field, "</h3>\n                            <h5 class=\"px-2\">").concat(p.type.replace(" ", "<br>"), "</h5>\n                            <button class=\"btn btn-l btn-light\" ").concat(function (action) {
+            if (action !== "none") return "onClick=\"window.open('".concat(action, "')\"");else return "style=\"visibility:hidden\"";
+          }(p.action), ">").concat(function (link) {
+            if (link.includes("youtu.be")) return '<i class="fas fa-play"></i>';else if (link.includes("github")) return '<i class="fab fa-github"></i>';else return "<i class=\"fas fa-link\"></i>";
+          }(p.action), "</button>\n                            <button id=\"portfolio-").concat(p.id, "\" class=\"btn btn-l detail-btn btn-light mx-1\"><i class=\"fas fa-info-circle\"></i></button>\n                        </div>\n                    </div>");
         });
 
         _this.portfolioElem.innerHTML = portfolioOutput + "</div>"; //Render logs content------------------------------  
@@ -1139,29 +1153,35 @@ function () {
         var advOutput = "<div id=\"adventure-logs\">";
 
         _this.contentData[1].forEach(function (a) {
-          return advOutput += "<div class=\"card-item\">\n                        <div class=\"card-photo\" style=\"background-image: url(../images/".concat(a.img, ")\">\n                            <div class=\"p-2 text-light text-drop-shadow\">\n                                <h2>").concat(a.title, "</h2>\n                                <h4>").concat(a.desc, "</h4>\n                            </div>\n                        </div>\n                        <div class=\"cta-panel adventure-panel\">\n                            <h4 class=\"p-2\">").concat(a.month, "</h4>\n                            <button class=\"btn btn-sm btn-light mx-1\">Diary</button>\n                        </div>\n                    </div>");
+          return advOutput += "<div class=\"card-item\">\n                        <div class=\"card-photo\" style=\"background-image: url(../images/".concat(a.cover, ")\">\n                            <div class=\"p-2 text-light text-drop-shadow\">\n                                <h2>").concat(a.title, "</h2>\n                                <h4>").concat(a.desc, "</h4>\n                            </div>\n                        </div>\n                        <div class=\"cta-panel adventure-panel\">\n                            <h4 class=\"p-2\">").concat(a.month, "</h4>\n                            <button id=\"adventure-").concat(a.id, "\" class=\"btn btn-sm detail-btn btn-light mx-1\">Diary</button>\n                        </div>\n                    </div>");
         });
 
         advOutput += "</div>";
         var upgradeData = _this.contentData[2];
         var inProgressList = upgradeData.filter(function (item) {
           return item.status === "progress";
+        }).sort(function (a, b) {
+          return b.id - a.id;
         });
         var wishList = upgradeData.filter(function (item) {
           return item.status === "que";
+        }).sort(function (a, b) {
+          return b.id - a.id;
         });
         var completedList = upgradeData.filter(function (item) {
           return item.status === "completed";
+        }).sort(function (a, b) {
+          return b.id - a.id;
         });
-        var upgradeOutput = "<div id=\"upgrade-logs\" class=\"hidden\">\n                <div class=\"cta-panel cta-warning upgrade-panel\">\n                    <h2 class=\"p-2\">In Progress</h2>\n                    <button id=\"progress-btn\" class=\"btn btn-l btn-light mx-1 toggle-btn\"><i class=\"fas fa-chevron-down\"></i></button>\n                </div>\n                <div id=\"progress\" class=\"upgrade-items\">";
+        var upgradeOutput = "<div id=\"upgrade-logs\" class=\"hidden\">\n                <div class=\"cta-panel cta-warning upgrade-panel\">\n                    <h2 class=\"p-2\">In Progress</h2>\n                    <button id=\"progress-btn\" class=\"btn btn-l btn-light mx-1 toggle-btn toggled\"><i class=\"fas fa-chevron-down\"></i></button>\n                </div>\n                <div id=\"progress\" class=\"upgrade-items\">";
         inProgressList.forEach(function (item) {
           upgradeOutput += "<div class=\"p-2\">\n                        <h3>".concat(item.title, "</h3>\n                    </div>");
         });
-        upgradeOutput += "</div>\n            <div class=\"cta-panel cta-danger upgrade-panel\">\n                <h2 class=\"p-2\">Knowledge Wishlist</h2>\n                <button id=\"wish-btn\" class=\"btn btn-l btn-light mx-1 toggle-btn\"><i class=\"fas fa-chevron-down\"></i></button>\n            </div>\n            <div id=\"wish\" class=\"upgrade-items\">";
+        upgradeOutput += "</div>\n            <div class=\"cta-panel cta-danger upgrade-panel\">\n                <h2 class=\"p-2\">Knowledge Wishlist</h2>\n                <button id=\"wish-btn\" class=\"btn btn-l btn-light mx-1 toggle-btn\"><i class=\"fas fa-chevron-down\"></i></button>\n            </div>\n            <div id=\"wish\" class=\"upgrade-items hidden\">";
         wishList.forEach(function (item) {
           upgradeOutput += "<div class=\"p-2\">\n                    <h3>".concat(item.title, "</h3>\n                </div>");
         });
-        upgradeOutput += "</div>\n            <div class=\"cta-panel cta-success upgrade-panel\">\n                <h2 class=\"p-2\">Recently Completed</h2>\n                <button id=\"completed-btn\" class=\"btn btn-l btn-light mx-1 toggle-btn\"><i class=\"fas fa-chevron-down\"></i></button>\n            </div>\n            <div id=\"completed\" class=\"upgrade-items\">";
+        upgradeOutput += "</div>\n            <div class=\"cta-panel cta-success upgrade-panel\">\n                <h2 class=\"p-2\">Recently Completed</h2>\n                <button id=\"completed-btn\" class=\"btn btn-l btn-light mx-1 toggle-btn\"><i class=\"fas fa-chevron-down\"></i></button>\n            </div>\n            <div id=\"completed\" class=\"upgrade-items hidden\">";
         completedList.forEach(function (item) {
           upgradeOutput += "<div class=\"p-2\">\n                        <h3>".concat(item.title, "</h3>\n                    </div>");
         });
@@ -1171,21 +1191,15 @@ function () {
         var expOutput = "<div id=\"experience-about\">";
 
         _this.contentData[3].forEach(function (exp) {
-          return expOutput += "<div class=\"card-item\">\n                        <div class=\"p-2\">\n                            <h2>".concat(exp.title, "</h2>\n                            <h4>").concat(exp.role, "</h4>\n                        </div>\n                        <div class=\"cta-panel experience-panel\">\n                            <h5 class=\"p-2\">").concat(exp.months, "</h5>\n                            <h5 class=\"px-2\"><i class=\"fas fa-map-marker-alt\"></i>&nbsp;").concat(exp.location, "</h5>\n                            <button class=\"btn btn-sm btn-light mx-1\">Detail</button>\n                        </div>\n                    </div>");
+          return expOutput += "<div class=\"card-item\">\n                        <div class=\"p-2\">\n                            <h2>".concat(exp.title, "</h2>\n                            <h4>").concat(exp.role, "</h4>\n                        </div>\n                        <div class=\"cta-panel experience-panel\">\n                            <h5 class=\"p-2\">").concat(exp.months, "</h5>\n                            <h5 class=\"px-2\"><i class=\"fas fa-map-marker-alt\"></i>&nbsp;").concat(exp.location, "</h5>\n                            <button id=\"experience-").concat(exp.id, "\" class=\"btn btn-sm detail-btn btn-light mx-1\">Detail</button>\n                        </div>\n                    </div>");
         });
 
         expOutput += "</div>";
         var edu = _this.contentData[4];
-        var eduOutput = "<div id=\"education-about\" class=\"education-card hidden\">\n                        <div class=\"milestone\"></div>\n                        <div class=\"card-item\">\n                            <h2>".concat(edu[0].deg, "</h2>\n                            <h4 class=\"text-warning mt-1\">").concat(edu[0].uni, "</h4>\n                            <h3 class=\"text-warning\">").concat(edu[0].year, "</h3>\n                            <button class=\"btn btn-sm btn-dark my-1 px-2\">Detail</button>\n                            <hr class=\"bg-warning text-warning my-1\">\n                        </div>\n                        <div class=\"milestone\"></div>\n                        <div class=\"card-item\">\n                            <h2>").concat(edu[1].deg, "</h2>\n                            <h4 class=\"text-warning mt-1\">").concat(edu[1].uni, "</h4>\n                            <h3 class=\"text-warning\">").concat(edu[1].year, "</h3>\n                            <button class=\"btn btn-sm btn-dark my-1\">Detail</button>\n                            <hr class=\"bg-warning text-warning my-1\">\n                        </div>\n                        <div class=\"milestone\"></div>\n                        <div class=\"card-item\">\n                            <h2>").concat(edu[2].deg, "</h2>\n                            <h4 class=\"text-warning mt-1\">").concat(edu[2].uni, "</h4>\n                            <h3 class=\"text-warning\">").concat(edu[2].year, "</h3>\n                            <button class=\"btn btn-sm btn-dark my-1\">Detail</button>\n                        </div>\n                    </div>");
+        var eduOutput = "<div id=\"education-about\" class=\"education-card hidden\">\n                        <div class=\"milestone\"></div>\n                        <div class=\"card-item\">\n                            <h2>".concat(edu[0].deg, "</h2>\n                            <h4 class=\"text-warning mt-1\">").concat(edu[0].uni, "</h4>\n                            <h3 class=\"text-warning\">").concat(edu[0].year, "</h3>\n                            <button id=\"education-1\" class=\"btn btn-sm detail-btn btn-dark my-1 px-2\">Detail</button>\n                            <hr class=\"bg-warning text-warning my-1\">\n                        </div>\n                        <div class=\"milestone\"></div>\n                        <div class=\"card-item\">\n                            <h2>").concat(edu[1].deg, "</h2>\n                            <h4 class=\"text-warning mt-1\">").concat(edu[1].uni, "</h4>\n                            <h3 class=\"text-warning\">").concat(edu[1].year, "</h3>\n                            <button id=\"education-2\" class=\"btn btn-sm detail-btn btn-dark my-1\">Detail</button>\n                            <hr class=\"bg-warning text-warning my-1\">\n                        </div>\n                        <div class=\"milestone\"></div>\n                        <div class=\"card-item\">\n                            <h2>").concat(edu[2].deg, "</h2>\n                            <h4 class=\"text-warning mt-1\">").concat(edu[2].uni, "</h4>\n                            <h3 class=\"text-warning\">").concat(edu[2].year, "</h3>\n                            <button id=\"education-3\" class=\"btn btn-sm detail-btn btn-dark my-1\">Detail</button>\n                        </div>\n                    </div>");
         var con = _this.contentData[5];
         console.log(con);
-        var contactOutput = "<div id=\"contact-about\" class=\"contact-card hidden\">\n                    <h1 class=\"text-center\">Thank You for Visiting!</h1>\n                    <div class=\"avatar\">\n                        <object class=\"mb-1\" type=\"image/svg+xml\" data=\"./images/me.svg\"></object>\n                    </div> \n                    <div class=\"cta-panel contact-panel\">\n                        <h4 class=\"p-2 text-left\">".concat(con.email, "</h4>\n                        <button class=\"btn btn-l btn-light mx-1\">Email</button>\n                    </div>\n                    <div class=\"cta-panel contact-panel\">\n                        <h4 class=\"p-2 text-left\">").concat(con.mobile, "</h4>\n                        <button class=\"btn btn-l btn-light mx-1\">Email</button>\n                    </div>\n                </div>");
-        {
-          /* <div class="social-media">
-          <a href="${con.social.linkedin}"><i class="fab fa-linkedin fa-3x"></i></a>
-          <button class="btn btn-l btn-dark mx-1">Download<br>My CV</button>
-          </div> */
-        }
+        var contactOutput = "<div id=\"contact-about\" class=\"contact-card hidden\">\n                    <h1 class=\"text-center\">Pleasure to meet you!</h1>\n                    <div class=\"avatar\">\n                        <object class=\"mb-1\" type=\"image/svg+xml\" data=\"./images/me.svg\"></object>\n                    </div> \n                    <div class=\"cta-panel contact-panel\">\n                        <h4 class=\"p-2 text-left\">Download CV</h4>\n                        <button class=\"btn btn-l btn-light mx-1\" onclick=\"window.open('./downloadable/C_Utsahajit_CV19.pdf')\"><i class=\"fas fa-download\"></i></button>\n                    </div>\n                    <div class=\"cta-panel contact-panel\">\n                        <h4 class=\"p-2 text-left\">".concat(con.email, "</h4>\n                        <button class=\"btn btn-l btn-light mx-1\" onclick=\"window.open('mailto:bzkwork1993@gmail.com')\">Email</button>\n                    </div>\n                    <div class=\"cta-panel contact-panel\">\n                        <h4 class=\"p-2 text-left\">").concat(con.mobile, "</h4>\n                        <button class=\"btn btn-l btn-light mx-1\" onclick=\"window.open('tel:+447956982635')\">Call</button>\n                    </div>\n                    <div class=\"social-media\">\n                        <button class=\"btn btn-l btn-dark\" onclick=\"window.open('https://github.com/bbazukun123')\"><i class=\"fab fa-github\"></i>&nbsp;Github</button>\n                        <button class=\"btn btn-l btn-dark\" onclick=\"window.open('https://www.linkedin.com/in/chanodom-utsahajit/')\"><i class=\"fab fa-linkedin\"></i>&nbsp;Linkedin</button>\n                    </div>\n                </div>");
         _this.aboutElem.innerHTML = expOutput + eduOutput + contactOutput;
       });
     }
@@ -1222,10 +1236,10 @@ function () {
             item.classList.add("hidden");
           });
           document.querySelectorAll(".card-item.Web").forEach(function (item) {
-            item.classList.remove("hidden");
+            item.classList.add("hidden");
           });
           document.querySelectorAll(".card-item.Design").forEach(function (item) {
-            item.classList.add("hidden");
+            item.classList.remove("hidden");
           });
           break;
 
@@ -1234,48 +1248,16 @@ function () {
             item.classList.add("hidden");
           });
           document.querySelectorAll(".card-item.Web").forEach(function (item) {
-            item.classList.add("hidden");
+            item.classList.remove("hidden");
           });
           document.querySelectorAll(".card-item.Design").forEach(function (item) {
-            item.classList.remove("hidden");
+            item.classList.add("hidden");
           });
           break;
 
         default:
           break;
       }
-      /* const portfolioData = this.contentData[0];
-      let selectedData;
-      let portfolioOutput = "";
-        if(inField === "all")
-          selectedData = portfolioData;
-      else
-          selectedData = portfolioData.filter(p => (inField === p.field));
-      //Render portfolio content
-      selectedData.forEach(p=>
-          portfolioOutput +=
-              `<div class="card-item">
-                  <div class="p-2">
-                      <h2>${p.title} (${p.year})</h2>
-                      <h4>${p.desc}</h4>
-                  </div>
-                  <div class="cta-panel portfolio-panel">
-                      <h3 class="p-2 bg-${(function(field){
-                          if(field === "UX")
-                              return "success";
-                          else if(field === "Design")
-                              return "warning";
-                          else if(field === "Web")
-                              return "danger";
-                      })(p.field)}">${p.field}</h3>
-                      <h5 class="px-2">${p.type.replace(" ","<br>")}</h5>
-                      <button class="btn btn-l btn-light"><i class="fas fa-play"></i></button>
-                      <button class="btn btn-l btn-light mx-1"><i class="fas fa-info-circle"></i></button>
-                  </div>
-              </div>`
-      );
-      this.portfolioElem.innerHTML = portfolioOutput; */
-
     }
   }, {
     key: "updateLogs",
@@ -1308,6 +1290,152 @@ function () {
         document.getElementById("education-about").classList.add("hidden");
         document.getElementById("contact-about").classList.remove("hidden");
       }
+    }
+  }, {
+    key: "updateDetail",
+    value: function updateDetail(id) {
+      if (id.includes("portfolio")) {
+        var d;
+        var detailContent = "";
+        this.contentData[0].forEach(function (p) {
+          if (p.id === id.replace("portfolio-", "")) d = p;
+        });
+        detailContent += "<h1 class=\"mt-3 px-6\">".concat(d.title, "</h1>\n                <h3 class=\"m-3 px-6\">").concat(d.desc, "</h3>\n                <hr class=\"mt-3 mb-1\">\n                <div class=\"detail-badges\">\n                    <h3 class=\"").concat(function (field) {
+          if (field === "UX") return "text-success";else if (field === "Web") return "text-danger";else if (field === "Design") return "text-warning";
+        }(d.field), "\">").concat(d.field, "</h3>\n                    <div class=\"mx-2\"></div>\n                    <h5 class=\"text-left\">").concat(d.type.replace(" ", "<br>"), "</h5>\n                </div>  \n                <div class=\"detail-gallery\">\n                    <div class=\"media-container\">");
+        var tempCounter = 1;
+        d.content.media.forEach(function (m) {
+          if (m.type === "image") {
+            detailContent += "<div id=\"media-".concat(tempCounter, "\" class=\"media-image\" style=\"background-image: url(./images/portfolio/").concat(d.id, "/").concat(m.link, ")\"></div>");
+          } else if (m.type === "video") {
+            detailContent += "<div id=\"media-".concat(tempCounter, "\" class=\"media-video\"><iframe src=\"").concat(m.link, "\" frameborder=\"0\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe></div>");
+          }
+
+          tempCounter++;
+        });
+        detailContent += "</div>       \n                </div>\n                <div class=\"media-control mb-4\">\n                    <button id=\"media-left-btn\" class=\"btn btn-l btn-dark mx-1\"><i class=\"fas fa-chevron-left\"></i></button>\n                    <h3 id=\"gallery-counter\">1 / ".concat(d.content.media.length, "</h3>\n                    <button id=\"media-right-btn\" class=\"btn btn-l btn-dark mx-1\"><i class=\"fas fa-chevron-right\"></i></button>\n                </div>\n                <h4 class=\"detail-content px-5 mb-2\">").concat(d.content.detail, "</h4><br> \n                <div class=\"cta-panel cta-danger challenges-panel\">\n                    <h3><i class=\"fas fa-mountain\"></i></h3>\n                    <h3 class=\"p-2\">Challenges</h3>\n                </div>\n                <div class=\"list-content\">");
+        d.content.challenges.forEach(function (c) {
+          detailContent += "<h4>".concat(c.challenge, "</h4>");
+        });
+        detailContent += "</div>\n                <div class=\"cta-panel tools-panel\">\n                    <h3><i class=\"fas fa-tools\"></i></h3>\n                    <h3 class=\"p-2\">Tools</h3>\n                </div>\n                <div class=\"list-content\">";
+        d.content.tools.forEach(function (t) {
+          detailContent += "<h4>".concat(t.tool, "</h4>");
+        });
+        detailContent += "</div>\n                <div class=\"height-filler\"></div>";
+        this.detailElem.innerHTML = detailContent;
+        document.querySelector(".media-container>div:first-child").classList.add("active");
+        var mediaBtns = Array.from(document.querySelector(".media-control").children);
+        mediaBtns[0].addEventListener("click", function (e) {
+          var current = document.querySelector(".media-container .active");
+
+          if (current.previousElementSibling) {
+            current.classList.remove("active");
+            current.previousElementSibling.classList.add("active");
+          } else {
+            current.classList.remove("active");
+            current.parentElement.lastChild.classList.add("active");
+          }
+
+          document.getElementById("gallery-counter").innerText = "".concat(document.querySelector(".media-container .active").id.replace("media-", ""), " / ").concat(d.content.media.length);
+        });
+        mediaBtns[2].addEventListener("click", function (e) {
+          var current = document.querySelector(".media-container .active");
+
+          if (current.nextElementSibling) {
+            current.classList.remove("active");
+            current.nextElementSibling.classList.add("active");
+          } else {
+            current.classList.remove("active");
+            current.parentElement.firstChild.classList.add("active");
+          }
+
+          document.getElementById("gallery-counter").innerText = "".concat(document.querySelector(".media-container .active").id.replace("media-", ""), " / ").concat(d.content.media.length);
+        });
+      } else if (id.includes("adventure")) {
+        var _d;
+
+        var _detailContent = "";
+        this.contentData[1].forEach(function (adv) {
+          if (adv.id === id.replace("adventure-", "")) _d = adv;
+        });
+        _detailContent += "<h1 class=\"mt-3 px-4\">".concat(_d.title, "</h1>\n                <h3 class=\"m-2 px-4\">").concat(_d.desc, "</h3>\n                <hr class=\"mt-1 mb-1\">\n                <h3 class=\"mb-4 text-danger\">").concat(_d.month, "</h3> \n                <div class=\"detail-gallery\">\n                    <div class=\"media-container\">");
+        var _tempCounter = 1;
+
+        _d.diary.media.forEach(function (m) {
+          if (m.type === "image") {
+            _detailContent += "<div id=\"media-".concat(_tempCounter, "\" class=\"media-image\" style=\"background-image: url(./images/").concat(m.link, ")\"></div>");
+          } else if (m.type === "video") {
+            _detailContent += "<div id=\"media-".concat(_tempCounter, "\" class=\"media-video\"><iframe src=\"").concat(m.link, "\" frameborder=\"0\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe></div>");
+          }
+
+          _tempCounter++;
+        });
+
+        _detailContent += "</div>\n                </div>\n                <div class=\"media-control mb-4\">\n                    <button id=\"media-left-btn\" class=\"btn btn-l btn-dark mx-1\"><i class=\"fas fa-chevron-left\"></i></button>\n                    <h3 id=\"gallery-counter\">1 / ".concat(_d.diary.media.length, "</h3>\n                    <button id=\"media-right-btn\" class=\"btn btn-l btn-dark mx-1\"><i class=\"fas fa-chevron-right\"></i></button>\n                </div>\n                <h4 class=\"detail-content p-3\">").concat(_d.diary.text, "</h4><br> \n                <div class=\"height-filler\"></div>");
+        this.detailElem.innerHTML = _detailContent;
+        document.querySelector(".media-container>div:first-child").classList.add("active");
+
+        var _mediaBtns = Array.from(document.querySelector(".media-control").children);
+
+        _mediaBtns[0].addEventListener("click", function (e) {
+          var current = document.querySelector(".media-container .active");
+
+          if (current.previousElementSibling) {
+            current.classList.remove("active");
+            current.previousElementSibling.classList.add("active");
+          } else {
+            current.classList.remove("active");
+            current.parentElement.lastChild.classList.add("active");
+          }
+
+          document.getElementById("gallery-counter").innerText = "".concat(document.querySelector(".media-container .active").id.replace("media-", ""), " / ").concat(_d.diary.media.length);
+        });
+
+        _mediaBtns[1].addEventListener("click", function (e) {
+          var current = document.querySelector(".media-container .active");
+
+          if (current.nextElementSibling) {
+            current.classList.remove("active");
+            current.nextElementSibling.classList.add("active");
+          } else {
+            current.classList.remove("active");
+            current.parentElement.firstChild.classList.add("active");
+          }
+
+          document.getElementById("gallery-counter").innerText = "".concat(document.querySelector(".media-container .active").id.replace("media-", ""), " / ").concat(_d.diary.media.length);
+        });
+      } else if (id.includes("experience")) {
+        var _d2;
+
+        var _detailContent2 = "";
+        this.contentData[3].forEach(function (exp) {
+          if (exp.id === id.replace("experience-", "")) _d2 = exp;
+        });
+        _detailContent2 += "<h1 class=\"mt-3 px-4\">".concat(_d2.title, "</h1>\n                <h3 class=\"m-3 px-4\">").concat(_d2.role, "</h3>\n                <hr class=\"mt-1 mb-1\">\n                <h3 class=\"m-2\">").concat(_d2.months.replace("-", " - "), "</h3>\n                <h3 class=\"m-1 text-danger\"><i class=\"fas fa-map-marker-alt\"></i>&nbsp;").concat(_d2.location, "</h3>\n                <h4 class=\"detail-content p-3 mt-2\">").concat(_d2.detail, "</h4><br> \n                <div class=\"cta-panel key-learning-panel\">\n                    <h3><i class=\"fas fa-key\"></i></h3>\n                    <h3 class=\"p-2\">Key Learning</h3>\n                </div>\n                <h3 id=\"key-learning\">").concat(_d2.gain, "</h3>\n                <div class=\"height-filler\"></div>");
+        this.detailElem.innerHTML = _detailContent2;
+      } else if (id.includes("education")) {
+        var _d3;
+
+        var _detailContent3 = "";
+        this.contentData[4].forEach(function (edu) {
+          if (edu.id === id.replace("education-", "")) _d3 = edu;
+        });
+        _detailContent3 += "<h1 class=\"mt-3 px-4\">".concat(_d3.deg, "</h1>\n                <h3 class=\"m-3 px-4\">").concat(_d3.uni, "</h3>\n                <hr class=\"mt-1 mb-1\">\n                <h3 class=\"m-2\">").concat(_d3.year, "</h3>\n                <h3 class=\"m-2 text-warning\"><i class=\"fas fa-award\"></i>&nbsp;").concat(_d3.honour, "</h3>\n                <h4 class=\"detail-content p-3 mt-2\"><span class=\"text-danger\">Key Modules:&nbsp;</span>").concat(_d3.modules, "</h4><br> \n                <div class=\"cta-panel dissertation-panel\">\n                    <h3><i class=\"fas fa-book\"></i></h3>\n                    <h3 class=\"p-2\">Dissertation</h3>\n                </div>\n                <h4 id=\"dissertation\">").concat(_d3.disser, "</h4>\n                <div class=\"height-filler\"></div>");
+        this.detailElem.innerHTML = _detailContent3;
+      }
+    }
+  }, {
+    key: "updateToolkit",
+    value: function updateToolkit(id) {
+      var d;
+      var toolkitContent = "";
+
+      if (id === "ux-screen") {
+        d = this.contentData[6][0];
+      } else if (id === "web-screen") {} else if (id === "business-screen") {}
+
+      toolkitContent += "";
+      this.toolkitElem.innerHTML = toolkitContent;
     }
   }]);
   return ContentManager;
@@ -1348,6 +1476,8 @@ function () {
 
     this.viewElem = document.querySelector(".view");
     this.supViewElem = document.querySelector(".sup-view");
+    this.detailViewElem = document.querySelector(".detail-view");
+    this.toolkitViewElem = document.querySelector(".toolkit-view");
     this.navElem = document.querySelector(".nav"); //Setup content manager & declare empty variables for content data
 
     this.contentManager = new _ContentManager.default();
@@ -1379,9 +1509,12 @@ function () {
       this.logsBtns = document.querySelector(".logs-selector-items");
       this.aboutBtns = document.querySelector(".about-selector-items");
       this.toggleBtns = document.querySelectorAll(".toggle-btn");
+      this.detailBtns = document.querySelectorAll(".detail-btn");
       Array.from(this.portfolioBtns.children).forEach(function (btn) {
         btn.addEventListener("click", function (e) {
           _this2.contentManager.updatePortfolio(e.target.id);
+
+          _this2.updateScrollCard(document.getElementById("portfolio-card"));
 
           Array.from(_this2.portfolioBtns.children).forEach(function (btn) {
             if (btn.classList.contains("selected")) btn.classList.remove("selected");
@@ -1393,6 +1526,8 @@ function () {
         btn.addEventListener("click", function (e) {
           _this2.contentManager.updateLogs(e.target.id);
 
+          _this2.updateScrollCard(document.getElementById("logs-card"));
+
           Array.from(_this2.logsBtns.children).forEach(function (btn) {
             if (btn.classList.contains("selected")) btn.classList.remove("selected");
           });
@@ -1402,6 +1537,8 @@ function () {
       Array.from(this.aboutBtns.children).forEach(function (btn) {
         btn.addEventListener("click", function (e) {
           _this2.contentManager.updateAbout(e.target.id);
+
+          _this2.updateScrollCard(document.getElementById("about-card"));
 
           Array.from(_this2.aboutBtns.children).forEach(function (btn) {
             if (btn.classList.contains("selected")) btn.classList.remove("selected");
@@ -1413,14 +1550,88 @@ function () {
         btn.addEventListener("click", function (e) {
           var outputElem = document.getElementById(e.target.id.replace("-btn", "")); //outputElem.style.maxHeight = outputElem.scrollHeight;
 
-          if (outputElem.classList.contains("hidden")) outputElem.classList.remove("hidden");else outputElem.classList.add("hidden");
+          if (outputElem.classList.contains("hidden")) {
+            outputElem.classList.remove("hidden");
+            e.target.classList.add("toggled");
+          } else {
+            outputElem.classList.add("hidden");
+            e.target.classList.remove("toggled");
+          }
+
+          _this2.updateScrollCard(document.getElementById("logs-card"));
         });
       });
+      this.detailBtns.forEach(function (btn) {
+        btn.addEventListener("click", function (e) {
+          _this2.showDetail(e.target.id);
+        });
+      });
+      document.querySelector(".back-btn.detail-btn").addEventListener("click", function (e) {
+        _this2.hideDetail();
+      });
+      document.querySelector(".back-btn.toolkit-btn").addEventListener("click", function (e) {
+        _this2.hideToolkit();
+
+        _this2.viewElem.classList.remove("disabled");
+      });
+      document.getElementById("ux-screen").addEventListener("click", function (e) {
+        _this2.showToolkit(e.target.id);
+
+        _this2.viewElem.classList.add("disabled");
+      });
+      document.getElementById("web-screen").addEventListener("click", function (e) {
+        _this2.showToolkit(e.target.id);
+
+        _this2.viewElem.classList.add("disabled");
+      });
+      document.getElementById("business-screen").addEventListener("click", function (e) {
+        _this2.showToolkit(e.target.id);
+
+        _this2.viewElem.classList.add("disabled");
+      });
+    } //Update all scrollable card elements
+
+  }, {
+    key: "initScrollCard",
+    value: function initScrollCard() {
+      var _this3 = this;
+
+      var cardLists = document.querySelectorAll(".card-list");
+      cardLists.forEach(function (list) {
+        list.addEventListener("scroll", function (e) {
+          _this3.updateScrollCard(e.target);
+        });
+        console.log(list);
+
+        _this3.updateScrollCard(list);
+      });
+    } //Update all scrollable card elements
+
+  }, {
+    key: "updateScrollCard",
+    value: function updateScrollCard(list) {
+      console.log("Scroll Height: ".concat(list.scrollHeight, ", & Client Height: ").concat(list.clientHeight));
+
+      if (list.scrollHeight > list.clientHeight) {
+        if (list.scrollTop === 0) {
+          list.parentElement.parentElement.classList.add("no-scroll-shadow-top");
+          list.parentElement.parentElement.classList.remove("no-scroll-shadow-bottom");
+        } else if (list.scrollTop !== 0 && list.scrollTop + list.clientHeight < list.scrollHeight) {
+          list.parentElement.parentElement.classList.remove("no-scroll-shadow-top");
+          list.parentElement.parentElement.classList.remove("no-scroll-shadow-bottom");
+        } else {
+          list.parentElement.parentElement.classList.remove("no-scroll-shadow-top");
+          list.parentElement.parentElement.classList.add("no-scroll-shadow-bottom");
+        }
+      } else {
+        list.parentElement.parentElement.classList.add("no-scroll-shadow-top");
+        list.parentElement.parentElement.classList.add("no-scroll-shadow-bottom");
+      }
     }
   }, {
     key: "renderViews",
     value: function renderViews(r) {
-      var _this3 = this;
+      var _this4 = this;
 
       var orderedRoutes = r.sort(function (a, b) {
         return a.viewPos - b.viewPos;
@@ -1440,13 +1651,13 @@ function () {
                     fetchArray.push(fetch("views/".concat(route.htmlName)).then(function (res) {
                       return res.text();
                     }).then(function (data) {
-                      _this3.viewElem.innerHTML += data;
+                      _this4.viewElem.innerHTML += data;
                     }));
                   } else {
                     fetchArray.push(fetch("views/".concat(route.htmlName)).then(function (res) {
                       return res.text();
                     }).then(function (data) {
-                      _this3.supViewElem.innerHTML += data;
+                      _this4.supViewElem.innerHTML += data;
                     }));
                   }
 
@@ -1465,12 +1676,14 @@ function () {
       Promise.all(fetchArray).then(function () {
         (0, _generateBG.default)();
 
-        _this3.contentManager.initContent();
+        _this4.contentManager.initContent();
 
-        _this3.hasChanged(r);
+        _this4.hasChanged(r);
 
-        Promise.all(_this3.contentManager.fetchArray).then(function () {
-          _this3.initButtons();
+        Promise.all(_this4.contentManager.fetchArray).then(function () {
+          _this4.initButtons();
+
+          _this4.initScrollCard();
         });
       });
     }
@@ -1522,7 +1735,7 @@ function () {
   }, {
     key: "showAbout",
     value: function showAbout() {
-      var routeClasses = document.getElementById("about").classList;
+      var routeClasses = document.getElementById("about-t").classList;
 
       if (!routeClasses.contains("sup-view-active")) {
         routeClasses.add("sup-view-active");
@@ -1532,6 +1745,32 @@ function () {
 
       (0, _updateNav.default)("about.html");
       console.log("showAbout");
+    }
+  }, {
+    key: "showDetail",
+    value: function showDetail(id) {
+      this.contentManager.updateDetail(id);
+      this.detailViewElem.classList.add("pop-up");
+      this.navElem.classList.add("hidden");
+    }
+  }, {
+    key: "hideDetail",
+    value: function hideDetail() {
+      this.detailViewElem.classList.remove("pop-up");
+      this.navElem.classList.remove("hidden");
+    }
+  }, {
+    key: "showToolkit",
+    value: function showToolkit(id) {
+      this.contentManager.updateToolkit(id);
+      this.toolkitViewElem.classList.add("pop-up");
+      this.navElem.classList.add("hidden");
+    }
+  }, {
+    key: "hideToolkit",
+    value: function hideToolkit() {
+      this.toolkitViewElem.classList.remove("pop-up");
+      this.navElem.classList.remove("hidden");
     }
   }]);
   return Router;
@@ -1617,7 +1856,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61434" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53366" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
