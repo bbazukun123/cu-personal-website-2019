@@ -1187,7 +1187,7 @@ function () {
         }).sort(function (a, b) {
           return b.id - a.id;
         });
-        var upgradeOutput = "<div id=\"upgrade-logs\" class=\"hidden\">\n                    <div class=\"cta-panel cta-warning upgrade-panel\">\n                        <h2 class=\"p-2\">In Progress</h2>\n                        <button id=\"progress-btn\" class=\"btn btn-l btn-light mx-1 toggle-btn toggled\"><i class=\"fas fa-chevron-down\"></i></button>\n                    </div>\n                    <div id=\"progress\" class=\"upgrade-items\">";
+        var upgradeOutput = "<div id=\"upgrade-logs\" class=\"hidden fade\">\n                    <div class=\"cta-panel cta-warning upgrade-panel\">\n                        <h2 class=\"p-2\">In Progress</h2>\n                        <button id=\"progress-btn\" class=\"btn btn-l btn-light mx-1 toggle-btn toggled\"><i class=\"fas fa-chevron-down\"></i></button>\n                    </div>\n                    <div id=\"progress\" class=\"upgrade-items\">";
         inProgressList.forEach(function (item) {
           upgradeOutput += "<div class=\"p-2\">\n                        <h3>".concat(item.title, "</h3>\n                    </div>");
         });
@@ -1210,9 +1210,9 @@ function () {
 
         expOutput += "</div>";
         var edu = _this.contentData[4];
-        var eduOutput = "<div id=\"education-about\" class=\"education-card hidden\">\n                    <div class=\"milestone\"></div>\n                    <div class=\"card-item\">\n                        <h2>".concat(edu[0].deg, "</h2>\n                        <h4 class=\"text-warning mt-1\">").concat(edu[0].uni, "</h4>\n                        <h3 class=\"text-warning\">").concat(edu[0].year, "</h3>\n                        <button id=\"education-1\" class=\"btn btn-sm detail-btn btn-dark my-1 px-2\">Detail</button>\n                        <hr class=\"bg-warning text-warning my-1\">\n                    </div>\n                    <div class=\"milestone\"></div>\n                    <div class=\"card-item\">\n                        <h2>").concat(edu[1].deg, "</h2>\n                        <h4 class=\"text-warning mt-1\">").concat(edu[1].uni, "</h4>\n                        <h3 class=\"text-warning\">").concat(edu[1].year, "</h3>\n                        <button id=\"education-2\" class=\"btn btn-sm detail-btn btn-dark my-1\">Detail</button>\n                        <hr class=\"bg-warning text-warning my-1\">\n                    </div>\n                    <div class=\"milestone\"></div>\n                    <div class=\"card-item\">\n                        <h2>").concat(edu[2].deg, "</h2>\n                        <h4 class=\"text-warning mt-1\">").concat(edu[2].uni, "</h4>\n                        <h3 class=\"text-warning\">").concat(edu[2].year, "</h3>\n                        <button id=\"education-3\" class=\"btn btn-sm detail-btn btn-dark my-1\">Detail</button>\n                    </div>\n                </div>");
+        var eduOutput = "<div id=\"education-about\" class=\"education-card hidden fade\">\n                    <div class=\"milestone\"></div>\n                    <div class=\"card-item\">\n                        <h2>".concat(edu[0].deg, "</h2>\n                        <h4 class=\"text-warning mt-1\">").concat(edu[0].uni, "</h4>\n                        <h3 class=\"text-warning\">").concat(edu[0].year, "</h3>\n                        <button id=\"education-1\" class=\"btn btn-sm detail-btn btn-dark my-1 px-2\">Detail</button>\n                        <hr class=\"bg-warning text-warning my-1\">\n                    </div>\n                    <div class=\"milestone\"></div>\n                    <div class=\"card-item\">\n                        <h2>").concat(edu[1].deg, "</h2>\n                        <h4 class=\"text-warning mt-1\">").concat(edu[1].uni, "</h4>\n                        <h3 class=\"text-warning\">").concat(edu[1].year, "</h3>\n                        <button id=\"education-2\" class=\"btn btn-sm detail-btn btn-dark my-1\">Detail</button>\n                        <hr class=\"bg-warning text-warning my-1\">\n                    </div>\n                    <div class=\"milestone\"></div>\n                    <div class=\"card-item\">\n                        <h2>").concat(edu[2].deg, "</h2>\n                        <h4 class=\"text-warning mt-1\">").concat(edu[2].uni, "</h4>\n                        <h3 class=\"text-warning\">").concat(edu[2].year, "</h3>\n                        <button id=\"education-3\" class=\"btn btn-sm detail-btn btn-dark my-1\">Detail</button>\n                    </div>\n                </div>");
         var con = _this.contentData[5];
-        var contactOutput = "<div id=\"contact-about\" class=\"contact-card hidden\">\n                    <h1 class=\"text-center\">Pleasure to meet you!</h1>\n                    <div class=\"avatar\">\n                        <object class=\"mb-1\" type=\"image/svg+xml\" data=\"./images/me.svg\"></object>\n                    </div> \n                    <div class=\"cta-panel contact-panel\">\n                        <h4 class=\"p-2 text-left\">Download CV</h4>\n                        <button class=\"btn btn-l btn-light mx-1\" onclick=\"window.open('./downloadable/C_Utsahajit_CV19.pdf')\"><i class=\"fas fa-download\"></i></button>\n                    </div>\n                    <div class=\"cta-panel contact-panel\">\n                        <h4 class=\"p-2 text-left\">".concat(con.email, "</h4>\n                        <button class=\"btn btn-l btn-light mx-1\" onclick=\"window.open('mailto:bzkwork1993@gmail.com')\">Email</button>\n                    </div>\n                    <div class=\"cta-panel contact-panel\">\n                        <h4 class=\"p-2 text-left\">").concat(con.mobile, "</h4>\n                        <button class=\"btn btn-l btn-light mx-1\" onclick=\"window.open('tel:+447956982635')\">Call</button>\n                    </div>\n                    <div class=\"social-media\">\n                        <button class=\"btn btn-l btn-dark\" onclick=\"window.open('https://github.com/bbazukun123')\"><i class=\"fab fa-github\"></i>&nbsp;Github</button>\n                        <button class=\"btn btn-l btn-dark\" onclick=\"window.open('https://www.linkedin.com/in/chanodom-utsahajit/')\"><i class=\"fab fa-linkedin\"></i>&nbsp;Linkedin</button>\n                    </div>\n                </div>");
+        var contactOutput = "<div id=\"contact-about\" class=\"contact-card hidden fade\">\n                    <h1 class=\"text-center\">Pleasure to meet you!</h1>\n                    <div class=\"avatar\">\n                        <object class=\"mb-1\" type=\"image/svg+xml\" data=\"./images/me.svg\"></object>\n                    </div> \n                    <div class=\"cta-panel contact-panel\">\n                        <h4 class=\"p-2 text-left\">Download CV</h4>\n                        <button class=\"btn btn-l btn-light mx-1\" onclick=\"window.open('./downloadable/C_Utsahajit_CV19.pdf')\"><i class=\"fas fa-download\"></i></button>\n                    </div>\n                    <div class=\"cta-panel contact-panel\">\n                        <h4 class=\"p-2 text-left\">".concat(con.email, "</h4>\n                        <button class=\"btn btn-l btn-light mx-1\" onclick=\"window.open('mailto:bzkwork1993@gmail.com')\">Email</button>\n                    </div>\n                    <div class=\"cta-panel contact-panel\">\n                        <h4 class=\"p-2 text-left\">").concat(con.mobile, "</h4>\n                        <button class=\"btn btn-l btn-light mx-1\" onclick=\"window.open('tel:+447956982635')\">Call</button>\n                    </div>\n                    <div class=\"social-media\">\n                        <button class=\"btn btn-l btn-dark\" onclick=\"window.open('https://github.com/bbazukun123')\"><i class=\"fab fa-github\"></i>&nbsp;Github</button>\n                        <button class=\"btn btn-l btn-dark\" onclick=\"window.open('https://www.linkedin.com/in/chanodom-utsahajit/')\"><i class=\"fab fa-linkedin\"></i>&nbsp;Linkedin</button>\n                    </div>\n                </div>");
         _this.aboutElem.innerHTML = expOutput + eduOutput + contactOutput;
       });
     } //Update portfolio card content based on input of field type filter
@@ -1220,87 +1220,133 @@ function () {
   }, {
     key: "updatePortfolio",
     value: function updatePortfolio(inField) {
-      switch (inField) {
-        case "all":
-          document.querySelectorAll(".card-item.UX").forEach(function (item) {
-            item.classList.remove("hidden");
+      var hide = function hide(item) {
+        if (!item.classList.contains("hidden")) {
+          var transitionExtract = item.style.transition;
+          item.style.transition = "";
+          requestAnimationFrame(function () {
+            item.style.height = item.scrollHeight + "px";
+            item.style.transition = transitionExtract;
+            requestAnimationFrame(function () {
+              item.style.height = 0 + "px";
+            });
           });
-          document.querySelectorAll(".card-item.Web").forEach(function (item) {
-            item.classList.remove("hidden");
-          });
-          document.querySelectorAll(".card-item.Design").forEach(function (item) {
-            item.classList.remove("hidden");
-          });
-          break;
+          var collapse = ["transitionend", function (e) {
+            item.removeEventListener.apply(item, collapse);
+            item.classList.add("hidden");
+            document.getElementById("portfolio-card").dispatchEvent(new Event("faded"));
+          }];
+          item.addEventListener.apply(item, collapse);
+        }
+      };
 
-        case "UX":
-          document.querySelectorAll(".card-item.UX").forEach(function (item) {
-            item.classList.remove("hidden");
-          });
-          document.querySelectorAll(".card-item.Web").forEach(function (item) {
-            item.classList.add("hidden");
-          });
-          document.querySelectorAll(".card-item.Design").forEach(function (item) {
-            item.classList.add("hidden");
-          });
-          break;
+      var show = function show(item) {
+        if (item.classList.contains("hidden")) {
+          item.classList.remove("hidden");
+          item.style.height = item.scrollHeight + "px";
+          var expand = ["transitionend", function (e) {
+            item.removeEventListener.apply(item, expand);
+            item.style.height = null;
+            document.getElementById("portfolio-card").dispatchEvent(new Event("faded"));
+          }];
+          item.addEventListener.apply(item, expand);
+        }
+      };
 
-        case "Design":
-          document.querySelectorAll(".card-item.UX").forEach(function (item) {
-            item.classList.add("hidden");
-          });
-          document.querySelectorAll(".card-item.Web").forEach(function (item) {
-            item.classList.add("hidden");
-          });
-          document.querySelectorAll(".card-item.Design").forEach(function (item) {
-            item.classList.remove("hidden");
-          });
-          break;
-
-        case "Web":
-          document.querySelectorAll(".card-item.UX").forEach(function (item) {
-            item.classList.add("hidden");
-          });
-          document.querySelectorAll(".card-item.Web").forEach(function (item) {
-            item.classList.remove("hidden");
-          });
-          document.querySelectorAll(".card-item.Design").forEach(function (item) {
-            item.classList.add("hidden");
-          });
-          break;
-
-        default:
-          break;
+      if (inField === "all") {
+        document.querySelectorAll(".card-item.UX").forEach(function (item) {
+          show(item);
+        });
+        document.querySelectorAll(".card-item.Web").forEach(function (item) {
+          show(item);
+        });
+        document.querySelectorAll(".card-item.Design").forEach(function (item) {
+          show(item);
+        });
+      } else if (inField === "UX") {
+        document.querySelectorAll(".card-item.UX").forEach(function (item) {
+          show(item);
+        });
+        document.querySelectorAll(".card-item.Web").forEach(function (item) {
+          hide(item);
+        });
+        document.querySelectorAll(".card-item.Design").forEach(function (item) {
+          hide(item);
+        });
+      } else if (inField === "Web") {
+        document.querySelectorAll(".card-item.UX").forEach(function (item) {
+          hide(item);
+        });
+        document.querySelectorAll(".card-item.Web").forEach(function (item) {
+          show(item);
+        });
+        document.querySelectorAll(".card-item.Design").forEach(function (item) {
+          hide(item);
+        });
+      } else if (inField === "Design") {
+        document.querySelectorAll(".card-item.UX").forEach(function (item) {
+          hide(item);
+        });
+        document.querySelectorAll(".card-item.Web").forEach(function (item) {
+          hide(item);
+        });
+        document.querySelectorAll(".card-item.Design").forEach(function (item) {
+          show(item);
+        });
       }
     } //Switch the logs content between the adventure and upgrade tabs
 
   }, {
     key: "updateLogs",
     value: function updateLogs(tab) {
+      //Define transition sequence between tabs
+      var fade = function fade(inElem, outElem) {
+        outElem.classList.add("fade");
+        inElem.classList.remove("hidden");
+        var fadeEvent = ["transitionend", function (e) {
+          outElem.removeEventListener.apply(outElem, fadeEvent);
+          outElem.classList.add("hidden");
+          inElem.classList.remove("fade");
+          document.getElementById("logs-card").dispatchEvent(new Event("faded"));
+        }];
+        outElem.addEventListener.apply(outElem, fadeEvent);
+      };
+
       if (tab === "Adventure") {
-        document.getElementById("adventure-logs").classList.remove("hidden");
-        document.getElementById("upgrade-logs").classList.add("hidden");
+        fade(document.getElementById("adventure-logs"), document.getElementById("upgrade-logs"));
       } else if (tab === "Upgrade") {
-        document.getElementById("adventure-logs").classList.add("hidden");
-        document.getElementById("upgrade-logs").classList.remove("hidden");
+        fade(document.getElementById("upgrade-logs"), document.getElementById("adventure-logs"));
       }
     } //Switch the about card content between the experience, education, & contact tabs
 
   }, {
     key: "updateAbout",
     value: function updateAbout(tab) {
+      //Define transition sequence between tabs
+      var fade = function fade(inElem, outElem) {
+        outElem.classList.add("fade");
+        inElem.classList.remove("hidden");
+        var fadeEvent = ["transitionend", function (e) {
+          outElem.removeEventListener.apply(outElem, fadeEvent);
+          outElem.classList.add("hidden");
+          inElem.classList.remove("fade");
+          document.getElementById("about-card").dispatchEvent(new Event("faded"));
+        }];
+        outElem.addEventListener.apply(outElem, fadeEvent);
+      };
+
       if (tab === "Experience") {
-        document.getElementById("experience-about").classList.remove("hidden");
-        document.getElementById("education-about").classList.add("hidden");
-        document.getElementById("contact-about").classList.add("hidden");
+        fade(document.getElementById("experience-about"), Array.from(document.getElementById("about-card").children).filter(function (item) {
+          return !item.classList.contains("hidden");
+        })[0]);
       } else if (tab === "Education") {
-        document.getElementById("experience-about").classList.add("hidden");
-        document.getElementById("education-about").classList.remove("hidden");
-        document.getElementById("contact-about").classList.add("hidden");
+        fade(document.getElementById("education-about"), Array.from(document.getElementById("about-card").children).filter(function (item) {
+          return !item.classList.contains("hidden");
+        })[0]);
       } else if (tab === "Contact") {
-        document.getElementById("experience-about").classList.add("hidden");
-        document.getElementById("education-about").classList.add("hidden");
-        document.getElementById("contact-about").classList.remove("hidden");
+        fade(document.getElementById("contact-about"), Array.from(document.getElementById("about-card").children).filter(function (item) {
+          return !item.classList.contains("hidden");
+        })[0]);
       }
     } //Update detail pop-up card to match the content of the select element
 
@@ -1565,11 +1611,18 @@ function () {
       Array.from(this.portfolioBtns.children).forEach(function (btn) {
         btn.addEventListener("click", function (e) {
           var portfolioCard = document.getElementById("portfolio-card");
-          portfolioCard.scrollTop = 0;
+          /* portfolioCard.scrollTop = 0; */
+
+          var transitionEvent = ["faded", function (e) {
+            portfolioCard.removeEventListener.apply(portfolioCard, transitionEvent); //Hacky Solution, Please find a way to fix this propperly!!! ***********
+
+            setTimeout(function () {
+              _this3.updateScrollCard(portfolioCard);
+            }, 1);
+          }];
+          portfolioCard.addEventListener.apply(portfolioCard, transitionEvent);
 
           _this3.contentManager.updatePortfolio(e.target.id);
-
-          _this3.updateScrollCard(portfolioCard);
 
           Array.from(_this3.portfolioBtns.children).forEach(function (btn) {
             if (btn.classList.contains("selected")) btn.classList.remove("selected");
@@ -1581,11 +1634,16 @@ function () {
       Array.from(this.logsBtns.children).forEach(function (btn) {
         btn.addEventListener("click", function (e) {
           var logsCard = document.getElementById("logs-card");
-          logsCard.scrollTop = 0;
+          var transitionEvent = ["faded", function (e) {
+            logsCard.removeEventListener.apply(logsCard, transitionEvent);
+
+            _this3.updateScrollCard(logsCard);
+
+            logsCard.scrollTop = 0;
+          }];
+          logsCard.addEventListener.apply(logsCard, transitionEvent);
 
           _this3.contentManager.updateLogs(e.target.id);
-
-          _this3.updateScrollCard(logsCard);
 
           Array.from(_this3.logsBtns.children).forEach(function (btn) {
             if (btn.classList.contains("selected")) btn.classList.remove("selected");
@@ -1598,25 +1656,51 @@ function () {
           var outputElem = document.getElementById(e.target.id.replace("-btn", ""));
 
           if (outputElem.classList.contains("hidden")) {
+            outputElem.style.height = outputElem.scrollHeight + "px";
+            var expand = ["transitionend", function (e) {
+              outputElem.removeEventListener.apply(outputElem, expand);
+              outputElem.style.height = null;
+
+              _this3.updateScrollCard(document.getElementById("logs-card"));
+            }];
+            outputElem.addEventListener.apply(outputElem, expand);
             outputElem.classList.remove("hidden");
             e.target.classList.add("toggled");
           } else {
-            outputElem.classList.add("hidden");
+            var transitionExtract = outputElem.style.transition;
+            outputElem.style.transition = "";
+            requestAnimationFrame(function () {
+              outputElem.style.height = outputElem.scrollHeight + "px";
+              outputElem.style.transition = transitionExtract;
+              requestAnimationFrame(function () {
+                outputElem.style.height = 0 + "px";
+              });
+            });
+            var collapse = ["transitionend", function (e) {
+              outputElem.removeEventListener.apply(outputElem, collapse);
+              outputElem.classList.add("hidden");
+
+              _this3.updateScrollCard(document.getElementById("logs-card"));
+            }];
+            outputElem.addEventListener.apply(outputElem, collapse);
             e.target.classList.remove("toggled");
           }
-
-          _this3.updateScrollCard(document.getElementById("logs-card"));
         });
       }); //Setup buttons on about screen
 
       Array.from(this.aboutBtns.children).forEach(function (btn) {
         btn.addEventListener("click", function (e) {
           var aboutCard = document.getElementById("about-card");
-          aboutCard.scrollTop = 0;
+          var transitionEvent = ["faded", function (e) {
+            aboutCard.removeEventListener.apply(aboutCard, transitionEvent);
+
+            _this3.updateScrollCard(aboutCard);
+
+            aboutCard.scrollTop = 0;
+          }];
+          aboutCard.addEventListener.apply(aboutCard, transitionEvent);
 
           _this3.contentManager.updateAbout(e.target.id);
-
-          _this3.updateScrollCard(aboutCard);
 
           Array.from(_this3.aboutBtns.children).forEach(function (btn) {
             if (btn.classList.contains("selected")) btn.classList.remove("selected");
@@ -1703,6 +1787,7 @@ function () {
           clientHeight = _ref2.clientHeight,
           scrollTop = _ref2.scrollTop,
           parentElement = _ref2.parentElement;
+      console.log(scrollHeight);
 
       if (scrollHeight > clientHeight) {
         if (scrollTop === 0) {
@@ -1872,7 +1957,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50274" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58019" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -103,10 +103,22 @@ export default class AppController{
             btn.addEventListener("click", e => {
 
                 const portfolioCard = document.getElementById("portfolio-card");
-                portfolioCard.scrollTop = 0;
+                /* portfolioCard.scrollTop = 0; */
+
+                const transitionEvent = ["faded", e => {
+
+                    portfolioCard.removeEventListener(...transitionEvent);
+
+                    //Hacky Solution, Please find a way to fix this propperly!!! ***********
+                    setTimeout(() => {
+                        this.updateScrollCard(portfolioCard);  
+                    }, 1);
+                    
+                }];
+
+                portfolioCard.addEventListener(...transitionEvent);
 
                 this.contentManager.updatePortfolio(e.target.id);
-                this.updateScrollCard(portfolioCard);
 
                 Array.from(this.portfolioBtns.children).forEach(btn => {
 
@@ -127,10 +139,18 @@ export default class AppController{
             btn.addEventListener("click", e => {
 
                 const logsCard = document.getElementById("logs-card");
-                logsCard.scrollTop = 0;
 
-                this.contentManager.updateLogs(e.target.id);
-                this.updateScrollCard(logsCard);
+                const transitionEvent = ["faded", e => {
+
+                    logsCard.removeEventListener(...transitionEvent);
+                    this.updateScrollCard(logsCard);  
+                    logsCard.scrollTop = 0;
+                    
+                }];
+
+                logsCard.addEventListener(...transitionEvent);
+
+                this.contentManager.updateLogs(e.target.id);          
 
                 Array.from(this.logsBtns.children).forEach(btn => {
 
@@ -153,18 +173,54 @@ export default class AppController{
                 
                 if(outputElem.classList.contains("hidden")){
 
+                    outputElem.style.height = outputElem.scrollHeight + "px";
+
+                    const expand = ["transitionend", e => {
+
+                        outputElem.removeEventListener(...expand);
+                        outputElem.style.height = null;
+                        this.updateScrollCard(document.getElementById("logs-card"));
+
+                    }];
+
+                    outputElem.addEventListener(...expand);
+
                     outputElem.classList.remove("hidden");
                     e.target.classList.add("toggled");
+
+                    
                     
                 }
                 else{
 
-                    outputElem.classList.add("hidden");
-                    e.target.classList.remove("toggled");
+                    const transitionExtract = outputElem.style.transition;
+                    outputElem.style.transition = "";
+
+                    requestAnimationFrame(() => {
+
+                        outputElem.style.height = outputElem.scrollHeight + "px";
+                        outputElem.style.transition = transitionExtract;
+
+                        requestAnimationFrame(() => {
+
+                            outputElem.style.height = 0 + "px";
+
+                        });
+
+                    });
+
+                    const collapse = ["transitionend", e => {
+
+                        outputElem.removeEventListener(...collapse);
+                        outputElem.classList.add("hidden");
+                        this.updateScrollCard(document.getElementById("logs-card"));
+
+                    }];
+
+                    outputElem.addEventListener(...collapse);  
+                    e.target.classList.remove("toggled");          
 
                 }
-                
-                this.updateScrollCard(document.getElementById("logs-card"));
 
             });
         })
@@ -175,10 +231,19 @@ export default class AppController{
             btn.addEventListener("click", e => {
 
                 const aboutCard = document.getElementById("about-card");
-                aboutCard.scrollTop = 0;
+                
+                const transitionEvent = ["faded", e => {
+
+                    aboutCard.removeEventListener(...transitionEvent);
+                    this.updateScrollCard(aboutCard);  
+                    aboutCard.scrollTop = 0;
+
+                }];
+
+                aboutCard.addEventListener(...transitionEvent);
 
                 this.contentManager.updateAbout(e.target.id);
-                this.updateScrollCard(aboutCard);
+                
 
                 Array.from(this.aboutBtns.children).forEach(btn => {
 
@@ -304,10 +369,12 @@ export default class AppController{
     //Update scrollable card element ------------------------------------------
     updateScrollCard({scrollHeight,clientHeight,scrollTop,parentElement}){
 
+        console.log(scrollHeight);    
+
         if(scrollHeight > clientHeight){
 
             if(scrollTop === 0){   
-                    
+            
                 parentElement.parentElement.classList.add("no-scroll-shadow-top");   
                 parentElement.parentElement.classList.remove("no-scroll-shadow-bottom"); 
 

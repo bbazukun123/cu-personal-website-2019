@@ -909,10 +909,23 @@
   grid-gap: 0.6rem;
   justify-items: center;
   width: 100%;
+  opacity: 1;
+  transition: opacity 0.25s ease-out;
 }
-.container .main-content .content-card .card-list > div.hidden {
+.container .main-content .content-card .card-list > div div {
+  height: auto;
+  overflow: hidden;
+  transition: height 0.25s ease-in-out;
+}
+.container .main-content .content-card .card-list > div div.hidden {
   /* opacity: 0;
   transform: scaleX(0.9); */
+  height: 0;
+}
+.container .main-content .content-card .card-list > div.fade {
+  opacity: 0;
+}
+.container .main-content .content-card .card-list > div.hidden {
   display: none;
 }
 .container .main-content .content-card .card-list > div.education-card {
@@ -1031,8 +1044,11 @@
 }
 .container .main-content .content-card .upgrade-items {
   width: 95%;
+  height: auto;
   /* transform-origin: 50% 0;
   transition: scaleY 0.25s ease-out; */
+  overflow: hidden;
+  transition: height 0.25s ease-out;
 }
 .container .main-content .content-card .upgrade-items div:nth-child(odd) {
   background-color: #C8D7D8;
@@ -1043,8 +1059,10 @@
   color: #000F33;
 }
 .container .main-content .content-card .upgrade-items.hidden {
-  /* transform: scaleY(0); */
-  max-height: 0;
+  height: 0;
+}
+.container .main-content .content-card .upgrade-items.disable-transition {
+  transition: none;
 }
 .container .main-content .selector-card {
   height: 8%;
@@ -1360,6 +1378,9 @@
 .btn.toggle-btn i {
   -webkit-transform: rotateZ(-90deg);
           transform: rotateZ(-90deg);
+  transition: -webkit-transform 0.15s ease-out;
+  transition: transform 0.15s ease-out;
+  transition: transform 0.15s ease-out, -webkit-transform 0.15s ease-out;
 }
 .btn.toggle-btn.toggled i {
   -webkit-transform: rotateZ(0);

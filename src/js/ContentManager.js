@@ -159,7 +159,7 @@ export default class ContentManager{
             const completedList = upgradeData.filter(item => (item.status === "completed")).sort((a,b) => b.id - a.id);
 
             let upgradeOutput =
-                `<div id="upgrade-logs" class="hidden">
+                `<div id="upgrade-logs" class="hidden fade">
                     <div class="cta-panel cta-warning upgrade-panel">
                         <h2 class="p-2">In Progress</h2>
                         <button id="progress-btn" class="btn btn-l btn-light mx-1 toggle-btn toggled"><i class="fas fa-chevron-down"></i></button>
@@ -231,7 +231,7 @@ export default class ContentManager{
             const edu = this.contentData[4];
 
             let eduOutput = 
-                `<div id="education-about" class="education-card hidden">
+                `<div id="education-about" class="education-card hidden fade">
                     <div class="milestone"></div>
                     <div class="card-item">
                         <h2>${edu[0].deg}</h2>
@@ -259,7 +259,7 @@ export default class ContentManager{
 
             const con = this.contentData[5];
             let contactOutput = 
-                `<div id="contact-about" class="contact-card hidden">
+                `<div id="contact-about" class="contact-card hidden fade">
                     <h1 class="text-center">Pleasure to meet you!</h1>
                     <div class="avatar">
                         <object class="mb-1" type="image/svg+xml" data="./images/me.svg"></object>
@@ -291,59 +291,144 @@ export default class ContentManager{
     //Update portfolio card content based on input of field type filter
     updatePortfolio(inField){
 
-        switch(inField){
+        const hide = item => {
 
-            case "all":
-                document.querySelectorAll(".card-item.UX").forEach(item => {
-                    item.classList.remove("hidden");
-                });
-                document.querySelectorAll(".card-item.Web").forEach(item => {
-                    item.classList.remove("hidden");
-                });
-                document.querySelectorAll(".card-item.Design").forEach(item => {
-                    item.classList.remove("hidden");
-                });
-                break;
+            if(!item.classList.contains("hidden")){
 
-            case "UX":
-                document.querySelectorAll(".card-item.UX").forEach(item => {
-                    item.classList.remove("hidden");
-                });
-                document.querySelectorAll(".card-item.Web").forEach(item => {
-                    item.classList.add("hidden");
-                });
-                document.querySelectorAll(".card-item.Design").forEach(item => {
-                    item.classList.add("hidden");
-                });
-                break;
+                const transitionExtract = item.style.transition;
+                item.style.transition = "";
 
-            case "Design":
-                document.querySelectorAll(".card-item.UX").forEach(item => {
-                    item.classList.add("hidden");
-                });
-                document.querySelectorAll(".card-item.Web").forEach(item => {
-                    item.classList.add("hidden");
-                });
-                document.querySelectorAll(".card-item.Design").forEach(item => {
-                    item.classList.remove("hidden");
-                });
-                break;
+                requestAnimationFrame(() => {
 
-            case "Web":
-                document.querySelectorAll(".card-item.UX").forEach(item => {
-                    item.classList.add("hidden");
-                });
-                document.querySelectorAll(".card-item.Web").forEach(item => {
-                    item.classList.remove("hidden");
-                });
-                document.querySelectorAll(".card-item.Design").forEach(item => {
-                    item.classList.add("hidden");
-                });
-                break;
+                    item.style.height = item.scrollHeight + "px";
+                    item.style.transition = transitionExtract;
 
-            default:
-                break;
+                    requestAnimationFrame(() => {
+
+                        item.style.height = 0 + "px";
+
+                    });
+
+                });
+
+                const collapse = ["transitionend", e => {
+
+                    item.removeEventListener(...collapse);
+                    item.classList.add("hidden");   
+                    
+                    document.getElementById("portfolio-card").dispatchEvent(new Event("faded"));
+
+                }];
+
+                item.addEventListener(...collapse);
+
+            }
+
+        };
+
+        const show = item => {
+
+            if(item.classList.contains("hidden")){
+
+                item.classList.remove("hidden")
+                item.style.height = item.scrollHeight + "px";
+
+                const expand = ["transitionend", e => {
+
+                    item.removeEventListener(...expand);
+                    item.style.height = null;
+
+                    document.getElementById("portfolio-card").dispatchEvent(new Event("faded"));
+
+                }];
+
+                item.addEventListener(...expand);
+
+            }
+
+        };
+        
+        if(inField === "all"){
+
+            document.querySelectorAll(".card-item.UX").forEach(item => {
+
+                show(item);
+
+            });
+
+            document.querySelectorAll(".card-item.Web").forEach(item => {
                 
+                show(item);
+
+            });
+
+            document.querySelectorAll(".card-item.Design").forEach(item => {
+                
+                show(item);
+
+            });
+
+        }
+        else if(inField === "UX"){
+
+            document.querySelectorAll(".card-item.UX").forEach(item => {
+
+                show(item);
+
+            });
+
+            document.querySelectorAll(".card-item.Web").forEach(item => {
+
+                hide(item);
+                
+            });
+
+            document.querySelectorAll(".card-item.Design").forEach(item => {
+
+                hide(item);
+
+            });
+
+        }
+        else if(inField === "Web"){
+
+            document.querySelectorAll(".card-item.UX").forEach(item => {
+                    
+                hide(item);
+
+            });
+
+            document.querySelectorAll(".card-item.Web").forEach(item => {
+
+                show(item);
+
+            });
+
+            document.querySelectorAll(".card-item.Design").forEach(item => {
+                hide(item);
+            });
+
+        }
+        else if(inField === "Design"){
+
+            document.querySelectorAll(".card-item.UX").forEach(item => {
+
+                hide(item);
+
+            });
+
+            document.querySelectorAll(".card-item.Web").forEach(item => {
+
+                hide(item);
+
+            });
+
+            document.querySelectorAll(".card-item.Design").forEach(item => {
+
+                show(item);
+
+            });
+
         }
 
     }
@@ -351,16 +436,35 @@ export default class ContentManager{
     //Switch the logs content between the adventure and upgrade tabs
     updateLogs(tab){
 
-        if(tab === "Adventure"){
+        //Define transition sequence between tabs
+        const fade = (inElem,outElem) => {
 
-            document.getElementById("adventure-logs").classList.remove("hidden");
-            document.getElementById("upgrade-logs").classList.add("hidden");
+            outElem.classList.add("fade");
+            inElem.classList.remove("hidden");
+
+            const fadeEvent = ["transitionend", e => {
+
+                outElem.removeEventListener(...fadeEvent);
+
+                outElem.classList.add("hidden");
+                inElem.classList.remove("fade"); 
+
+                document.getElementById("logs-card").dispatchEvent(new Event("faded"));
+
+            }];
+
+            outElem.addEventListener(...fadeEvent);
+            
+        };
+
+        if(tab === "Adventure"){    
+
+            fade(document.getElementById("adventure-logs"),document.getElementById("upgrade-logs"));
 
         }
         else if(tab === "Upgrade"){
 
-            document.getElementById("adventure-logs").classList.add("hidden");
-            document.getElementById("upgrade-logs").classList.remove("hidden");
+            fade(document.getElementById("upgrade-logs"),document.getElementById("adventure-logs"));
 
         }
 
@@ -369,25 +473,40 @@ export default class ContentManager{
     //Switch the about card content between the experience, education, & contact tabs
     updateAbout(tab){
 
+        //Define transition sequence between tabs
+        const fade = (inElem,outElem) => {
+
+            outElem.classList.add("fade");
+            inElem.classList.remove("hidden");
+
+            const fadeEvent = ["transitionend", e => {
+
+                outElem.removeEventListener(...fadeEvent);
+
+                outElem.classList.add("hidden");    
+                inElem.classList.remove("fade"); 
+
+                document.getElementById("about-card").dispatchEvent(new Event("faded"));
+
+            }];
+
+            outElem.addEventListener(...fadeEvent);
+            
+        };
+
         if(tab === "Experience"){
 
-            document.getElementById("experience-about").classList.remove("hidden");
-            document.getElementById("education-about").classList.add("hidden");
-            document.getElementById("contact-about").classList.add("hidden");
+            fade(document.getElementById("experience-about"),Array.from( document.getElementById("about-card").children).filter(item => !item.classList.contains("hidden"))[0]);    
 
         }
         else if(tab === "Education"){
             
-            document.getElementById("experience-about").classList.add("hidden");
-            document.getElementById("education-about").classList.remove("hidden");
-            document.getElementById("contact-about").classList.add("hidden");
+            fade(document.getElementById("education-about"),Array.from( document.getElementById("about-card").children).filter(item => !item.classList.contains("hidden"))[0]);    
             
         }
         else if(tab === "Contact"){
 
-            document.getElementById("experience-about").classList.add("hidden");
-            document.getElementById("education-about").classList.add("hidden");
-            document.getElementById("contact-about").classList.remove("hidden");
+            fade(document.getElementById("contact-about"),Array.from( document.getElementById("about-card").children).filter(item => !item.classList.contains("hidden"))[0]);    
 
         }
 
@@ -684,7 +803,7 @@ export default class ContentManager{
             d = this.contentData[6][0];
         else if(id === "business-screen")
             d = this.contentData[6][0];
-            
+
         toolkitContent +=
             ``;
                 
