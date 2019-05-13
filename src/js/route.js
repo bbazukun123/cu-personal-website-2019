@@ -14,6 +14,5 @@ export default class Route{
 
         return hashedPath.replace("#","") === this.name;
 
-
     }
 }

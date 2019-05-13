@@ -1,9 +1,12 @@
+//A feature module to update the room background graphic for the main screens
 export default function updateNav(pageName){
 
+    //Grab navigation bar elements
     const navElem = document.querySelector(".nav");
     const navBtnElem = document.querySelectorAll(".nav-btn");
     const navTextElem = document.querySelectorAll(".nav-text");
     
+    //Manually defining navigation bar state for each screen
     const pageNavData = {
         desk: ["bottom","logs","about","portfolio"],
         logs: ["bottom","null","null","desk"],
@@ -11,8 +14,22 @@ export default function updateNav(pageName){
         about: ["top","null","desk","null"]
     };
 
+    //Grab relevant navigation state according to the inputted page number
     const navItems = pageNavData[pageName.replace(".html","")];
 
+    //Setup animation listener to complete the navigation bar transition flow
+    navElem.addEventListener("animationend", (e) => {
+
+        navElem.classList.remove("fade");
+
+        //Reset scroll position of all cards
+        document.getElementById("portfolio-card").scrollTop = 0;
+        document.getElementById("logs-card").scrollTop = 0;
+        document.getElementById("about-card").scrollTop = 0;
+
+    })
+
+    //Fade out navigation bar & update navigation bar content as soon as fade finishes (0.25s hard coded timing)
     navElem.classList.add("fade");
     setTimeout(() => {
 

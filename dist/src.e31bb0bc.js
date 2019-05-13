@@ -992,17 +992,19 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = generateBG;
 
+//A feature module to generate the room background graphic for the main screens
 function generateBG() {
   document.querySelectorAll(".container .room-bg").forEach(function (bg) {
-    var column = bg.getAttribute("column"); //Generate Wallpaper
-
-    var wallpaperOutput = "";
+    var column = bg.getAttribute("column");
+    var wallpaperOutput = ""; //Generate wallpaper tiles
 
     for (var i = 0; i < column; i++) {
       wallpaperOutput += "<div></div>";
-    }
+    } //Combine wallpaper with other background elements
 
-    var output = "<div class=\"wallpaper\">\n            ".concat(wallpaperOutput, "\n        </div>\n        <div class=\"baseboard\"></div>\n        <div class=\"floor\"></div>\n        ");
+
+    var output = "<div class=\"wallpaper\">\n                ".concat(wallpaperOutput, "\n            </div>\n            <div class=\"baseboard\"></div>\n            <div class=\"floor\"></div>\n            "); //Output combine background
+
     bg.innerHTML = output;
   });
 }
@@ -1014,17 +1016,30 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = updateNav;
 
+//A feature module to update the room background graphic for the main screens
 function updateNav(pageName) {
+  //Grab navigation bar elements
   var navElem = document.querySelector(".nav");
   var navBtnElem = document.querySelectorAll(".nav-btn");
-  var navTextElem = document.querySelectorAll(".nav-text");
+  var navTextElem = document.querySelectorAll(".nav-text"); //Manually defining navigation bar state for each screen
+
   var pageNavData = {
     desk: ["bottom", "logs", "about", "portfolio"],
     logs: ["bottom", "null", "null", "desk"],
     portfolio: ["bottom", "desk", "null", "null"],
     about: ["top", "null", "desk", "null"]
-  };
-  var navItems = pageNavData[pageName.replace(".html", "")];
+  }; //Grab relevant navigation state according to the inputted page number
+
+  var navItems = pageNavData[pageName.replace(".html", "")]; //Setup animation listener to complete the navigation bar transition flow
+
+  navElem.addEventListener("animationend", function (e) {
+    navElem.classList.remove("fade"); //Reset scroll position of all cards
+
+    document.getElementById("portfolio-card").scrollTop = 0;
+    document.getElementById("logs-card").scrollTop = 0;
+    document.getElementById("about-card").scrollTop = 0;
+  }); //Fade out navigation bar & update navigation bar content as soon as fade finishes (0.25s hard coded timing)
+
   navElem.classList.add("fade");
   setTimeout(function () {
     if (navItems[0] === "bottom") navElem.classList.remove("nav-top");else if (navItems[0] === "top") navElem.classList.add("nav-top");else throw "Error: Invalid nav position";
@@ -1061,7 +1076,7 @@ function () {
     (0, _classCallCheck2.default)(this, ContentManager);
     this.contentData = [];
     this.fetchArray = [];
-  } //Grab all the content data from JSON files & render initial content
+  } //Grab all the content data from JSON files & render all base content
 
 
   (0, _createClass2.default)(ContentManager, [{
@@ -1069,7 +1084,6 @@ function () {
     value: function initContent() {
       var _this = this;
 
-      //let fetchArray = [];
       //Fetch portfolio content
       this.fetchArray.push(fetch("content/portfolioContent.json").then(function (res) {
         return res.json();
@@ -1126,7 +1140,7 @@ function () {
       }).catch(function (err) {
         throw err;
       }));
-      /* -------------------------------------------------------------------- */
+      /* ------------------------------------------------------------------------------------------------- */
 
       Promise.all(this.fetchArray).then(function () {
         //Grab all output elements
@@ -1134,7 +1148,7 @@ function () {
         _this.logsElem = document.getElementById("logs-card");
         _this.aboutElem = document.getElementById("about-card");
         _this.detailElem = document.querySelector(".detail-card");
-        _this.toolkitElem = document.querySelector(".toolkit-card"); //Render portfolio content---------------------------------
+        _this.toolkitElem = document.querySelector(".toolkit-card"); //Render portfolio content ---------------------------------
 
         var portfolioOutput = "<div>";
 
@@ -1148,7 +1162,7 @@ function () {
           }(p.action), "</button>\n                            <button id=\"portfolio-").concat(p.id, "\" class=\"btn btn-l detail-btn btn-light mx-1\"><i class=\"fas fa-info-circle\"></i></button>\n                        </div>\n                    </div>");
         });
 
-        _this.portfolioElem.innerHTML = portfolioOutput + "</div>"; //Render logs content------------------------------  
+        _this.portfolioElem.innerHTML = portfolioOutput + "</div>"; //Render logs content ------------------------------  
 
         var advOutput = "<div id=\"adventure-logs\">";
 
@@ -1173,20 +1187,20 @@ function () {
         }).sort(function (a, b) {
           return b.id - a.id;
         });
-        var upgradeOutput = "<div id=\"upgrade-logs\" class=\"hidden\">\n                <div class=\"cta-panel cta-warning upgrade-panel\">\n                    <h2 class=\"p-2\">In Progress</h2>\n                    <button id=\"progress-btn\" class=\"btn btn-l btn-light mx-1 toggle-btn toggled\"><i class=\"fas fa-chevron-down\"></i></button>\n                </div>\n                <div id=\"progress\" class=\"upgrade-items\">";
+        var upgradeOutput = "<div id=\"upgrade-logs\" class=\"hidden\">\n                    <div class=\"cta-panel cta-warning upgrade-panel\">\n                        <h2 class=\"p-2\">In Progress</h2>\n                        <button id=\"progress-btn\" class=\"btn btn-l btn-light mx-1 toggle-btn toggled\"><i class=\"fas fa-chevron-down\"></i></button>\n                    </div>\n                    <div id=\"progress\" class=\"upgrade-items\">";
         inProgressList.forEach(function (item) {
           upgradeOutput += "<div class=\"p-2\">\n                        <h3>".concat(item.title, "</h3>\n                    </div>");
         });
-        upgradeOutput += "</div>\n            <div class=\"cta-panel cta-danger upgrade-panel\">\n                <h2 class=\"p-2\">Knowledge Wishlist</h2>\n                <button id=\"wish-btn\" class=\"btn btn-l btn-light mx-1 toggle-btn\"><i class=\"fas fa-chevron-down\"></i></button>\n            </div>\n            <div id=\"wish\" class=\"upgrade-items hidden\">";
+        upgradeOutput += "</div>\n                <div class=\"cta-panel cta-danger upgrade-panel\">\n                    <h2 class=\"p-2\">Knowledge Wishlist</h2>\n                    <button id=\"wish-btn\" class=\"btn btn-l btn-light mx-1 toggle-btn\"><i class=\"fas fa-chevron-down\"></i></button>\n                </div>\n                <div id=\"wish\" class=\"upgrade-items hidden\">";
         wishList.forEach(function (item) {
           upgradeOutput += "<div class=\"p-2\">\n                    <h3>".concat(item.title, "</h3>\n                </div>");
         });
-        upgradeOutput += "</div>\n            <div class=\"cta-panel cta-success upgrade-panel\">\n                <h2 class=\"p-2\">Recently Completed</h2>\n                <button id=\"completed-btn\" class=\"btn btn-l btn-light mx-1 toggle-btn\"><i class=\"fas fa-chevron-down\"></i></button>\n            </div>\n            <div id=\"completed\" class=\"upgrade-items hidden\">";
+        upgradeOutput += "</div>\n                <div class=\"cta-panel cta-success upgrade-panel\">\n                    <h2 class=\"p-2\">Recently Completed</h2>\n                    <button id=\"completed-btn\" class=\"btn btn-l btn-light mx-1 toggle-btn\"><i class=\"fas fa-chevron-down\"></i></button>\n                </div>\n                <div id=\"completed\" class=\"upgrade-items hidden\">";
         completedList.forEach(function (item) {
           upgradeOutput += "<div class=\"p-2\">\n                        <h3>".concat(item.title, "</h3>\n                    </div>");
         });
         upgradeOutput += "</div></div>";
-        _this.logsElem.innerHTML = advOutput + upgradeOutput; //Render about content--------------------------------
+        _this.logsElem.innerHTML = advOutput + upgradeOutput; //Render about content --------------------------------
 
         var expOutput = "<div id=\"experience-about\">";
 
@@ -1196,13 +1210,13 @@ function () {
 
         expOutput += "</div>";
         var edu = _this.contentData[4];
-        var eduOutput = "<div id=\"education-about\" class=\"education-card hidden\">\n                        <div class=\"milestone\"></div>\n                        <div class=\"card-item\">\n                            <h2>".concat(edu[0].deg, "</h2>\n                            <h4 class=\"text-warning mt-1\">").concat(edu[0].uni, "</h4>\n                            <h3 class=\"text-warning\">").concat(edu[0].year, "</h3>\n                            <button id=\"education-1\" class=\"btn btn-sm detail-btn btn-dark my-1 px-2\">Detail</button>\n                            <hr class=\"bg-warning text-warning my-1\">\n                        </div>\n                        <div class=\"milestone\"></div>\n                        <div class=\"card-item\">\n                            <h2>").concat(edu[1].deg, "</h2>\n                            <h4 class=\"text-warning mt-1\">").concat(edu[1].uni, "</h4>\n                            <h3 class=\"text-warning\">").concat(edu[1].year, "</h3>\n                            <button id=\"education-2\" class=\"btn btn-sm detail-btn btn-dark my-1\">Detail</button>\n                            <hr class=\"bg-warning text-warning my-1\">\n                        </div>\n                        <div class=\"milestone\"></div>\n                        <div class=\"card-item\">\n                            <h2>").concat(edu[2].deg, "</h2>\n                            <h4 class=\"text-warning mt-1\">").concat(edu[2].uni, "</h4>\n                            <h3 class=\"text-warning\">").concat(edu[2].year, "</h3>\n                            <button id=\"education-3\" class=\"btn btn-sm detail-btn btn-dark my-1\">Detail</button>\n                        </div>\n                    </div>");
+        var eduOutput = "<div id=\"education-about\" class=\"education-card hidden\">\n                    <div class=\"milestone\"></div>\n                    <div class=\"card-item\">\n                        <h2>".concat(edu[0].deg, "</h2>\n                        <h4 class=\"text-warning mt-1\">").concat(edu[0].uni, "</h4>\n                        <h3 class=\"text-warning\">").concat(edu[0].year, "</h3>\n                        <button id=\"education-1\" class=\"btn btn-sm detail-btn btn-dark my-1 px-2\">Detail</button>\n                        <hr class=\"bg-warning text-warning my-1\">\n                    </div>\n                    <div class=\"milestone\"></div>\n                    <div class=\"card-item\">\n                        <h2>").concat(edu[1].deg, "</h2>\n                        <h4 class=\"text-warning mt-1\">").concat(edu[1].uni, "</h4>\n                        <h3 class=\"text-warning\">").concat(edu[1].year, "</h3>\n                        <button id=\"education-2\" class=\"btn btn-sm detail-btn btn-dark my-1\">Detail</button>\n                        <hr class=\"bg-warning text-warning my-1\">\n                    </div>\n                    <div class=\"milestone\"></div>\n                    <div class=\"card-item\">\n                        <h2>").concat(edu[2].deg, "</h2>\n                        <h4 class=\"text-warning mt-1\">").concat(edu[2].uni, "</h4>\n                        <h3 class=\"text-warning\">").concat(edu[2].year, "</h3>\n                        <button id=\"education-3\" class=\"btn btn-sm detail-btn btn-dark my-1\">Detail</button>\n                    </div>\n                </div>");
         var con = _this.contentData[5];
-        console.log(con);
         var contactOutput = "<div id=\"contact-about\" class=\"contact-card hidden\">\n                    <h1 class=\"text-center\">Pleasure to meet you!</h1>\n                    <div class=\"avatar\">\n                        <object class=\"mb-1\" type=\"image/svg+xml\" data=\"./images/me.svg\"></object>\n                    </div> \n                    <div class=\"cta-panel contact-panel\">\n                        <h4 class=\"p-2 text-left\">Download CV</h4>\n                        <button class=\"btn btn-l btn-light mx-1\" onclick=\"window.open('./downloadable/C_Utsahajit_CV19.pdf')\"><i class=\"fas fa-download\"></i></button>\n                    </div>\n                    <div class=\"cta-panel contact-panel\">\n                        <h4 class=\"p-2 text-left\">".concat(con.email, "</h4>\n                        <button class=\"btn btn-l btn-light mx-1\" onclick=\"window.open('mailto:bzkwork1993@gmail.com')\">Email</button>\n                    </div>\n                    <div class=\"cta-panel contact-panel\">\n                        <h4 class=\"p-2 text-left\">").concat(con.mobile, "</h4>\n                        <button class=\"btn btn-l btn-light mx-1\" onclick=\"window.open('tel:+447956982635')\">Call</button>\n                    </div>\n                    <div class=\"social-media\">\n                        <button class=\"btn btn-l btn-dark\" onclick=\"window.open('https://github.com/bbazukun123')\"><i class=\"fab fa-github\"></i>&nbsp;Github</button>\n                        <button class=\"btn btn-l btn-dark\" onclick=\"window.open('https://www.linkedin.com/in/chanodom-utsahajit/')\"><i class=\"fab fa-linkedin\"></i>&nbsp;Linkedin</button>\n                    </div>\n                </div>");
         _this.aboutElem.innerHTML = expOutput + eduOutput + contactOutput;
       });
-    }
+    } //Update portfolio card content based on input of field type filter
+
   }, {
     key: "updatePortfolio",
     value: function updatePortfolio(inField) {
@@ -1258,12 +1272,11 @@ function () {
         default:
           break;
       }
-    }
+    } //Switch the logs content between the adventure and upgrade tabs
+
   }, {
     key: "updateLogs",
     value: function updateLogs(tab) {
-      var logsOutput = "";
-
       if (tab === "Adventure") {
         document.getElementById("adventure-logs").classList.remove("hidden");
         document.getElementById("upgrade-logs").classList.add("hidden");
@@ -1271,12 +1284,11 @@ function () {
         document.getElementById("adventure-logs").classList.add("hidden");
         document.getElementById("upgrade-logs").classList.remove("hidden");
       }
-    }
+    } //Switch the about card content between the experience, education, & contact tabs
+
   }, {
     key: "updateAbout",
     value: function updateAbout(tab) {
-      var aboutOutput = "";
-
       if (tab === "Experience") {
         document.getElementById("experience-about").classList.remove("hidden");
         document.getElementById("education-about").classList.add("hidden");
@@ -1290,10 +1302,12 @@ function () {
         document.getElementById("education-about").classList.add("hidden");
         document.getElementById("contact-about").classList.remove("hidden");
       }
-    }
+    } //Update detail pop-up card to match the content of the select element
+
   }, {
     key: "updateDetail",
     value: function updateDetail(id) {
+      //Render detail card for the selected portfolio item
       if (id.includes("portfolio")) {
         var d;
         var detailContent = "";
@@ -1323,117 +1337,90 @@ function () {
         });
         detailContent += "</div>\n                <div class=\"height-filler\"></div>";
         this.detailElem.innerHTML = detailContent;
-        document.querySelector(".media-container>div:first-child").classList.add("active");
+        document.querySelector(".media-container>div:first-child").classList.add("active"); //Setup gallery buttons
+
         var mediaBtns = Array.from(document.querySelector(".media-control").children);
         mediaBtns[0].addEventListener("click", function (e) {
           var current = document.querySelector(".media-container .active");
-
-          if (current.previousElementSibling) {
-            current.classList.remove("active");
-            current.previousElementSibling.classList.add("active");
-          } else {
-            current.classList.remove("active");
-            current.parentElement.lastChild.classList.add("active");
-          }
-
+          current.classList.remove("active");
+          if (current.previousElementSibling) current.previousElementSibling.classList.add("active");else current.parentElement.lastChild.classList.add("active");
           document.getElementById("gallery-counter").innerText = "".concat(document.querySelector(".media-container .active").id.replace("media-", ""), " / ").concat(d.content.media.length);
         });
         mediaBtns[2].addEventListener("click", function (e) {
           var current = document.querySelector(".media-container .active");
-
-          if (current.nextElementSibling) {
-            current.classList.remove("active");
-            current.nextElementSibling.classList.add("active");
-          } else {
-            current.classList.remove("active");
-            current.parentElement.firstChild.classList.add("active");
-          }
-
+          current.classList.remove("active");
+          if (current.nextElementSibling) current.nextElementSibling.classList.add("active");else current.parentElement.firstChild.classList.add("active");
           document.getElementById("gallery-counter").innerText = "".concat(document.querySelector(".media-container .active").id.replace("media-", ""), " / ").concat(d.content.media.length);
         });
-      } else if (id.includes("adventure")) {
-        var _d;
+      } //Render detail card for the selected adventure item
+      else if (id.includes("adventure")) {
+          var _d;
 
-        var _detailContent = "";
-        this.contentData[1].forEach(function (adv) {
-          if (adv.id === id.replace("adventure-", "")) _d = adv;
-        });
-        _detailContent += "<h1 class=\"mt-3 px-4\">".concat(_d.title, "</h1>\n                <h3 class=\"m-2 px-4\">").concat(_d.desc, "</h3>\n                <hr class=\"mt-1 mb-1\">\n                <h3 class=\"mb-4 text-danger\">").concat(_d.month, "</h3> \n                <div class=\"detail-gallery\">\n                    <div class=\"media-container\">");
-        var _tempCounter = 1;
+          var _detailContent = "";
+          this.contentData[1].forEach(function (adv) {
+            if (adv.id === id.replace("adventure-", "")) _d = adv;
+          });
+          _detailContent += "<h1 class=\"mt-3 px-4\">".concat(_d.title, "</h1>\n                <h3 class=\"m-2 px-4\">").concat(_d.desc, "</h3>\n                <hr class=\"mt-1 mb-1\">\n                <h3 class=\"mb-4 text-danger\">").concat(_d.month, "</h3> \n                <div class=\"detail-gallery\">\n                    <div class=\"media-container\">");
+          var _tempCounter = 1;
 
-        _d.diary.media.forEach(function (m) {
-          if (m.type === "image") {
-            _detailContent += "<div id=\"media-".concat(_tempCounter, "\" class=\"media-image\" style=\"background-image: url(./images/").concat(m.link, ")\"></div>");
-          } else if (m.type === "video") {
-            _detailContent += "<div id=\"media-".concat(_tempCounter, "\" class=\"media-video\"><iframe src=\"").concat(m.link, "\" frameborder=\"0\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe></div>");
-          }
+          _d.diary.media.forEach(function (m) {
+            if (m.type === "image") {
+              _detailContent += "<div id=\"media-".concat(_tempCounter, "\" class=\"media-image\" style=\"background-image: url(./images/").concat(m.link, ")\"></div>");
+            } else if (m.type === "video") {
+              _detailContent += "<div id=\"media-".concat(_tempCounter, "\" class=\"media-video\"><iframe src=\"").concat(m.link, "\" frameborder=\"0\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe></div>");
+            }
 
-          _tempCounter++;
-        });
+            _tempCounter++;
+          });
 
-        _detailContent += "</div>\n                </div>\n                <div class=\"media-control mb-4\">\n                    <button id=\"media-left-btn\" class=\"btn btn-l btn-dark mx-1\"><i class=\"fas fa-chevron-left\"></i></button>\n                    <h3 id=\"gallery-counter\">1 / ".concat(_d.diary.media.length, "</h3>\n                    <button id=\"media-right-btn\" class=\"btn btn-l btn-dark mx-1\"><i class=\"fas fa-chevron-right\"></i></button>\n                </div>\n                <h4 class=\"detail-content p-3\">").concat(_d.diary.text, "</h4><br> \n                <div class=\"height-filler\"></div>");
-        this.detailElem.innerHTML = _detailContent;
-        document.querySelector(".media-container>div:first-child").classList.add("active");
+          _detailContent += "</div>\n                </div>\n                <div class=\"media-control mb-4\">\n                    <button id=\"media-left-btn\" class=\"btn btn-l btn-dark mx-1\"><i class=\"fas fa-chevron-left\"></i></button>\n                    <h3 id=\"gallery-counter\">1 / ".concat(_d.diary.media.length, "</h3>\n                    <button id=\"media-right-btn\" class=\"btn btn-l btn-dark mx-1\"><i class=\"fas fa-chevron-right\"></i></button>\n                </div>\n                <h4 class=\"detail-content p-3\">").concat(_d.diary.text, "</h4><br> \n                <div class=\"height-filler\"></div>");
+          this.detailElem.innerHTML = _detailContent;
+          document.querySelector(".media-container>div:first-child").classList.add("active"); //Setup gallery buttons
 
-        var _mediaBtns = Array.from(document.querySelector(".media-control").children);
+          var _mediaBtns = Array.from(document.querySelector(".media-control").children);
 
-        _mediaBtns[0].addEventListener("click", function (e) {
-          var current = document.querySelector(".media-container .active");
-
-          if (current.previousElementSibling) {
+          _mediaBtns[0].addEventListener("click", function (e) {
+            var current = document.querySelector(".media-container .active");
             current.classList.remove("active");
-            current.previousElementSibling.classList.add("active");
-          } else {
+            if (current.previousElementSibling) current.previousElementSibling.classList.add("active");else current.parentElement.lastChild.classList.add("active");
+            document.getElementById("gallery-counter").innerText = "".concat(document.querySelector(".media-container .active").id.replace("media-", ""), " / ").concat(_d.diary.media.length);
+          });
+
+          _mediaBtns[2].addEventListener("click", function (e) {
+            var current = document.querySelector(".media-container .active");
             current.classList.remove("active");
-            current.parentElement.lastChild.classList.add("active");
-          }
+            if (current.nextElementSibling) current.nextElementSibling.classList.add("active");else current.parentElement.firstChild.classList.add("active");
+            document.getElementById("gallery-counter").innerText = "".concat(document.querySelector(".media-container .active").id.replace("media-", ""), " / ").concat(_d.diary.media.length);
+          });
+        } //Render detail card for the selected experience item
+        else if (id.includes("experience")) {
+            var _d2;
 
-          document.getElementById("gallery-counter").innerText = "".concat(document.querySelector(".media-container .active").id.replace("media-", ""), " / ").concat(_d.diary.media.length);
-        });
+            var _detailContent2 = "";
+            this.contentData[3].forEach(function (exp) {
+              if (exp.id === id.replace("experience-", "")) _d2 = exp;
+            });
+            _detailContent2 += "<h1 class=\"mt-3 px-4\">".concat(_d2.title, "</h1>\n                <h3 class=\"m-3 px-4\">").concat(_d2.role, "</h3>\n                <hr class=\"mt-1 mb-1\">\n                <h3 class=\"m-2\">").concat(_d2.months.replace("-", " - "), "</h3>\n                <h3 class=\"m-1 text-danger\"><i class=\"fas fa-map-marker-alt\"></i>&nbsp;").concat(_d2.location, "</h3>\n                <h4 class=\"detail-content p-3 mt-2\">").concat(_d2.detail, "</h4><br> \n                <div class=\"cta-panel key-learning-panel\">\n                    <h3><i class=\"fas fa-key\"></i></h3>\n                    <h3 class=\"p-2\">Key Learning</h3>\n                </div>\n                <h3 id=\"key-learning\">").concat(_d2.gain, "</h3>\n                <div class=\"height-filler\"></div>");
+            this.detailElem.innerHTML = _detailContent2;
+          } //Render detail card for the selected education item
+          else if (id.includes("education")) {
+              var _d3;
 
-        _mediaBtns[1].addEventListener("click", function (e) {
-          var current = document.querySelector(".media-container .active");
+              var _detailContent3 = "";
+              this.contentData[4].forEach(function (edu) {
+                if (edu.id === id.replace("education-", "")) _d3 = edu;
+              });
+              _detailContent3 += "<h1 class=\"mt-3 px-4\">".concat(_d3.deg, "</h1>\n                <h3 class=\"m-3 px-4\">").concat(_d3.uni, "</h3>\n                <hr class=\"mt-1 mb-1\">\n                <h3 class=\"m-2\">").concat(_d3.year, "</h3>\n                <h3 class=\"m-2 text-warning\"><i class=\"fas fa-award\"></i>&nbsp;").concat(_d3.honour, "</h3>\n                <h4 class=\"detail-content p-3 mt-2\"><span class=\"text-danger\">Key Modules:&nbsp;</span>").concat(_d3.modules, "</h4><br> \n                <div class=\"cta-panel dissertation-panel\">\n                    <h3><i class=\"fas fa-book\"></i></h3>\n                    <h3 class=\"p-2\">Dissertation</h3>\n                </div>\n                <h4 id=\"dissertation\">").concat(_d3.disser, "</h4>\n                <div class=\"height-filler\"></div>");
+              this.detailElem.innerHTML = _detailContent3;
+            }
+    } //Update toolkit pop-up card to match the content of the select toolkit
 
-          if (current.nextElementSibling) {
-            current.classList.remove("active");
-            current.nextElementSibling.classList.add("active");
-          } else {
-            current.classList.remove("active");
-            current.parentElement.firstChild.classList.add("active");
-          }
-
-          document.getElementById("gallery-counter").innerText = "".concat(document.querySelector(".media-container .active").id.replace("media-", ""), " / ").concat(_d.diary.media.length);
-        });
-      } else if (id.includes("experience")) {
-        var _d2;
-
-        var _detailContent2 = "";
-        this.contentData[3].forEach(function (exp) {
-          if (exp.id === id.replace("experience-", "")) _d2 = exp;
-        });
-        _detailContent2 += "<h1 class=\"mt-3 px-4\">".concat(_d2.title, "</h1>\n                <h3 class=\"m-3 px-4\">").concat(_d2.role, "</h3>\n                <hr class=\"mt-1 mb-1\">\n                <h3 class=\"m-2\">").concat(_d2.months.replace("-", " - "), "</h3>\n                <h3 class=\"m-1 text-danger\"><i class=\"fas fa-map-marker-alt\"></i>&nbsp;").concat(_d2.location, "</h3>\n                <h4 class=\"detail-content p-3 mt-2\">").concat(_d2.detail, "</h4><br> \n                <div class=\"cta-panel key-learning-panel\">\n                    <h3><i class=\"fas fa-key\"></i></h3>\n                    <h3 class=\"p-2\">Key Learning</h3>\n                </div>\n                <h3 id=\"key-learning\">").concat(_d2.gain, "</h3>\n                <div class=\"height-filler\"></div>");
-        this.detailElem.innerHTML = _detailContent2;
-      } else if (id.includes("education")) {
-        var _d3;
-
-        var _detailContent3 = "";
-        this.contentData[4].forEach(function (edu) {
-          if (edu.id === id.replace("education-", "")) _d3 = edu;
-        });
-        _detailContent3 += "<h1 class=\"mt-3 px-4\">".concat(_d3.deg, "</h1>\n                <h3 class=\"m-3 px-4\">").concat(_d3.uni, "</h3>\n                <hr class=\"mt-1 mb-1\">\n                <h3 class=\"m-2\">").concat(_d3.year, "</h3>\n                <h3 class=\"m-2 text-warning\"><i class=\"fas fa-award\"></i>&nbsp;").concat(_d3.honour, "</h3>\n                <h4 class=\"detail-content p-3 mt-2\"><span class=\"text-danger\">Key Modules:&nbsp;</span>").concat(_d3.modules, "</h4><br> \n                <div class=\"cta-panel dissertation-panel\">\n                    <h3><i class=\"fas fa-book\"></i></h3>\n                    <h3 class=\"p-2\">Dissertation</h3>\n                </div>\n                <h4 id=\"dissertation\">").concat(_d3.disser, "</h4>\n                <div class=\"height-filler\"></div>");
-        this.detailElem.innerHTML = _detailContent3;
-      }
-    }
   }, {
     key: "updateToolkit",
     value: function updateToolkit(id) {
       var d;
       var toolkitContent = "";
-
-      if (id === "ux-screen") {
-        d = this.contentData[6][0];
-      } else if (id === "web-screen") {} else if (id === "business-screen") {}
-
+      if (id === "ux-screen") d = this.contentData[6][0];else if (id === "web-screen") d = this.contentData[6][0];else if (id === "business-screen") d = this.contentData[6][0];
       toolkitContent += "";
       this.toolkitElem.innerHTML = toolkitContent;
     }
@@ -1442,7 +1429,7 @@ function () {
 }();
 
 exports.default = ContentManager;
-},{"@babel/runtime/helpers/classCallCheck":"../node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"../node_modules/@babel/runtime/helpers/createClass.js"}],"js/router.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/classCallCheck":"../node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"../node_modules/@babel/runtime/helpers/createClass.js"}],"js/AppController.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1466,12 +1453,12 @@ var _ContentManager = _interopRequireDefault(require("./ContentManager"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Router =
+//Import content controller and feature modules ------------------------------------------
+var AppController =
 /*#__PURE__*/
 function () {
-  function Router(routes) {
-    (0, _classCallCheck2.default)(this, Router);
-    //Set routes
+  function AppController(routes) {
+    (0, _classCallCheck2.default)(this, AppController);
     this.routes = routes; //Grab output & control elements
 
     this.viewElem = document.querySelector(".view");
@@ -1482,161 +1469,34 @@ function () {
 
     this.contentManager = new _ContentManager.default();
     this.contentData = [];
-  } //Assign a listener to hashchange & run hasChanged initially to load default route
+  } //Initialising the application's base content and assign a listener to the hash changes of the URL ------------------------------------------
 
 
-  (0, _createClass2.default)(Router, [{
+  (0, _createClass2.default)(AppController, [{
     key: "init",
     value: function init() {
       var _this = this;
 
-      var r = this.routes;
-      this.renderViews(r);
+      this.renderViews(this.routes);
       window.addEventListener("hashchange", function (e) {
-        _this.hasChanged(r);
+        _this.routeChanged(_this.routes);
+        /* if(navigator.userAgent.match(/Android|BlackBerry|iPhone|iPod|Opera Mini|IEMobile/i))
+            document.documentElement.requestFullscreen(); */
+
       });
-      this.navElem.addEventListener("animationend", function (e) {
-        _this.navElem.classList.remove("fade");
-      });
-    } //Setup all the selector & item buttons' actions
+    } //Render the base screens' content ------------------------------------------
 
-  }, {
-    key: "initButtons",
-    value: function initButtons() {
-      var _this2 = this;
-
-      this.portfolioBtns = document.querySelector(".portfolio-selector-items");
-      this.logsBtns = document.querySelector(".logs-selector-items");
-      this.aboutBtns = document.querySelector(".about-selector-items");
-      this.toggleBtns = document.querySelectorAll(".toggle-btn");
-      this.detailBtns = document.querySelectorAll(".detail-btn");
-      Array.from(this.portfolioBtns.children).forEach(function (btn) {
-        btn.addEventListener("click", function (e) {
-          _this2.contentManager.updatePortfolio(e.target.id);
-
-          _this2.updateScrollCard(document.getElementById("portfolio-card"));
-
-          Array.from(_this2.portfolioBtns.children).forEach(function (btn) {
-            if (btn.classList.contains("selected")) btn.classList.remove("selected");
-          });
-          e.target.classList.add("selected");
-        });
-      });
-      Array.from(this.logsBtns.children).forEach(function (btn) {
-        btn.addEventListener("click", function (e) {
-          _this2.contentManager.updateLogs(e.target.id);
-
-          _this2.updateScrollCard(document.getElementById("logs-card"));
-
-          Array.from(_this2.logsBtns.children).forEach(function (btn) {
-            if (btn.classList.contains("selected")) btn.classList.remove("selected");
-          });
-          e.target.classList.add("selected");
-        });
-      });
-      Array.from(this.aboutBtns.children).forEach(function (btn) {
-        btn.addEventListener("click", function (e) {
-          _this2.contentManager.updateAbout(e.target.id);
-
-          _this2.updateScrollCard(document.getElementById("about-card"));
-
-          Array.from(_this2.aboutBtns.children).forEach(function (btn) {
-            if (btn.classList.contains("selected")) btn.classList.remove("selected");
-          });
-          e.target.classList.add("selected");
-        });
-      });
-      this.toggleBtns.forEach(function (btn) {
-        btn.addEventListener("click", function (e) {
-          var outputElem = document.getElementById(e.target.id.replace("-btn", "")); //outputElem.style.maxHeight = outputElem.scrollHeight;
-
-          if (outputElem.classList.contains("hidden")) {
-            outputElem.classList.remove("hidden");
-            e.target.classList.add("toggled");
-          } else {
-            outputElem.classList.add("hidden");
-            e.target.classList.remove("toggled");
-          }
-
-          _this2.updateScrollCard(document.getElementById("logs-card"));
-        });
-      });
-      this.detailBtns.forEach(function (btn) {
-        btn.addEventListener("click", function (e) {
-          _this2.showDetail(e.target.id);
-        });
-      });
-      document.querySelector(".back-btn.detail-btn").addEventListener("click", function (e) {
-        _this2.hideDetail();
-      });
-      document.querySelector(".back-btn.toolkit-btn").addEventListener("click", function (e) {
-        _this2.hideToolkit();
-
-        _this2.viewElem.classList.remove("disabled");
-      });
-      document.getElementById("ux-screen").addEventListener("click", function (e) {
-        _this2.showToolkit(e.target.id);
-
-        _this2.viewElem.classList.add("disabled");
-      });
-      document.getElementById("web-screen").addEventListener("click", function (e) {
-        _this2.showToolkit(e.target.id);
-
-        _this2.viewElem.classList.add("disabled");
-      });
-      document.getElementById("business-screen").addEventListener("click", function (e) {
-        _this2.showToolkit(e.target.id);
-
-        _this2.viewElem.classList.add("disabled");
-      });
-    } //Update all scrollable card elements
-
-  }, {
-    key: "initScrollCard",
-    value: function initScrollCard() {
-      var _this3 = this;
-
-      var cardLists = document.querySelectorAll(".card-list");
-      cardLists.forEach(function (list) {
-        list.addEventListener("scroll", function (e) {
-          _this3.updateScrollCard(e.target);
-        });
-        console.log(list);
-
-        _this3.updateScrollCard(list);
-      });
-    } //Update all scrollable card elements
-
-  }, {
-    key: "updateScrollCard",
-    value: function updateScrollCard(list) {
-      console.log("Scroll Height: ".concat(list.scrollHeight, ", & Client Height: ").concat(list.clientHeight));
-
-      if (list.scrollHeight > list.clientHeight) {
-        if (list.scrollTop === 0) {
-          list.parentElement.parentElement.classList.add("no-scroll-shadow-top");
-          list.parentElement.parentElement.classList.remove("no-scroll-shadow-bottom");
-        } else if (list.scrollTop !== 0 && list.scrollTop + list.clientHeight < list.scrollHeight) {
-          list.parentElement.parentElement.classList.remove("no-scroll-shadow-top");
-          list.parentElement.parentElement.classList.remove("no-scroll-shadow-bottom");
-        } else {
-          list.parentElement.parentElement.classList.remove("no-scroll-shadow-top");
-          list.parentElement.parentElement.classList.add("no-scroll-shadow-bottom");
-        }
-      } else {
-        list.parentElement.parentElement.classList.add("no-scroll-shadow-top");
-        list.parentElement.parentElement.classList.add("no-scroll-shadow-bottom");
-      }
-    }
   }, {
     key: "renderViews",
     value: function renderViews(r) {
-      var _this4 = this;
+      var _this2 = this;
 
+      //Sort route base on assigned view position
       var orderedRoutes = r.sort(function (a, b) {
         return a.viewPos - b.viewPos;
       });
-      var fetchArray = [];
+      var fetchArray = []; //Grab base HTML for main screens, including about screen
+
       orderedRoutes.forEach(
       /*#__PURE__*/
       function () {
@@ -1651,13 +1511,13 @@ function () {
                     fetchArray.push(fetch("views/".concat(route.htmlName)).then(function (res) {
                       return res.text();
                     }).then(function (data) {
-                      _this4.viewElem.innerHTML += data;
+                      _this2.viewElem.innerHTML += data;
                     }));
                   } else {
                     fetchArray.push(fetch("views/".concat(route.htmlName)).then(function (res) {
                       return res.text();
                     }).then(function (data) {
-                      _this4.supViewElem.innerHTML += data;
+                      _this2.supViewElem.innerHTML += data;
                     }));
                   }
 
@@ -1672,31 +1532,156 @@ function () {
         return function (_x) {
           return _ref.apply(this, arguments);
         };
-      }());
+      }()); //Once base HTMLs are in place, move on to inject content into those structure 
+
       Promise.all(fetchArray).then(function () {
         (0, _generateBG.default)();
 
-        _this4.contentManager.initContent();
+        _this2.contentManager.initContent();
 
-        _this4.hasChanged(r);
+        _this2.routeChanged(r); //Wait for all the content data to be fetched and injected before setting up their functionalities
 
-        Promise.all(_this4.contentManager.fetchArray).then(function () {
-          _this4.initButtons();
 
-          _this4.initScrollCard();
+        Promise.all(_this2.contentManager.fetchArray).then(function () {
+          _this2.setupButtons();
+
+          _this2.setupScrollCards();
         });
       });
-    }
+    } //Setup all the selector & item buttons' actions ------------------------------------------
+
   }, {
-    key: "hasChanged",
-    value: function hasChanged(r) {
+    key: "setupButtons",
+    value: function setupButtons() {
+      var _this3 = this;
+
+      //Grab button elements
+      this.portfolioBtns = document.querySelector(".portfolio-selector-items");
+      this.logsBtns = document.querySelector(".logs-selector-items");
+      this.aboutBtns = document.querySelector(".about-selector-items");
+      this.toggleBtns = document.querySelectorAll(".toggle-btn");
+      this.detailBtns = document.querySelectorAll(".detail-btn"); //Setup buttons on portfolio screen
+
+      Array.from(this.portfolioBtns.children).forEach(function (btn) {
+        btn.addEventListener("click", function (e) {
+          var portfolioCard = document.getElementById("portfolio-card");
+          portfolioCard.scrollTop = 0;
+
+          _this3.contentManager.updatePortfolio(e.target.id);
+
+          _this3.updateScrollCard(portfolioCard);
+
+          Array.from(_this3.portfolioBtns.children).forEach(function (btn) {
+            if (btn.classList.contains("selected")) btn.classList.remove("selected");
+          });
+          e.target.classList.add("selected");
+        });
+      }); //Setup buttons on logs screen
+
+      Array.from(this.logsBtns.children).forEach(function (btn) {
+        btn.addEventListener("click", function (e) {
+          var logsCard = document.getElementById("logs-card");
+          logsCard.scrollTop = 0;
+
+          _this3.contentManager.updateLogs(e.target.id);
+
+          _this3.updateScrollCard(logsCard);
+
+          Array.from(_this3.logsBtns.children).forEach(function (btn) {
+            if (btn.classList.contains("selected")) btn.classList.remove("selected");
+          });
+          e.target.classList.add("selected");
+        });
+      });
+      this.toggleBtns.forEach(function (btn) {
+        btn.addEventListener("click", function (e) {
+          var outputElem = document.getElementById(e.target.id.replace("-btn", ""));
+
+          if (outputElem.classList.contains("hidden")) {
+            outputElem.classList.remove("hidden");
+            e.target.classList.add("toggled");
+          } else {
+            outputElem.classList.add("hidden");
+            e.target.classList.remove("toggled");
+          }
+
+          _this3.updateScrollCard(document.getElementById("logs-card"));
+        });
+      }); //Setup buttons on about screen
+
+      Array.from(this.aboutBtns.children).forEach(function (btn) {
+        btn.addEventListener("click", function (e) {
+          var aboutCard = document.getElementById("about-card");
+          aboutCard.scrollTop = 0;
+
+          _this3.contentManager.updateAbout(e.target.id);
+
+          _this3.updateScrollCard(aboutCard);
+
+          Array.from(_this3.aboutBtns.children).forEach(function (btn) {
+            if (btn.classList.contains("selected")) btn.classList.remove("selected");
+          });
+          e.target.classList.add("selected");
+        });
+      }); //Setup more info, detail & diary action buttons for list elements
+
+      this.detailBtns.forEach(function (btn) {
+        btn.addEventListener("click", function (e) {
+          _this3.showDetail(e.target.id);
+        });
+      }); //Setup close/back button for pop-up elements
+
+      document.querySelectorAll(".back-btn").forEach(function (btn) {
+        btn.addEventListener("click", function (e) {
+          if (e.target.classList.contains("detail-btn")) _this3.hideDetail();else if (e.target.classList.contains("toolkit-btn")) {
+            _this3.hideToolkit();
+
+            _this3.viewElem.classList.remove("disabled");
+          }
+        });
+      }); //Setup toolkit buttons (monitor buttons)
+
+      document.getElementById("ux-screen").addEventListener("click", function (e) {
+        _this3.showToolkit(e.target.id);
+
+        _this3.viewElem.classList.add("disabled");
+      });
+      document.getElementById("web-screen").addEventListener("click", function (e) {
+        _this3.showToolkit(e.target.id);
+
+        _this3.viewElem.classList.add("disabled");
+      });
+      document.getElementById("business-screen").addEventListener("click", function (e) {
+        _this3.showToolkit(e.target.id);
+
+        _this3.viewElem.classList.add("disabled");
+      });
+    } //Setup all scrollable card elements ------------------------------------------
+
+  }, {
+    key: "setupScrollCards",
+    value: function setupScrollCards() {
+      var _this4 = this;
+
+      var cardLists = document.querySelectorAll(".card-list");
+      cardLists.forEach(function (list) {
+        list.addEventListener("scroll", function (e) {
+          _this4.updateScrollCard(e.target);
+        });
+
+        _this4.updateScrollCard(list);
+      });
+    } //Acts as a router, update the content accordingly (Initialisation: Setup and show the default screen) ------------------------------------------
+
+  }, {
+    key: "routeChanged",
+    value: function routeChanged(r) {
       if (window.location.hash.replace("#", "") !== "about") {
         if (window.location.hash.length > 0) {
           for (var i = 0, length = r.length; i < length; i++) {
             var route = r[i];
 
             if (route.isActiveRoute(window.location.hash.replace("#", ""))) {
-              console.log(route.htmlName);
               this.updateView(route);
             }
           }
@@ -1704,18 +1689,42 @@ function () {
           for (var _i = 0, _length = r.length; _i < _length; _i++) {
             var _route = r[_i];
             if (_route.defaultRoute) this.updateView(_route);
-            console.log(_route.htmlName);
           }
         }
       } else {
         this.showAbout();
       }
-    }
+    } //Update scrollable card element ------------------------------------------
+
+  }, {
+    key: "updateScrollCard",
+    value: function updateScrollCard(_ref2) {
+      var scrollHeight = _ref2.scrollHeight,
+          clientHeight = _ref2.clientHeight,
+          scrollTop = _ref2.scrollTop,
+          parentElement = _ref2.parentElement;
+
+      if (scrollHeight > clientHeight) {
+        if (scrollTop === 0) {
+          parentElement.parentElement.classList.add("no-scroll-shadow-top");
+          parentElement.parentElement.classList.remove("no-scroll-shadow-bottom");
+        } else if (scrollTop !== 0 && scrollTop + clientHeight < scrollHeight) {
+          parentElement.parentElement.classList.remove("no-scroll-shadow-top");
+          parentElement.parentElement.classList.remove("no-scroll-shadow-bottom");
+        } else {
+          parentElement.parentElement.classList.remove("no-scroll-shadow-top");
+          parentElement.parentElement.classList.add("no-scroll-shadow-bottom");
+        }
+      } else {
+        parentElement.parentElement.classList.add("no-scroll-shadow-top");
+        parentElement.parentElement.classList.add("no-scroll-shadow-bottom");
+      }
+    } //Update and transition left/right to the according main screen ------------------------------------------
+
   }, {
     key: "updateView",
     value: function updateView(r) {
       if (!document.querySelector(".sup-view-active")) {
-        console.log("In for others");
         var viewClasses = this.viewElem.classList;
 
         if (viewClasses[1] !== "view-".concat(r.viewPos)) {
@@ -1724,14 +1733,14 @@ function () {
 
         if (!viewClasses.contains("animate")) viewClasses.add("animate");
       } else {
-        console.log("Wrong");
         document.querySelector(".sup-view-active").classList.remove("sup-view-active");
         this.supViewElem.classList.remove("roll-in");
         this.viewElem.classList.remove("disabled");
       }
 
       (0, _updateNav.default)(r.htmlName);
-    }
+    } //Roll in the about screen ------------------------------------------
+
   }, {
     key: "showAbout",
     value: function showAbout() {
@@ -1744,28 +1753,31 @@ function () {
       }
 
       (0, _updateNav.default)("about.html");
-      console.log("showAbout");
-    }
+    } //Pop-up the detail screen ------------------------------------------
+
   }, {
     key: "showDetail",
     value: function showDetail(id) {
       this.contentManager.updateDetail(id);
       this.detailViewElem.classList.add("pop-up");
       this.navElem.classList.add("hidden");
-    }
-  }, {
-    key: "hideDetail",
-    value: function hideDetail() {
-      this.detailViewElem.classList.remove("pop-up");
-      this.navElem.classList.remove("hidden");
-    }
+    } //Pop-up the toolkit screen ------------------------------------------
+
   }, {
     key: "showToolkit",
     value: function showToolkit(id) {
       this.contentManager.updateToolkit(id);
       this.toolkitViewElem.classList.add("pop-up");
       this.navElem.classList.add("hidden");
-    }
+    } //Close the detail screen ------------------------------------------
+
+  }, {
+    key: "hideDetail",
+    value: function hideDetail() {
+      this.detailViewElem.classList.remove("pop-up");
+      this.navElem.classList.remove("hidden");
+    } //Close the toolkit screen ------------------------------------------
+
   }, {
     key: "hideToolkit",
     value: function hideToolkit() {
@@ -1773,10 +1785,10 @@ function () {
       this.navElem.classList.remove("hidden");
     }
   }]);
-  return Router;
+  return AppController;
 }();
 
-exports.default = Router;
+exports.default = AppController;
 },{"@babel/runtime/regenerator":"../node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"../node_modules/@babel/runtime/helpers/asyncToGenerator.js","@babel/runtime/helpers/classCallCheck":"../node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"../node_modules/@babel/runtime/helpers/createClass.js","./generateBG":"js/generateBG.js","./updateNav":"js/updateNav.js","./ContentManager":"js/ContentManager.js"}],"js/route.js":[function(require,module,exports) {
 "use strict";
 
@@ -1785,18 +1797,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Route =
 /*#__PURE__*/
 function () {
   function Route(name, htmlName, viewPos, defaultRoute) {
-    _classCallCheck(this, Route);
-
+    (0, _classCallCheck2.default)(this, Route);
     this.name = name;
     this.viewPos = viewPos;
     this.htmlName = htmlName;
@@ -1804,31 +1815,36 @@ function () {
   } //Self checking for activeness
 
 
-  _createClass(Route, [{
+  (0, _createClass2.default)(Route, [{
     key: "isActiveRoute",
     value: function isActiveRoute(hashedPath) {
       return hashedPath.replace("#", "") === this.name;
     }
   }]);
-
   return Route;
 }();
 
 exports.default = Route;
-},{}],"index.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/classCallCheck":"../node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"../node_modules/@babel/runtime/helpers/createClass.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 require("./scss/style.scss");
 
-var _router = _interopRequireDefault(require("./js/router"));
+var _AppController = _interopRequireDefault(require("./js/AppController"));
 
 var _route = _interopRequireDefault(require("./js/route"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var router = new _router.default([new _route.default("desk", "desk.html", 2, true), new _route.default("about", "about.html", -1), new _route.default("portfolio", "portfolio.html", 3), new _route.default("logs", "logs.html", 1)]);
-router.init();
-},{"./scss/style.scss":"scss/style.scss","./js/router":"js/router.js","./js/route":"js/route.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+//Import key modules and other resources ------------------------------------------
+//Instantiate & run app controller ------------------------------------------
+var appController = new _AppController.default([//Pass in main screens as routes
+new _route.default("desk", "desk.html", 2, true), new _route.default("about", "about.html", -1), new _route.default("portfolio", "portfolio.html", 3), new _route.default("logs", "logs.html", 1)]); //Run the app initialisation ------------------------------------------
+
+appController.init();
+window.scrollTo(0, 1);
+window.scrollTo(0, document.querySelector(".view").scrollHeight);
+},{"./scss/style.scss":"scss/style.scss","./js/AppController":"js/AppController.js","./js/route":"js/route.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -1856,7 +1872,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53366" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50274" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

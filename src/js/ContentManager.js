@@ -7,10 +7,9 @@ export default class ContentManager{
 
     }
 
-     //Grab all the content data from JSON files & render initial content
+     //Grab all the content data from JSON files & render all base content
     initContent(){
         
-        //let fetchArray = [];
         //Fetch portfolio content
         this.fetchArray.push(fetch("content/portfolioContent.json")
             .then(res => res.json())
@@ -81,7 +80,8 @@ export default class ContentManager{
                 throw err;
             }));
 
-/* -------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------------- */
+
         Promise.all(this.fetchArray)
         .then(() => { 
             
@@ -92,8 +92,9 @@ export default class ContentManager{
             this.detailElem = document.querySelector(".detail-card");
             this.toolkitElem = document.querySelector(".toolkit-card");
 
-            //Render portfolio content---------------------------------
+            //Render portfolio content ---------------------------------
             let portfolioOutput = "<div>";
+
             this.contentData[0].forEach(p=>
                 portfolioOutput +=
                     `<div class="card-item ${p.field}">
@@ -128,11 +129,12 @@ export default class ContentManager{
                         </div>
                     </div>`
             );
+
             this.portfolioElem.innerHTML = portfolioOutput + "</div>";
 
-            //Render logs content------------------------------  
+            //Render logs content ------------------------------  
+            let advOutput = `<div id="adventure-logs">`;
 
-            let advOutput = `<div id="adventure-logs">`;    
             this.contentData[1].forEach(a =>
                 advOutput +=
                     `<div class="card-item">
@@ -148,59 +150,68 @@ export default class ContentManager{
                         </div>
                     </div>`
             );
+
             advOutput += "</div>"; 
 
             const upgradeData = this.contentData[2];
-
             const inProgressList = upgradeData.filter(item => (item.status === "progress")).sort((a,b) => b.id - a.id);
             const wishList = upgradeData.filter(item => (item.status === "que")).sort((a,b) => b.id - a.id);
             const completedList = upgradeData.filter(item => (item.status === "completed")).sort((a,b) => b.id - a.id);
 
             let upgradeOutput =
-            `<div id="upgrade-logs" class="hidden">
-                <div class="cta-panel cta-warning upgrade-panel">
-                    <h2 class="p-2">In Progress</h2>
-                    <button id="progress-btn" class="btn btn-l btn-light mx-1 toggle-btn toggled"><i class="fas fa-chevron-down"></i></button>
-                </div>
-                <div id="progress" class="upgrade-items">`;
+                `<div id="upgrade-logs" class="hidden">
+                    <div class="cta-panel cta-warning upgrade-panel">
+                        <h2 class="p-2">In Progress</h2>
+                        <button id="progress-btn" class="btn btn-l btn-light mx-1 toggle-btn toggled"><i class="fas fa-chevron-down"></i></button>
+                    </div>
+                    <div id="progress" class="upgrade-items">`;
+
             inProgressList.forEach(item => {
                 upgradeOutput +=
                     `<div class="p-2">
                         <h3>${item.title}</h3>
                     </div>`;
             });
+
             upgradeOutput +=
-            `</div>
-            <div class="cta-panel cta-danger upgrade-panel">
-                <h2 class="p-2">Knowledge Wishlist</h2>
-                <button id="wish-btn" class="btn btn-l btn-light mx-1 toggle-btn"><i class="fas fa-chevron-down"></i></button>
-            </div>
-            <div id="wish" class="upgrade-items hidden">`;
+                `</div>
+                <div class="cta-panel cta-danger upgrade-panel">
+                    <h2 class="p-2">Knowledge Wishlist</h2>
+                    <button id="wish-btn" class="btn btn-l btn-light mx-1 toggle-btn"><i class="fas fa-chevron-down"></i></button>
+                </div>
+                <div id="wish" class="upgrade-items hidden">`;
+
             wishList.forEach(item => {
+
                 upgradeOutput +=
                 `<div class="p-2">
                     <h3>${item.title}</h3>
                 </div>`;
+
             });
             upgradeOutput +=
-            `</div>
-            <div class="cta-panel cta-success upgrade-panel">
-                <h2 class="p-2">Recently Completed</h2>
-                <button id="completed-btn" class="btn btn-l btn-light mx-1 toggle-btn"><i class="fas fa-chevron-down"></i></button>
-            </div>
-            <div id="completed" class="upgrade-items hidden">`;
+                `</div>
+                <div class="cta-panel cta-success upgrade-panel">
+                    <h2 class="p-2">Recently Completed</h2>
+                    <button id="completed-btn" class="btn btn-l btn-light mx-1 toggle-btn"><i class="fas fa-chevron-down"></i></button>
+                </div>
+                <div id="completed" class="upgrade-items hidden">`;
+
             completedList.forEach(item => {
+
                 upgradeOutput +=
                     `<div class="p-2">
                         <h3>${item.title}</h3>
                     </div>`
-            });
-            upgradeOutput += "</div></div>"; 
 
+            });
+
+            upgradeOutput += "</div></div>"; 
             this.logsElem.innerHTML = advOutput + upgradeOutput;
             
-            //Render about content--------------------------------
+            //Render about content --------------------------------
             let expOutput = `<div id="experience-about">`;
+
             this.contentData[3].forEach(exp =>
                 expOutput +=
                     `<div class="card-item">
@@ -215,38 +226,38 @@ export default class ContentManager{
                         </div>
                     </div>`
             );
+
             expOutput += "</div>";
-            
             const edu = this.contentData[4];
+
             let eduOutput = 
-                    `<div id="education-about" class="education-card hidden">
-                        <div class="milestone"></div>
-                        <div class="card-item">
-                            <h2>${edu[0].deg}</h2>
-                            <h4 class="text-warning mt-1">${edu[0].uni}</h4>
-                            <h3 class="text-warning">${edu[0].year}</h3>
-                            <button id="education-1" class="btn btn-sm detail-btn btn-dark my-1 px-2">Detail</button>
-                            <hr class="bg-warning text-warning my-1">
-                        </div>
-                        <div class="milestone"></div>
-                        <div class="card-item">
-                            <h2>${edu[1].deg}</h2>
-                            <h4 class="text-warning mt-1">${edu[1].uni}</h4>
-                            <h3 class="text-warning">${edu[1].year}</h3>
-                            <button id="education-2" class="btn btn-sm detail-btn btn-dark my-1">Detail</button>
-                            <hr class="bg-warning text-warning my-1">
-                        </div>
-                        <div class="milestone"></div>
-                        <div class="card-item">
-                            <h2>${edu[2].deg}</h2>
-                            <h4 class="text-warning mt-1">${edu[2].uni}</h4>
-                            <h3 class="text-warning">${edu[2].year}</h3>
-                            <button id="education-3" class="btn btn-sm detail-btn btn-dark my-1">Detail</button>
-                        </div>
-                    </div>`;
+                `<div id="education-about" class="education-card hidden">
+                    <div class="milestone"></div>
+                    <div class="card-item">
+                        <h2>${edu[0].deg}</h2>
+                        <h4 class="text-warning mt-1">${edu[0].uni}</h4>
+                        <h3 class="text-warning">${edu[0].year}</h3>
+                        <button id="education-1" class="btn btn-sm detail-btn btn-dark my-1 px-2">Detail</button>
+                        <hr class="bg-warning text-warning my-1">
+                    </div>
+                    <div class="milestone"></div>
+                    <div class="card-item">
+                        <h2>${edu[1].deg}</h2>
+                        <h4 class="text-warning mt-1">${edu[1].uni}</h4>
+                        <h3 class="text-warning">${edu[1].year}</h3>
+                        <button id="education-2" class="btn btn-sm detail-btn btn-dark my-1">Detail</button>
+                        <hr class="bg-warning text-warning my-1">
+                    </div>
+                    <div class="milestone"></div>
+                    <div class="card-item">
+                        <h2>${edu[2].deg}</h2>
+                        <h4 class="text-warning mt-1">${edu[2].uni}</h4>
+                        <h3 class="text-warning">${edu[2].year}</h3>
+                        <button id="education-3" class="btn btn-sm detail-btn btn-dark my-1">Detail</button>
+                    </div>
+                </div>`;
 
             const con = this.contentData[5];
-            console.log(con);
             let contactOutput = 
                 `<div id="contact-about" class="contact-card hidden">
                     <h1 class="text-center">Pleasure to meet you!</h1>
@@ -272,13 +283,16 @@ export default class ContentManager{
                 </div>`;
             
             this.aboutElem.innerHTML = expOutput + eduOutput + contactOutput;
+
         });
                 
     }
 
+    //Update portfolio card content based on input of field type filter
     updatePortfolio(inField){
 
         switch(inField){
+
             case "all":
                 document.querySelectorAll(".card-item.UX").forEach(item => {
                     item.classList.remove("hidden");
@@ -290,6 +304,7 @@ export default class ContentManager{
                     item.classList.remove("hidden");
                 });
                 break;
+
             case "UX":
                 document.querySelectorAll(".card-item.UX").forEach(item => {
                     item.classList.remove("hidden");
@@ -301,6 +316,7 @@ export default class ContentManager{
                     item.classList.add("hidden");
                 });
                 break;
+
             case "Design":
                 document.querySelectorAll(".card-item.UX").forEach(item => {
                     item.classList.add("hidden");
@@ -312,6 +328,7 @@ export default class ContentManager{
                     item.classList.remove("hidden");
                 });
                 break;
+
             case "Web":
                 document.querySelectorAll(".card-item.UX").forEach(item => {
                     item.classList.add("hidden");
@@ -323,40 +340,41 @@ export default class ContentManager{
                     item.classList.add("hidden");
                 });
                 break;
+
             default:
                 break;
+                
         }
-
-        
-
 
     }
 
+    //Switch the logs content between the adventure and upgrade tabs
     updateLogs(tab){
 
-        let logsOutput = "";
+        if(tab === "Adventure"){
 
-        if(tab === "Adventure")
-        {
             document.getElementById("adventure-logs").classList.remove("hidden");
             document.getElementById("upgrade-logs").classList.add("hidden");
+
         }
         else if(tab === "Upgrade"){
 
             document.getElementById("adventure-logs").classList.add("hidden");
             document.getElementById("upgrade-logs").classList.remove("hidden");
+
         }
+
     }
 
+    //Switch the about card content between the experience, education, & contact tabs
     updateAbout(tab){
 
-        let aboutOutput = "";
+        if(tab === "Experience"){
 
-        if(tab === "Experience")
-        {
             document.getElementById("experience-about").classList.remove("hidden");
             document.getElementById("education-about").classList.add("hidden");
             document.getElementById("contact-about").classList.add("hidden");
+
         }
         else if(tab === "Education"){
             
@@ -370,18 +388,25 @@ export default class ContentManager{
             document.getElementById("experience-about").classList.add("hidden");
             document.getElementById("education-about").classList.add("hidden");
             document.getElementById("contact-about").classList.remove("hidden");
+
         }
+
     }
 
+    //Update detail pop-up card to match the content of the select element
     updateDetail(id){
 
+        //Render detail card for the selected portfolio item
         if(id.includes("portfolio")){
 
             let d;
             let detailContent = "";
+
             this.contentData[0].forEach(p => {
+
                 if(p.id === id.replace("portfolio-",""))
                     d = p;
+
             })
 
             detailContent +=
@@ -403,19 +428,25 @@ export default class ContentManager{
                 <div class="detail-gallery">
                     <div class="media-container">`
             
-                let tempCounter = 1;
-                d.content.media.forEach(m => {
-                    if(m.type === "image"){
-                        detailContent += 
-                        `<div id="media-${tempCounter}" class="media-image" style="background-image: url(./images/portfolio/${d.id}/${m.link})"></div>`;
-                    }
-                    else if(m.type === "video"){
-                        detailContent +=
-                        `<div id="media-${tempCounter}" class="media-video"><iframe src="${m.link}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`
-                    }
+            let tempCounter = 1;
 
-                    tempCounter++;
-                });
+            d.content.media.forEach(m => {
+
+                if(m.type === "image"){
+
+                    detailContent += 
+                        `<div id="media-${tempCounter}" class="media-image" style="background-image: url(./images/portfolio/${d.id}/${m.link})"></div>`;
+                    
+                }
+                else if(m.type === "video"){
+
+                    detailContent +=
+                        `<div id="media-${tempCounter}" class="media-video"><iframe src="${m.link}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
+
+                }
+
+                tempCounter++;
+            });
 
             detailContent +=
                     `</div>       
@@ -432,12 +463,13 @@ export default class ContentManager{
                 </div>
                 <div class="list-content">`;
 
-                d.content.challenges.forEach(c => {
-                    detailContent +=
-                    `<h4>${c.challenge}</h4>`
-                });
+            d.content.challenges.forEach(c => {
 
-                detailContent +=
+                detailContent += `<h4>${c.challenge}</h4>`;
+
+            });
+
+            detailContent +=
                 `</div>
                 <div class="cta-panel tools-panel">
                     <h3><i class="fas fa-tools"></i></h3>
@@ -445,55 +477,62 @@ export default class ContentManager{
                 </div>
                 <div class="list-content">`;
 
-                d.content.tools.forEach(t => {
-                    detailContent +=
-                    `<h4>${t.tool}</h4>`
-                });
+            d.content.tools.forEach(t => {
 
-                detailContent +=
+                detailContent += `<h4>${t.tool}</h4>`;
+
+            });
+
+            detailContent +=
                 `</div>
                 <div class="height-filler"></div>`;
 
-                this.detailElem.innerHTML = detailContent;
-
-                document.querySelector(".media-container>div:first-child").classList.add("active");
+            this.detailElem.innerHTML = detailContent;
+            document.querySelector(".media-container>div:first-child").classList.add("active");
             
+            //Setup gallery buttons
+            const mediaBtns = Array.from(document.querySelector(".media-control").children);
 
-                const mediaBtns = Array.from(document.querySelector(".media-control").children);
+            mediaBtns[0].addEventListener("click",e => {
 
-                mediaBtns[0].addEventListener("click",e => {
-                    const current = document.querySelector(".media-container .active");
-                    if(current.previousElementSibling){
-                        current.classList.remove("active");
-                        current.previousElementSibling.classList.add("active");
-                    }
-                    else{
-                        current.classList.remove("active");
-                        current.parentElement.lastChild.classList.add("active");
-                    }
-                    document.getElementById("gallery-counter").innerText = `${document.querySelector(".media-container .active").id.replace("media-","")} / ${d.content.media.length}`;
-                })
+                const current = document.querySelector(".media-container .active");
+                current.classList.remove("active");
 
-                mediaBtns[2].addEventListener("click",e => {
-                    const current = document.querySelector(".media-container .active");
-                    if(current.nextElementSibling){
-                        current.classList.remove("active");
-                        current.nextElementSibling.classList.add("active");
-                    }
-                    else{
-                        current.classList.remove("active");
-                        current.parentElement.firstChild.classList.add("active");
-                    }
-                    document.getElementById("gallery-counter").innerText = `${document.querySelector(".media-container .active").id.replace("media-","")} / ${d.content.media.length}`;
-                })
+                if(current.previousElementSibling)
+                    current.previousElementSibling.classList.add("active");
+                else
+                    current.parentElement.lastChild.classList.add("active");
+
+                document.getElementById("gallery-counter").innerText = `${document.querySelector(".media-container .active").id.replace("media-","")} / ${d.content.media.length}`;
+
+            })
+
+            mediaBtns[2].addEventListener("click",e => {
+
+                const current = document.querySelector(".media-container .active");
+                current.classList.remove("active");
+
+                if(current.nextElementSibling)            
+                    current.nextElementSibling.classList.add("active");
+                else
+                    current.parentElement.firstChild.classList.add("active");
+
+                document.getElementById("gallery-counter").innerText = `${document.querySelector(".media-container .active").id.replace("media-","")} / ${d.content.media.length}`;
+
+            })
                 
         }
+        //Render detail card for the selected adventure item
         else if(id.includes("adventure")){
+
             let d;
             let detailContent = "";
+
             this.contentData[1].forEach(adv => {
+
                 if(adv.id === id.replace("adventure-",""))
                     d = adv;
+
             })
 
             detailContent +=
@@ -504,19 +543,26 @@ export default class ContentManager{
                 <div class="detail-gallery">
                     <div class="media-container">`
             
-                let tempCounter = 1;
-                d.diary.media.forEach(m => {
-                    if(m.type === "image"){
-                        detailContent += 
-                        `<div id="media-${tempCounter}" class="media-image" style="background-image: url(./images/${m.link})"></div>`;
-                    }
-                    else if(m.type === "video"){
-                        detailContent +=
-                        `<div id="media-${tempCounter}" class="media-video"><iframe src="${m.link}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`
-                    }
+            let tempCounter = 1;
 
-                    tempCounter++;
-                });
+            d.diary.media.forEach(m => {
+
+                if(m.type === "image"){
+
+                    detailContent += 
+                        `<div id="media-${tempCounter}" class="media-image" style="background-image: url(./images/${m.link})"></div>`;
+
+                }
+                else if(m.type === "video"){
+
+                    detailContent +=
+                        `<div id="media-${tempCounter}" class="media-video"><iframe src="${m.link}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`
+
+                }
+
+                tempCounter++;
+
+            });
 
             detailContent +=
                     `</div>
@@ -529,46 +575,52 @@ export default class ContentManager{
                 <h4 class="detail-content p-3">${d.diary.text}</h4><br> 
                 <div class="height-filler"></div>`;
 
-                this.detailElem.innerHTML = detailContent;
+            this.detailElem.innerHTML = detailContent;
+            document.querySelector(".media-container>div:first-child").classList.add("active");
 
-                document.querySelector(".media-container>div:first-child").classList.add("active");
-            
+            //Setup gallery buttons
+            const mediaBtns = Array.from(document.querySelector(".media-control").children);
 
-                const mediaBtns = Array.from(document.querySelector(".media-control").children);
+            mediaBtns[0].addEventListener("click",e => {
 
-                mediaBtns[0].addEventListener("click",e => {
-                    const current = document.querySelector(".media-container .active");
-                    if(current.previousElementSibling){
-                        current.classList.remove("active");
-                        current.previousElementSibling.classList.add("active");
-                    }
-                    else{
-                        current.classList.remove("active");
-                        current.parentElement.lastChild.classList.add("active");
-                    }
-                    document.getElementById("gallery-counter").innerText = `${document.querySelector(".media-container .active").id.replace("media-","")} / ${d.diary.media.length}`;
-                })
+                const current = document.querySelector(".media-container .active");
+                current.classList.remove("active");
 
-                mediaBtns[1].addEventListener("click",e => {
-                    const current = document.querySelector(".media-container .active");
-                    if(current.nextElementSibling){
-                        current.classList.remove("active");
-                        current.nextElementSibling.classList.add("active");
-                    }
-                    else{
-                        current.classList.remove("active");
-                        current.parentElement.firstChild.classList.add("active");
-                    }
-                    document.getElementById("gallery-counter").innerText = `${document.querySelector(".media-container .active").id.replace("media-","")} / ${d.diary.media.length}`;
-                })
+                if(current.previousElementSibling)
+                    current.previousElementSibling.classList.add("active");
+                else
+                    current.parentElement.lastChild.classList.add("active");
+
+                document.getElementById("gallery-counter").innerText = `${document.querySelector(".media-container .active").id.replace("media-","")} / ${d.diary.media.length}`;
+
+            })
+
+            mediaBtns[2].addEventListener("click",e => {
+
+                const current = document.querySelector(".media-container .active");
+                current.classList.remove("active");
+
+                if(current.nextElementSibling)            
+                    current.nextElementSibling.classList.add("active");
+                else
+                    current.parentElement.firstChild.classList.add("active");
+
+                document.getElementById("gallery-counter").innerText = `${document.querySelector(".media-container .active").id.replace("media-","")} / ${d.diary.media.length}`;
+
+            })
             
         }
+        //Render detail card for the selected experience item
         else if(id.includes("experience")){
+
             let d;
             let detailContent = "";
+
             this.contentData[3].forEach(exp => {
+
                 if(exp.id === id.replace("experience-",""))
                     d = exp;
+
             })
 
             detailContent +=
@@ -585,14 +637,20 @@ export default class ContentManager{
                 <h3 id="key-learning">${d.gain}</h3>
                 <div class="height-filler"></div>`;
 
-                this.detailElem.innerHTML = detailContent;
+            this.detailElem.innerHTML = detailContent;
+
         }
+        //Render detail card for the selected education item
         else if(id.includes("education")){
+
             let d;
             let detailContent = "";
+
             this.contentData[4].forEach(edu => {
+
                 if(edu.id === id.replace("education-",""))
                     d = edu;
+
             })
 
             detailContent +=
@@ -609,30 +667,26 @@ export default class ContentManager{
                 <h4 id="dissertation">${d.disser}</h4>
                 <div class="height-filler"></div>`;
 
-                this.detailElem.innerHTML = detailContent;
+            this.detailElem.innerHTML = detailContent;
+
         }
     }
 
+    //Update toolkit pop-up card to match the content of the select toolkit
     updateToolkit(id){
 
         let d;
         let toolkitContent = "";
 
-        if(id === "ux-screen"){
-            
+        if(id === "ux-screen")    
             d = this.contentData[6][0];
-
-                
-        }
-        else if(id === "web-screen"){
-
-        }
-        else if(id === "business-screen"){
-
-        }
-
+        else if(id === "web-screen")
+            d = this.contentData[6][0];
+        else if(id === "business-screen")
+            d = this.contentData[6][0];
+            
         toolkitContent +=
-                ``;
+            ``;
                 
         this.toolkitElem.innerHTML = toolkitContent;
 
