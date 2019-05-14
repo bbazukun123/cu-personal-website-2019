@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "gulp syncViews && gulp syncContent && gulp syncImages && concurrently --kill-others \"parcel src/index.html\" \"gulp\"",
-    "build": "parcel build src/index.html && gulp buildViews && gulp buildContent && gulp syncImages",
+    "start": "gulp syncViews && gulp syncContent && gulp syncImages && concurrently --kill-others \"parcel src/index.html --public-url .\" \"gulp\"",
+    "build": "parcel build src/index.html --public-url . && gulp buildViews && gulp buildContent && gulp syncImages",
     "deploy":"gh-pages -d dist"
   },
   "repository": {
