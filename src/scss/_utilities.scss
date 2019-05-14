@@ -74,6 +74,10 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
         color: $dark-color;
     }
 
+    &-dark-muted{
+        color: transparentize($dark-color, 0.3);
+    }
+
     &-success{
         color: $success-color;
     }
@@ -113,6 +117,18 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
     &-lowercase{
         text-transform: lowercase;
     }
+
+    &-paragraph{
+        text-align: justify;
+        text-justify: auto;
+        text-indent: 10%;
+        //text-transform: none;
+        font-size: 1.1rem;
+        //letter-spacing: 0.15rem
+        //ext-align-last: center;
+        //text-justify: inter-word;
+    }
+
 }
 
 //Colour utilities
@@ -640,7 +656,7 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
                     justify-items: center;
                     width: 100%;
                     opacity: 1;
-                    transition: opacity 0.25s ease-out;
+                    transition: opacity 0.15s ease-out;
 
                     div{
                         height: auto;
@@ -993,6 +1009,7 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
             display: block;
             width: 100%;
             @include set-background($primary-color);
+            //color: transparentize($dark-color, 0.2);
         }
 
         h4:nth-child(even){
@@ -1001,12 +1018,24 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
             display: block;
             width: 100%;
             @include set-background(darken($primary-color, 15%));
+            //color: transparentize($dark-color, 0.2);
         }
+
+        &.list-danger h4:nth-child(odd){
+            background-color: lighten($danger-color, 55%);
+            color: transparentize($dark-color, 0.2);
+        }
+
+        &.list-danger h4:nth-child(even){
+            background-color: lighten($danger-color, 45%);
+            color: transparentize($dark-color, 0.2);
+        }
+
     }
 
     .detail-gallery{
         margin: auto;
-        margin-bottom: 0.8rem;
+        margin-bottom: 1.5rem;
         //background-color: lighten($success-color, 50%);
         width: 100%;
         padding-bottom: 56.25%;

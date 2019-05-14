@@ -418,6 +418,9 @@
 .text-dark {
   color: #000F33;
 }
+.text-dark-muted {
+  color: rgba(0, 15, 51, 0.7);
+}
 .text-success {
   color: #298D94;
 }
@@ -447,6 +450,12 @@
 }
 .text-lowercase {
   text-transform: lowercase;
+}
+.text-paragraph {
+  text-align: justify;
+  text-justify: auto;
+  text-indent: 10%;
+  font-size: 1.1rem;
 }
 
 .bg-primary {
@@ -910,7 +919,7 @@
   justify-items: center;
   width: 100%;
   opacity: 1;
-  transition: opacity 0.25s ease-out;
+  transition: opacity 0.15s ease-out;
 }
 .container .main-content .content-card .card-list > div div {
   height: auto;
@@ -1198,9 +1207,17 @@
   background-color: #9bb6b8;
   color: #000F33;
 }
+.detail-card .list-content.list-danger h4:nth-child(odd) {
+  background-color: #f5eaea;
+  color: rgba(0, 15, 51, 0.8);
+}
+.detail-card .list-content.list-danger h4:nth-child(even) {
+  background-color: #e5c7c7;
+  color: rgba(0, 15, 51, 0.8);
+}
 .detail-card .detail-gallery {
   margin: auto;
-  margin-bottom: 0.8rem;
+  margin-bottom: 1.5rem;
   width: 100%;
   padding-bottom: 56.25%;
   position: relative;

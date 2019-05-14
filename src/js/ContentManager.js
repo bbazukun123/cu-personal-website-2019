@@ -570,17 +570,17 @@ export default class ContentManager{
             detailContent +=
                     `</div>       
                 </div>
-                <div class="media-control mb-4">
+                <div class="media-control mb-8">
                     <button id="media-left-btn" class="btn btn-l btn-dark mx-1"><i class="fas fa-chevron-left"></i></button>
                     <h3 id="gallery-counter">1 / ${d.content.media.length}</h3>
                     <button id="media-right-btn" class="btn btn-l btn-dark mx-1"><i class="fas fa-chevron-right"></i></button>
                 </div>
-                <h4 class="detail-content px-5 mb-2">${d.content.detail}</h4><br> 
+                <h4 class="detail-content px-5 mb-5 text-paragraph text-dark-muted">${d.content.detail}</h4><br> 
                 <div class="cta-panel cta-danger challenges-panel">
                     <h3><i class="fas fa-mountain"></i></h3>
                     <h3 class="p-2">Challenges</h3>
                 </div>
-                <div class="list-content">`;
+                <div class="list-content list-danger">`;
 
             d.content.challenges.forEach(c => {
 
@@ -655,10 +655,10 @@ export default class ContentManager{
             })
 
             detailContent +=
-                `<h1 class="mt-3 px-4">${d.title}</h1>
-                <h3 class="m-2 px-4">${d.desc}</h3>
-                <hr class="mt-1 mb-1">
-                <h3 class="mb-4 text-danger">${d.month}</h3> 
+                `<h1 class="mt-3 px-5">${d.title}</h1>
+                <h3 class="m-2 px-5 text-success">${d.desc}</h3>
+                <hr class="mt-2 mb-2">
+                <h3 class="mb-5 text-danger">${d.month}</h3> 
                 <div class="detail-gallery">
                     <div class="media-container">`
             
@@ -686,12 +686,12 @@ export default class ContentManager{
             detailContent +=
                     `</div>
                 </div>
-                <div class="media-control mb-4">
+                <div class="media-control mb-8">
                     <button id="media-left-btn" class="btn btn-l btn-dark mx-1"><i class="fas fa-chevron-left"></i></button>
                     <h3 id="gallery-counter">1 / ${d.diary.media.length}</h3>
                     <button id="media-right-btn" class="btn btn-l btn-dark mx-1"><i class="fas fa-chevron-right"></i></button>
                 </div>
-                <h4 class="detail-content p-3">${d.diary.text}</h4><br> 
+                <h4 class="detail-content px-5 mb-5 text-paragraph text-dark-muted">${d.diary.text}</h4><br> 
                 <div class="height-filler"></div>`;
 
             this.detailElem.innerHTML = detailContent;
@@ -744,16 +744,16 @@ export default class ContentManager{
 
             detailContent +=
                 `<h1 class="mt-3 px-4">${d.title}</h1>
-                <h3 class="m-3 px-4">${d.role}</h3>
+                <h3 class="m-3 px-4 text-success">${d.role}</h3>
                 <hr class="mt-1 mb-1">
                 <h3 class="m-2">${d.months.replace("-"," - ")}</h3>
                 <h3 class="m-1 text-danger"><i class="fas fa-map-marker-alt"></i>&nbsp;${d.location}</h3>
-                <h4 class="detail-content p-3 mt-2">${d.detail}</h4><br> 
+                <h4 class="detail-content px-5 mt-8 mb-4 text-paragraph text-dark-muted">${d.detail}</h4><br> 
                 <div class="cta-panel key-learning-panel">
                     <h3><i class="fas fa-key"></i></h3>
                     <h3 class="p-2">Key Learning</h3>
                 </div>
-                <h3 id="key-learning">${d.gain}</h3>
+                <h3 id="key-learning" class="text-dark-muted">${d.gain}</h3>
                 <div class="height-filler"></div>`;
 
             this.detailElem.innerHTML = detailContent;
@@ -774,16 +774,16 @@ export default class ContentManager{
 
             detailContent +=
                 `<h1 class="mt-3 px-4">${d.deg}</h1>
-                <h3 class="m-3 px-4">${d.uni}</h3>
+                <h3 class="m-3 px-4 text-success">${d.uni}</h3>
                 <hr class="mt-1 mb-1">
                 <h3 class="m-2">${d.year}</h3>
                 <h3 class="m-2 text-warning"><i class="fas fa-award"></i>&nbsp;${d.honour}</h3>
-                <h4 class="detail-content p-3 mt-2"><span class="text-danger">Key Modules:&nbsp;</span>${d.modules}</h4><br> 
+                <h4 class="detail-content px-5 mt-8 mb-4 text-paragraph text-dark-muted"><span class="text-danger">Key Modules:&nbsp;</span>${d.modules}</h4><br> 
                 <div class="cta-panel dissertation-panel">
                     <h3><i class="fas fa-book"></i></h3>
                     <h3 class="p-2">Dissertation</h3>
                 </div>
-                <h4 id="dissertation">${d.disser}</h4>
+                <h4 id="dissertation" class="text-dark-muted">${d.disser}</h4>
                 <div class="height-filler"></div>`;
 
             this.detailElem.innerHTML = detailContent;

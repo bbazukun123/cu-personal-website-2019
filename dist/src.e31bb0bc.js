@@ -1373,7 +1373,7 @@ function () {
 
           tempCounter++;
         });
-        detailContent += "</div>       \n                </div>\n                <div class=\"media-control mb-4\">\n                    <button id=\"media-left-btn\" class=\"btn btn-l btn-dark mx-1\"><i class=\"fas fa-chevron-left\"></i></button>\n                    <h3 id=\"gallery-counter\">1 / ".concat(d.content.media.length, "</h3>\n                    <button id=\"media-right-btn\" class=\"btn btn-l btn-dark mx-1\"><i class=\"fas fa-chevron-right\"></i></button>\n                </div>\n                <h4 class=\"detail-content px-5 mb-2\">").concat(d.content.detail, "</h4><br> \n                <div class=\"cta-panel cta-danger challenges-panel\">\n                    <h3><i class=\"fas fa-mountain\"></i></h3>\n                    <h3 class=\"p-2\">Challenges</h3>\n                </div>\n                <div class=\"list-content\">");
+        detailContent += "</div>       \n                </div>\n                <div class=\"media-control mb-8\">\n                    <button id=\"media-left-btn\" class=\"btn btn-l btn-dark mx-1\"><i class=\"fas fa-chevron-left\"></i></button>\n                    <h3 id=\"gallery-counter\">1 / ".concat(d.content.media.length, "</h3>\n                    <button id=\"media-right-btn\" class=\"btn btn-l btn-dark mx-1\"><i class=\"fas fa-chevron-right\"></i></button>\n                </div>\n                <h4 class=\"detail-content px-5 mb-5 text-paragraph text-dark-muted\">").concat(d.content.detail, "</h4><br> \n                <div class=\"cta-panel cta-danger challenges-panel\">\n                    <h3><i class=\"fas fa-mountain\"></i></h3>\n                    <h3 class=\"p-2\">Challenges</h3>\n                </div>\n                <div class=\"list-content list-danger\">");
         d.content.challenges.forEach(function (c) {
           detailContent += "<h4>".concat(c.challenge, "</h4>");
         });
@@ -1406,7 +1406,7 @@ function () {
           this.contentData[1].forEach(function (adv) {
             if (adv.id === id.replace("adventure-", "")) _d = adv;
           });
-          _detailContent += "<h1 class=\"mt-3 px-4\">".concat(_d.title, "</h1>\n                <h3 class=\"m-2 px-4\">").concat(_d.desc, "</h3>\n                <hr class=\"mt-1 mb-1\">\n                <h3 class=\"mb-4 text-danger\">").concat(_d.month, "</h3> \n                <div class=\"detail-gallery\">\n                    <div class=\"media-container\">");
+          _detailContent += "<h1 class=\"mt-3 px-5\">".concat(_d.title, "</h1>\n                <h3 class=\"m-2 px-5 text-success\">").concat(_d.desc, "</h3>\n                <hr class=\"mt-2 mb-2\">\n                <h3 class=\"mb-5 text-danger\">").concat(_d.month, "</h3> \n                <div class=\"detail-gallery\">\n                    <div class=\"media-container\">");
           var _tempCounter = 1;
 
           _d.diary.media.forEach(function (m) {
@@ -1419,7 +1419,7 @@ function () {
             _tempCounter++;
           });
 
-          _detailContent += "</div>\n                </div>\n                <div class=\"media-control mb-4\">\n                    <button id=\"media-left-btn\" class=\"btn btn-l btn-dark mx-1\"><i class=\"fas fa-chevron-left\"></i></button>\n                    <h3 id=\"gallery-counter\">1 / ".concat(_d.diary.media.length, "</h3>\n                    <button id=\"media-right-btn\" class=\"btn btn-l btn-dark mx-1\"><i class=\"fas fa-chevron-right\"></i></button>\n                </div>\n                <h4 class=\"detail-content p-3\">").concat(_d.diary.text, "</h4><br> \n                <div class=\"height-filler\"></div>");
+          _detailContent += "</div>\n                </div>\n                <div class=\"media-control mb-8\">\n                    <button id=\"media-left-btn\" class=\"btn btn-l btn-dark mx-1\"><i class=\"fas fa-chevron-left\"></i></button>\n                    <h3 id=\"gallery-counter\">1 / ".concat(_d.diary.media.length, "</h3>\n                    <button id=\"media-right-btn\" class=\"btn btn-l btn-dark mx-1\"><i class=\"fas fa-chevron-right\"></i></button>\n                </div>\n                <h4 class=\"detail-content px-5 mb-5 text-paragraph text-dark-muted\">").concat(_d.diary.text, "</h4><br> \n                <div class=\"height-filler\"></div>");
           this.detailElem.innerHTML = _detailContent;
           document.querySelector(".media-container>div:first-child").classList.add("active"); //Setup gallery buttons
 
@@ -1446,7 +1446,7 @@ function () {
             this.contentData[3].forEach(function (exp) {
               if (exp.id === id.replace("experience-", "")) _d2 = exp;
             });
-            _detailContent2 += "<h1 class=\"mt-3 px-4\">".concat(_d2.title, "</h1>\n                <h3 class=\"m-3 px-4\">").concat(_d2.role, "</h3>\n                <hr class=\"mt-1 mb-1\">\n                <h3 class=\"m-2\">").concat(_d2.months.replace("-", " - "), "</h3>\n                <h3 class=\"m-1 text-danger\"><i class=\"fas fa-map-marker-alt\"></i>&nbsp;").concat(_d2.location, "</h3>\n                <h4 class=\"detail-content p-3 mt-2\">").concat(_d2.detail, "</h4><br> \n                <div class=\"cta-panel key-learning-panel\">\n                    <h3><i class=\"fas fa-key\"></i></h3>\n                    <h3 class=\"p-2\">Key Learning</h3>\n                </div>\n                <h3 id=\"key-learning\">").concat(_d2.gain, "</h3>\n                <div class=\"height-filler\"></div>");
+            _detailContent2 += "<h1 class=\"mt-3 px-4\">".concat(_d2.title, "</h1>\n                <h3 class=\"m-3 px-4 text-success\">").concat(_d2.role, "</h3>\n                <hr class=\"mt-1 mb-1\">\n                <h3 class=\"m-2\">").concat(_d2.months.replace("-", " - "), "</h3>\n                <h3 class=\"m-1 text-danger\"><i class=\"fas fa-map-marker-alt\"></i>&nbsp;").concat(_d2.location, "</h3>\n                <h4 class=\"detail-content px-5 mt-8 mb-4 text-paragraph text-dark-muted\">").concat(_d2.detail, "</h4><br> \n                <div class=\"cta-panel key-learning-panel\">\n                    <h3><i class=\"fas fa-key\"></i></h3>\n                    <h3 class=\"p-2\">Key Learning</h3>\n                </div>\n                <h3 id=\"key-learning\" class=\"text-dark-muted\">").concat(_d2.gain, "</h3>\n                <div class=\"height-filler\"></div>");
             this.detailElem.innerHTML = _detailContent2;
           } //Render detail card for the selected education item
           else if (id.includes("education")) {
@@ -1456,7 +1456,7 @@ function () {
               this.contentData[4].forEach(function (edu) {
                 if (edu.id === id.replace("education-", "")) _d3 = edu;
               });
-              _detailContent3 += "<h1 class=\"mt-3 px-4\">".concat(_d3.deg, "</h1>\n                <h3 class=\"m-3 px-4\">").concat(_d3.uni, "</h3>\n                <hr class=\"mt-1 mb-1\">\n                <h3 class=\"m-2\">").concat(_d3.year, "</h3>\n                <h3 class=\"m-2 text-warning\"><i class=\"fas fa-award\"></i>&nbsp;").concat(_d3.honour, "</h3>\n                <h4 class=\"detail-content p-3 mt-2\"><span class=\"text-danger\">Key Modules:&nbsp;</span>").concat(_d3.modules, "</h4><br> \n                <div class=\"cta-panel dissertation-panel\">\n                    <h3><i class=\"fas fa-book\"></i></h3>\n                    <h3 class=\"p-2\">Dissertation</h3>\n                </div>\n                <h4 id=\"dissertation\">").concat(_d3.disser, "</h4>\n                <div class=\"height-filler\"></div>");
+              _detailContent3 += "<h1 class=\"mt-3 px-4\">".concat(_d3.deg, "</h1>\n                <h3 class=\"m-3 px-4 text-success\">").concat(_d3.uni, "</h3>\n                <hr class=\"mt-1 mb-1\">\n                <h3 class=\"m-2\">").concat(_d3.year, "</h3>\n                <h3 class=\"m-2 text-warning\"><i class=\"fas fa-award\"></i>&nbsp;").concat(_d3.honour, "</h3>\n                <h4 class=\"detail-content px-5 mt-8 mb-4 text-paragraph text-dark-muted\"><span class=\"text-danger\">Key Modules:&nbsp;</span>").concat(_d3.modules, "</h4><br> \n                <div class=\"cta-panel dissertation-panel\">\n                    <h3><i class=\"fas fa-book\"></i></h3>\n                    <h3 class=\"p-2\">Dissertation</h3>\n                </div>\n                <h4 id=\"dissertation\" class=\"text-dark-muted\">").concat(_d3.disser, "</h4>\n                <div class=\"height-filler\"></div>");
               this.detailElem.innerHTML = _detailContent3;
             }
     } //Update toolkit pop-up card to match the content of the select toolkit
