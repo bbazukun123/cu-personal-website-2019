@@ -15,6 +15,7 @@ export default class AppController{
         this.detailViewElem = document.querySelector(".detail-view");
         this.toolkitViewElem = document.querySelector(".toolkit-view");
         this.navElem = document.querySelector(".nav");
+        this.loadingScreenElem = document.querySelector(".loading-screen");
 
         //Setup content manager & declare empty variables for content data
         this.contentManager = new ContentManager();
@@ -31,10 +32,8 @@ export default class AppController{
 
             this.routeChanged(this.routes);
 
-            /* if(navigator.userAgent.match(/Android|BlackBerry|iPhone|iPod|Opera Mini|IEMobile/i))
-                document.documentElement.requestFullscreen(); */
-
         });
+
 
     }
     
@@ -69,6 +68,18 @@ export default class AppController{
             //Wait for all the content data to be fetched and injected before setting up their functionalities
             Promise.all(this.contentManager.fetchArray).then(() => {
 
+                const loadedEvent = ["loaded", e => {
+
+                    this.loadingScreenElem.removeEventListener(...loadedEvent);
+        
+                    console.log("Done Loading Imgs");
+                    this.loadingScreenElem.classList.add("loaded");
+                    
+                }];
+        
+                this.loadingScreenElem.addEventListener(...loadedEvent);
+
+                this.contentManager.preloadImages();
                 generateBG();
                 this.setupButtons();
                 this.setupScrollCards();
@@ -295,6 +306,16 @@ export default class AppController{
 
             this.showToolkit(e.target.id);
             //this.viewElem.classList.add("disabled");
+
+        })
+
+        //Setup enter button on loading screen
+        document.getElementById("enter-btn").addEventListener("click",e => {
+
+            /* if(navigator.userAgent.match(/Android|BlackBerry|iPhone|iPod|Opera Mini|IEMobile/i))
+                document.documentElement.requestFullscreen(); */
+
+            this.loadingScreenElem.classList.add("entered");
 
         })
 

@@ -302,6 +302,62 @@ export default class ContentManager{
                 
     }
 
+    //Pre-cache images into users' browser
+    preloadImages(){
+
+        let linkList = [];
+
+        //Accumulate portfolio image links
+        this.contentData[0].forEach(d => {
+
+            d.content.media.forEach(img => {
+
+                if(img.type === "image")
+                    linkList.push(`portfolio/${d.id}/${img.link}`);
+            })
+
+        })
+
+        //Accumulate adventure image links
+        this.contentData[1].forEach(d => {
+
+            d.diary.media.forEach(img => {
+                linkList.push(`adventure/${d.id}/${img.link}`);
+            })
+
+        })
+        
+        let counter = linkList.length;
+        let loadingList = [];
+
+        linkList.forEach(link => {
+
+            const img = new Image();
+
+            img.onload = () => {
+
+                const index = loadingList.indexOf(this);
+
+                if (index !== -1) {
+
+                    loadingList.splice(index, 1);
+
+                }
+
+                counter--;
+
+                if(counter == 0)
+                    document.querySelector(".loading-screen").dispatchEvent(new Event("loaded"));
+
+            };
+
+            loadingList.push(img);
+            img.src = "./images/" + link;
+
+        });
+        
+    }
+
     //Update portfolio card content based on input of field type filter
     updatePortfolio(inField){
 
