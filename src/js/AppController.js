@@ -43,47 +43,39 @@ export default class AppController{
 
         //Sort route base on assigned view position
         const orderedRoutes = r.sort((a,b) => a.viewPos - b.viewPos);
-        let fetchArray = [];
 
-        //Grab base HTML for main screens, including about screen
-        orderedRoutes.forEach(async route => {
+        //Grab base HTML for main screens, including about screen (** use map instead of foreach to return an array of promises **)
+        Promise.all(orderedRoutes.map(async route => {
 
             if(Math.sign(route.viewPos) !== -1){
 
-                fetchArray.push(fetch(`views/${route.htmlName}`)
-                    .then(res => res.text())
-                    .then(data => {
-                        this.viewElem.innerHTML += data;
-                    }));
+                const res = await fetch(`views/${route.htmlName}`);
+                const data = await res.text();
+                this.viewElem.innerHTML += data;
 
             }
             else{
 
-                fetchArray.push(fetch(`views/${route.htmlName}`)
-                    .then(res => res.text())
-                    .then(data => {
-                        this.supViewElem.innerHTML += data;
-                    }));
+                const res = await fetch(`views/${route.htmlName}`);
+                const data = await res.text();
+                this.supViewElem.innerHTML += data;
 
             }
-        });
+        })).then(() => {
 
-        //Once base HTMLs are in place, move on to inject content into those structure 
-        Promise.all(fetchArray)
-            .then(() => {
+            //Once base HTMLs are in place, move on to inject content into those structure 
+            this.contentManager.initContent();
+
+            //Wait for all the content data to be fetched and injected before setting up their functionalities
+            Promise.all(this.contentManager.fetchArray).then(() => {
 
                 generateBG();
-                this.contentManager.initContent();
+                this.setupButtons();
+                this.setupScrollCards();
                 this.routeChanged(r);
 
-                //Wait for all the content data to be fetched and injected before setting up their functionalities
-                Promise.all(this.contentManager.fetchArray).then(() => {
-                    this.setupButtons();
-                    this.setupScrollCards();
-                });
-
-            });
-        
+            });  
+        });
         
     }
 
@@ -94,7 +86,7 @@ export default class AppController{
         this.portfolioBtns = document.querySelector(".portfolio-selector-items");
         this.logsBtns = document.querySelector(".logs-selector-items");
         this.aboutBtns = document.querySelector(".about-selector-items");
-        this.toggleBtns = document.querySelectorAll(".toggle-btn");
+        this.upgradeToggles = document.querySelectorAll(".upgrade-toggle");
         this.detailBtns = document.querySelectorAll(".detail-btn");
 
         //Setup buttons on portfolio screen
@@ -103,7 +95,6 @@ export default class AppController{
             btn.addEventListener("click", e => {
 
                 const portfolioCard = document.getElementById("portfolio-card");
-                /* portfolioCard.scrollTop = 0; */
 
                 const transitionEvent = ["faded", e => {
 
@@ -145,7 +136,7 @@ export default class AppController{
                     logsCard.removeEventListener(...transitionEvent);
                     this.updateScrollCard(logsCard);  
                     logsCard.scrollTop = 0;
-                    
+
                 }];
 
                 logsCard.addEventListener(...transitionEvent);
@@ -164,8 +155,8 @@ export default class AppController{
             })
 
         })
-
-        this.toggleBtns.forEach(btn => {
+        
+        this.upgradeToggles.forEach(btn => {
 
             btn.addEventListener("click", e => {
 
@@ -274,11 +265,11 @@ export default class AppController{
 
             btn.addEventListener("click",e => {
 
-                if(e.target.classList.contains("detail-btn"))
+                if(e.target.classList.contains("detail-back"))
                     this.hideDetail();
-                else if(e.target.classList.contains("toolkit-btn")){
+                else if(e.target.classList.contains("toolkit-back")){
                     this.hideToolkit();
-                    this.viewElem.classList.remove("disabled");
+                    //this.viewElem.classList.remove("disabled");
                 }
 
             });
@@ -289,21 +280,21 @@ export default class AppController{
         document.getElementById("ux-screen").addEventListener("click",e => {
 
             this.showToolkit(e.target.id);
-            this.viewElem.classList.add("disabled");
+            //this.viewElem.classList.add("disabled");
 
         })
 
-        document.getElementById("web-screen").addEventListener("click",e => {
+        document.getElementById("dev-screen").addEventListener("click",e => {
 
             this.showToolkit(e.target.id);
-            this.viewElem.classList.add("disabled");
+            //this.viewElem.classList.add("disabled");
 
         })
 
         document.getElementById("business-screen").addEventListener("click",e => {
 
             this.showToolkit(e.target.id);
-            this.viewElem.classList.add("disabled");
+            //this.viewElem.classList.add("disabled");
 
         })
 
@@ -367,9 +358,7 @@ export default class AppController{
     }
 
     //Update scrollable card element ------------------------------------------
-    updateScrollCard({scrollHeight,clientHeight,scrollTop,parentElement}){
-
-        console.log(scrollHeight);    
+    updateScrollCard({scrollHeight,clientHeight,scrollTop,parentElement}){   
 
         if(scrollHeight > clientHeight){
 
@@ -481,7 +470,7 @@ export default class AppController{
 
         this.toolkitViewElem.classList.remove("pop-up");
         this.navElem.classList.remove("hidden");
-
+        
     }
 
 }

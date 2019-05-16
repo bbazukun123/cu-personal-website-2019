@@ -3,6 +3,7 @@ const {parallel} = require("gulp");
 const htmlmin = require("gulp-htmlmin");
 const imagemin = require("gulp-imagemin");
 const jsonminify = require('gulp-jsonminify');
+const del = require('del');
 
 //Just to copy/update HTML view components from src to dist
 function syncViews(){
@@ -45,6 +46,24 @@ function syncImages(){
 
 }
 
+//Clean Folders
+function cleanViews(){
+    return del(["dist/views/"]);
+}
+
+function cleanImages(){
+    return del(["dist/images/"]);
+}
+
+function cleanContent(){
+    return del(["dist/content/"]);
+}
+
+function cleanAll(){
+    return del(["dist/"]);
+}
+
+//Watch Folders
 function watchHTML(){
     return gulp.watch("src/views/*.html", syncViews);
 }
@@ -60,6 +79,10 @@ function watchImages(){
 exports.syncViews = syncViews;
 exports.syncContent = syncContent;
 exports.syncImages = syncImages;
+exports.cleanViews = cleanViews;
+exports.cleanContent = cleanContent;
+exports.cleanImages = cleanImages;
+exports.cleanAll = cleanAll;
 exports.buildViews = buildViews;
 exports.buildContent = buildContent;
 exports.default = parallel(watchHTML,watchImages,watchContent);

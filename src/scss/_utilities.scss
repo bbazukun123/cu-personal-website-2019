@@ -29,6 +29,10 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
         padding: #{$amount/2}rem;
     }
 
+    .pl-#{$amount}{
+        padding-left: #{$amount/2}rem;
+    }
+
     .px-#{$amount}{
         padding: 0 #{$amount/2}rem;
     }
@@ -123,7 +127,8 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
         text-justify: auto;
         text-indent: 10%;
         //text-transform: none;
-        font-size: 1.1rem;
+        font-size: 0.9rem;
+        line-height: 1.6;
         //letter-spacing: 0.15rem
         //ext-align-last: center;
         //text-justify: inter-word;
@@ -815,8 +820,8 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
                             bottom: 0;
                             left: 0;
                             right: 0;
-                            //background: hsla(0, 0, 0, 0.4);
-                            background: rgba(255, 255, 255, 0.3);
+                            background: hsla(0, 0, 0, 0.3);
+                            //background: rgba(255, 255, 255, 0.3);
                         }
 
                     }
@@ -848,9 +853,9 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
                     height: 0;
                 }
 
-                &.disable-transition{
+                /* &.disable-transition{
                     transition: none;
-                }
+                } */
 
             }
 
@@ -992,46 +997,9 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
         padding: 1.8rem 0.8rem;
     }
 
-    .detail-content{
+    /* .detail-content{
         line-height: 1.6;
-    }
-
-    .list-content{
-
-        width: 82%;
-        margin: auto;
-        margin-bottom: 1.5rem;
-        text-align: left;
-
-        h4:nth-child(odd){
-            margin: 0.5rem 0;
-            padding: 0.8rem;
-            display: block;
-            width: 100%;
-            @include set-background($primary-color);
-            //color: transparentize($dark-color, 0.2);
-        }
-
-        h4:nth-child(even){
-            margin: 0.5rem 0;
-            padding: 0.8rem;
-            display: block;
-            width: 100%;
-            @include set-background(darken($primary-color, 15%));
-            //color: transparentize($dark-color, 0.2);
-        }
-
-        &.list-danger h4:nth-child(odd){
-            background-color: lighten($danger-color, 55%);
-            color: transparentize($dark-color, 0.2);
-        }
-
-        &.list-danger h4:nth-child(even){
-            background-color: lighten($danger-color, 45%);
-            color: transparentize($dark-color, 0.2);
-        }
-
-    }
+    } */
 
     .detail-gallery{
         margin: auto;
@@ -1118,13 +1086,92 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
 }
 
 .toolkit-card{
-    width: 85%;
-    height: 85%;
-    margin: 15% auto;
+    width: 100%;
+    height: 100%;
+    //margin: 8% auto;
     text-align: center;
     background-color: $light-color;
-    border-bottom: 0.4rem solid #B8B8B8;
+    //border-bottom: 0.4rem solid #B8B8B8;
     overflow: scroll;
+
+    hr{
+        width: 60%;
+        margin: auto;
+    }
+
+    .height-filler{
+        height: 4.6rem;
+    }
+}
+
+.list-content{
+
+    width: 82%;
+    margin: auto;
+    margin-bottom: 1.5rem;
+    text-align: left;
+    height: auto;
+    overflow: hidden;
+    transition: height 0.25s ease-out;
+
+    &.hidden{
+        height: 0;
+    }
+
+    h4:nth-child(odd){
+        margin: 0.5rem 0;
+        padding: 0.8rem;
+        display: block;
+        width: 100%;
+        @include set-background($primary-color);
+        //color: transparentize($dark-color, 0.2);
+    }
+
+    h4:nth-child(even){
+        margin: 0.5rem 0;
+        padding: 0.8rem;
+        display: block;
+        width: 100%;
+        @include set-background(darken($primary-color, 15%));
+        //color: transparentize($dark-color, 0.2);
+    }
+
+    &.list-danger h4:nth-child(odd){
+        padding-left: 1rem;
+        background-color: lighten($danger-color, 55%);
+        color: transparentize($dark-color, 0.2);
+    }
+
+    &.list-danger h4:nth-child(even){
+        padding-left: 1rem;
+        background-color: lighten($danger-color, 45%);
+        color: transparentize($dark-color, 0.2);
+    }
+
+    &.list-warning h4:nth-child(odd){
+        padding-left: 1rem;
+        background-color: lighten($warning-color, 55%);
+        color: transparentize($dark-color, 0.2);
+    }
+
+    &.list-warning h4:nth-child(even){
+        padding-left: 1rem;
+        background-color: lighten($warning-color, 45%);
+        color: transparentize($dark-color, 0.2);
+    }
+
+    &.list-success h4:nth-child(odd){
+        padding-left: 1rem;
+        background-color: lighten($success-color, 55%);
+        color: transparentize($dark-color, 0.2);
+    }
+
+    &.list-success h4:nth-child(even){
+        padding-left: 1rem;
+        background-color: lighten($success-color, 45%);
+        color: transparentize($dark-color, 0.2);
+    }
+
 }
 
 //Other components
@@ -1190,6 +1237,18 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
     &.key-learning-panel,
     &.dissertation-panel{
         margin-bottom: 0;
+    }
+
+    &.toolkit-panel{
+        margin: 0.5rem auto;
+        width: 90%;
+        grid-template-columns: 1fr 4fr 1.2fr;
+
+        /* i{
+            padding-left: 1.2rem;
+            display: block;
+            width: 100%;
+        } */
     }
 
 }
@@ -1285,9 +1344,9 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
     transition: opacity 0.25s ease-out;
     transition: all 0.05s ease-out;
 
-    &.toolkit-btn{
-        bottom: 2rem;
-    }
+    /* &.toolkit-btn{
+        bottom: 1rem;
+    } */
     
     i{
         width: 100%;

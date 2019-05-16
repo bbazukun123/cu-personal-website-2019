@@ -1,4 +1,7 @@
 node_modules
 src/scss/bootstrap/
 src/js/ext_modules/
+src/images/
+dist/images/
 .cache/
+.netlify/

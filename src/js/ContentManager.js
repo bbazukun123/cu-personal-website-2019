@@ -9,12 +9,64 @@ export default class ContentManager{
 
      //Grab all the content data from JSON files & render all base content
     initContent(){
-        
+
+        //Grab all output elements
+        this.portfolioElem = document.getElementById("portfolio-card");
+        this.logsElem = document.getElementById("logs-card");
+        this.aboutElem = document.getElementById("about-card");
+        this.detailElem = document.querySelector(".detail-card");
+        this.toolkitElem = document.querySelector(".toolkit-card");
+
+        //Empty the innerHTML of multi-block output elements
+        this.logsElem.innerHTML = "";
+        this.aboutElem.innerHTML = "";
+
         //Fetch portfolio content
         this.fetchArray.push(fetch("content/portfolioContent.json")
             .then(res => res.json())
             .then(data => {
+
                 this.contentData.push(data);
+
+                //Render portfolio content ---------------------------------
+                let portfolioOutput = "<div>";
+
+                data.forEach(p=>
+                    portfolioOutput +=
+                        `<div class="card-item ${p.field}">
+                            <div class="p-2">
+                                <h2>${p.title} (${p.year})</h2>
+                                <h4>${p.desc}</h4>
+                            </div>
+                            <div class="cta-panel portfolio-panel">
+                                <h3 class="p-2 bg-${(function(field){
+                                    if(field === "UX")
+                                        return "success";
+                                    else if(field === "Design")
+                                        return "warning";
+                                    else if(field === "Dev")
+                                        return "danger";
+                                })(p.field)}">${p.field}</h3>
+                                <h5 class="px-2">${p.type.replace(" ","<br>")}</h5>
+                                <button class="btn btn-l btn-light" ${(function(action){
+                                    if(action !== "none")
+                                        return `onClick="window.open('${action}')"`;
+                                    else
+                                        return `style="visibility:hidden"`;
+                                }(p.action))}>${(link => {
+                                    if(link.includes("youtu.be"))
+                                        return '<i class="fas fa-play"></i>';
+                                    else if(link.includes("github"))
+                                        return '<i class="fab fa-github fa-lg"></i>';
+                                    else
+                                        return `<i class="fas fa-link"></i>`;
+                                })(p.action)}</button>
+                                <button id="portfolio-${p.id}" class="btn btn-l detail-btn btn-light mx-1"><i class="fas fa-info-circle"></i></button>
+                            </div>
+                        </div>`
+                );
+
+                this.portfolioElem.innerHTML = portfolioOutput + "</div>";
             })
             .catch(err => {
                 throw err;
@@ -24,7 +76,31 @@ export default class ContentManager{
         this.fetchArray.push(fetch("content/adventureContent.json")
             .then(res => res.json())
             .then(data => {
+
                 this.contentData.push(data);
+
+                //Render adventure content ------------------------------  
+                let advOutput = `<div id="adventure-logs">`;
+
+                data.forEach(a =>
+                    advOutput +=
+                        `<div class="card-item">
+                            <div class="card-photo" style="background-image: url(./images/adventure/${a.id}/${a.cover})">
+                                <div class="p-2 text-light text-drop-shadow">
+                                    <h2>${a.title}</h2>
+                                    <h4>${a.desc}</h4>
+                                </div>
+                            </div>
+                            <div class="cta-panel adventure-panel">
+                                <h4 class="p-2">${a.month}</h4>
+                                <button id="adventure-${a.id}" class="btn btn-sm detail-btn btn-light mx-1">Diary</button>
+                            </div>
+                        </div>`
+                );
+
+                advOutput += "</div>"; 
+                this.logsElem.innerHTML += advOutput;
+
             })
             .catch(err => {
                 throw err;
@@ -34,7 +110,65 @@ export default class ContentManager{
         this.fetchArray.push(fetch("content/upgradeContent.json")
             .then(res => res.json())
             .then(data => {
+
                 this.contentData.push(data);
+
+                //Render upgrade content ------------------------------  
+                const inProgressList = data.filter(item => (item.status === "progress")).sort((a,b) => b.id - a.id);
+                const wishList = data.filter(item => (item.status === "que")).sort((a,b) => b.id - a.id);
+                const completedList = data.filter(item => (item.status === "completed")).sort((a,b) => b.id - a.id);
+
+                let upgradeOutput =
+                    `<div id="upgrade-logs" class="hidden fade">
+                        <div class="cta-panel cta-warning upgrade-panel">
+                            <h2 class="p-2">In Progress</h2>
+                            <button id="progress-btn" class="btn btn-l btn-light mx-1 toggle-btn upgrade-toggle toggled"><i class="fas fa-chevron-down"></i></button>
+                        </div>
+                        <div id="progress" class="upgrade-items">`;
+
+                inProgressList.forEach(item => {
+                    upgradeOutput +=
+                        `<div class="p-2">
+                            <h3>${item.title}</h3>
+                        </div>`;
+                });
+
+                upgradeOutput +=
+                    `</div>
+                    <div class="cta-panel cta-danger upgrade-panel">
+                        <h2 class="p-2">Knowledge Wishlist</h2>
+                        <button id="wish-btn" class="btn btn-l btn-light mx-1 toggle-btn upgrade-toggle"><i class="fas fa-chevron-down"></i></button>
+                    </div>
+                    <div id="wish" class="upgrade-items hidden">`;
+
+                wishList.forEach(item => {
+
+                    upgradeOutput +=
+                    `<div class="p-2">
+                        <h3>${item.title}</h3>
+                    </div>`;
+
+                });
+                upgradeOutput +=
+                    `</div>
+                    <div class="cta-panel cta-success upgrade-panel">
+                        <h2 class="p-2">Recently Completed</h2>
+                        <button id="completed-btn" class="btn btn-l btn-light mx-1 toggle-btn upgrade-toggle"><i class="fas fa-chevron-down"></i></button>
+                    </div>
+                    <div id="completed" class="upgrade-items hidden">`;
+
+                completedList.forEach(item => {
+
+                    upgradeOutput +=
+                        `<div class="p-2">
+                            <h3>${item.title}</h3>
+                        </div>`
+
+                });
+
+                upgradeOutput += "</div></div>"; 
+                this.logsElem.innerHTML += upgradeOutput;
+
             })
             .catch(err => {
                 throw err;
@@ -44,7 +178,31 @@ export default class ContentManager{
         this.fetchArray.push(fetch("content/experienceContent.json")
             .then(res => res.json())
             .then(data => {
+
                 this.contentData.push(data);
+
+                //Render about content --------------------------------
+                let expOutput = `<div id="experience-about">`;
+
+                this.contentData[3].forEach(exp =>
+                    expOutput +=
+                        `<div class="card-item">
+                            <div class="p-2">
+                                <h2>${exp.title}</h2>
+                                <h4>${exp.role}</h4>
+                            </div>
+                            <div class="cta-panel experience-panel">
+                                <h5 class="p-2">${exp.months}</h5>
+                                <h5 class="px-2"><i class="fas fa-map-marker-alt"></i>&nbsp;${exp.location}</h5>
+                                <button id="experience-${exp.id}" class="btn btn-sm detail-btn btn-light mx-1">Detail</button>
+                            </div>
+                        </div>`
+                );
+
+                expOutput += "</div>";
+
+                this.aboutElem.innerHTML += expOutput;
+
             })
             .catch(err => {
                 throw err;
@@ -54,7 +212,40 @@ export default class ContentManager{
         this.fetchArray.push(fetch("content/educationContent.json")
             .then(res => res.json())
             .then(data => {
+
                 this.contentData.push(data);
+
+                //Render about content --------------------------------
+
+                let eduOutput = 
+                    `<div id="education-about" class="education-card hidden fade">
+                        <div class="milestone"></div>
+                        <div class="card-item">
+                            <h2>${data[0].deg}</h2>
+                            <h4 class="text-warning mt-1">${data[0].uni}</h4>
+                            <h3 class="text-warning">${data[0].year}</h3>
+                            <button id="education-1" class="btn btn-sm detail-btn btn-dark my-1 px-2">Detail</button>
+                            <hr class="bg-warning text-warning my-1">
+                        </div>
+                        <div class="milestone"></div>
+                        <div class="card-item">
+                            <h2>${data[1].deg}</h2>
+                            <h4 class="text-warning mt-1">${data[1].uni}</h4>
+                            <h3 class="text-warning">${data[1].year}</h3>
+                            <button id="education-2" class="btn btn-sm detail-btn btn-dark my-1">Detail</button>
+                            <hr class="bg-warning text-warning my-1">
+                        </div>
+                        <div class="milestone"></div>
+                        <div class="card-item">
+                            <h2>${data[2].deg}</h2>
+                            <h4 class="text-warning mt-1">${data[2].uni}</h4>
+                            <h3 class="text-warning">${data[2].year}</h3>
+                            <button id="education-3" class="btn btn-sm detail-btn btn-dark my-1">Detail</button>
+                        </div>
+                    </div>`;
+
+                    this.aboutElem.innerHTML += eduOutput;
+                
             })
             .catch(err => {
                 throw err;
@@ -64,7 +255,36 @@ export default class ContentManager{
         this.fetchArray.push(fetch("content/contactContent.json")
             .then(res => res.json())
             .then(data => {
+
                 this.contentData.push(data);
+
+                //Render about content --------------------------------
+                let contactOutput = 
+                    `<div id="contact-about" class="contact-card hidden fade">
+                        <h1 class="text-center">Pleasure to meet you!</h1>
+                        <div class="avatar">
+                            <object class="mb-1" type="image/svg+xml" data="./images/me.svg"></object>
+                        </div> 
+                        <div class="cta-panel contact-panel">
+                            <h4 class="p-2 text-left">Download CV</h4>
+                            <button class="btn btn-l btn-light mx-1" onclick="window.open('./downloadable/C_Utsahajit_CV19.pdf')"><i class="fas fa-download"></i></button>
+                        </div>
+                        <div class="cta-panel contact-panel">
+                            <h4 class="p-2 text-left">${data.email}</h4>
+                            <button class="btn btn-l btn-light mx-1" onclick="window.open('mailto:bzkwork1993@gmail.com')">Email</button>
+                        </div>
+                        <div class="cta-panel contact-panel">
+                            <h4 class="p-2 text-left">${data.mobile}</h4>
+                            <button class="btn btn-l btn-light mx-1" onclick="window.open('tel:+447956982635')">Call</button>
+                        </div>
+                        <div class="social-media">
+                            <button class="btn btn-l btn-dark" onclick="window.open('https://github.com/bbazukun123')"><i class="fab fa-github"></i>&nbsp;Github</button>
+                            <button class="btn btn-l btn-dark" onclick="window.open('https://www.linkedin.com/in/chanodom-utsahajit/')"><i class="fab fa-linkedin"></i>&nbsp;Linkedin</button>
+                        </div>
+                    </div>`;
+                
+                this.aboutElem.innerHTML += contactOutput;
+
             })
             .catch(err => {
                 throw err;
@@ -79,212 +299,6 @@ export default class ContentManager{
             .catch(err => {
                 throw err;
             }));
-
-/* ------------------------------------------------------------------------------------------------- */
-
-        Promise.all(this.fetchArray)
-        .then(() => { 
-            
-            //Grab all output elements
-            this.portfolioElem = document.getElementById("portfolio-card");
-            this.logsElem = document.getElementById("logs-card");
-            this.aboutElem = document.getElementById("about-card");
-            this.detailElem = document.querySelector(".detail-card");
-            this.toolkitElem = document.querySelector(".toolkit-card");
-
-            //Render portfolio content ---------------------------------
-            let portfolioOutput = "<div>";
-
-            this.contentData[0].forEach(p=>
-                portfolioOutput +=
-                    `<div class="card-item ${p.field}">
-                        <div class="p-2">
-                            <h2>${p.title} (${p.year})</h2>
-                            <h4>${p.desc}</h4>
-                        </div>
-                        <div class="cta-panel portfolio-panel">
-                            <h3 class="p-2 bg-${(function(field){
-                                if(field === "UX")
-                                    return "success";
-                                else if(field === "Design")
-                                    return "warning";
-                                else if(field === "Web")
-                                    return "danger";
-                            })(p.field)}">${p.field}</h3>
-                            <h5 class="px-2">${p.type.replace(" ","<br>")}</h5>
-                            <button class="btn btn-l btn-light" ${(function(action){
-                                if(action !== "none")
-                                    return `onClick="window.open('${action}')"`;
-                                else
-                                    return `style="visibility:hidden"`;
-                            }(p.action))}>${(link => {
-                                if(link.includes("youtu.be"))
-                                    return '<i class="fas fa-play"></i>';
-                                else if(link.includes("github"))
-                                    return '<i class="fab fa-github"></i>';
-                                else
-                                    return `<i class="fas fa-link"></i>`;
-                            })(p.action)}</button>
-                            <button id="portfolio-${p.id}" class="btn btn-l detail-btn btn-light mx-1"><i class="fas fa-info-circle"></i></button>
-                        </div>
-                    </div>`
-            );
-
-            this.portfolioElem.innerHTML = portfolioOutput + "</div>";
-
-            //Render logs content ------------------------------  
-            let advOutput = `<div id="adventure-logs">`;
-
-            this.contentData[1].forEach(a =>
-                advOutput +=
-                    `<div class="card-item">
-                        <div class="card-photo" style="background-image: url(../images/${a.cover})">
-                            <div class="p-2 text-light text-drop-shadow">
-                                <h2>${a.title}</h2>
-                                <h4>${a.desc}</h4>
-                            </div>
-                        </div>
-                        <div class="cta-panel adventure-panel">
-                            <h4 class="p-2">${a.month}</h4>
-                            <button id="adventure-${a.id}" class="btn btn-sm detail-btn btn-light mx-1">Diary</button>
-                        </div>
-                    </div>`
-            );
-
-            advOutput += "</div>"; 
-
-            const upgradeData = this.contentData[2];
-            const inProgressList = upgradeData.filter(item => (item.status === "progress")).sort((a,b) => b.id - a.id);
-            const wishList = upgradeData.filter(item => (item.status === "que")).sort((a,b) => b.id - a.id);
-            const completedList = upgradeData.filter(item => (item.status === "completed")).sort((a,b) => b.id - a.id);
-
-            let upgradeOutput =
-                `<div id="upgrade-logs" class="hidden fade">
-                    <div class="cta-panel cta-warning upgrade-panel">
-                        <h2 class="p-2">In Progress</h2>
-                        <button id="progress-btn" class="btn btn-l btn-light mx-1 toggle-btn toggled"><i class="fas fa-chevron-down"></i></button>
-                    </div>
-                    <div id="progress" class="upgrade-items">`;
-
-            inProgressList.forEach(item => {
-                upgradeOutput +=
-                    `<div class="p-2">
-                        <h3>${item.title}</h3>
-                    </div>`;
-            });
-
-            upgradeOutput +=
-                `</div>
-                <div class="cta-panel cta-danger upgrade-panel">
-                    <h2 class="p-2">Knowledge Wishlist</h2>
-                    <button id="wish-btn" class="btn btn-l btn-light mx-1 toggle-btn"><i class="fas fa-chevron-down"></i></button>
-                </div>
-                <div id="wish" class="upgrade-items hidden">`;
-
-            wishList.forEach(item => {
-
-                upgradeOutput +=
-                `<div class="p-2">
-                    <h3>${item.title}</h3>
-                </div>`;
-
-            });
-            upgradeOutput +=
-                `</div>
-                <div class="cta-panel cta-success upgrade-panel">
-                    <h2 class="p-2">Recently Completed</h2>
-                    <button id="completed-btn" class="btn btn-l btn-light mx-1 toggle-btn"><i class="fas fa-chevron-down"></i></button>
-                </div>
-                <div id="completed" class="upgrade-items hidden">`;
-
-            completedList.forEach(item => {
-
-                upgradeOutput +=
-                    `<div class="p-2">
-                        <h3>${item.title}</h3>
-                    </div>`
-
-            });
-
-            upgradeOutput += "</div></div>"; 
-            this.logsElem.innerHTML = advOutput + upgradeOutput;
-            
-            //Render about content --------------------------------
-            let expOutput = `<div id="experience-about">`;
-
-            this.contentData[3].forEach(exp =>
-                expOutput +=
-                    `<div class="card-item">
-                        <div class="p-2">
-                            <h2>${exp.title}</h2>
-                            <h4>${exp.role}</h4>
-                        </div>
-                        <div class="cta-panel experience-panel">
-                            <h5 class="p-2">${exp.months}</h5>
-                            <h5 class="px-2"><i class="fas fa-map-marker-alt"></i>&nbsp;${exp.location}</h5>
-                            <button id="experience-${exp.id}" class="btn btn-sm detail-btn btn-light mx-1">Detail</button>
-                        </div>
-                    </div>`
-            );
-
-            expOutput += "</div>";
-            const edu = this.contentData[4];
-
-            let eduOutput = 
-                `<div id="education-about" class="education-card hidden fade">
-                    <div class="milestone"></div>
-                    <div class="card-item">
-                        <h2>${edu[0].deg}</h2>
-                        <h4 class="text-warning mt-1">${edu[0].uni}</h4>
-                        <h3 class="text-warning">${edu[0].year}</h3>
-                        <button id="education-1" class="btn btn-sm detail-btn btn-dark my-1 px-2">Detail</button>
-                        <hr class="bg-warning text-warning my-1">
-                    </div>
-                    <div class="milestone"></div>
-                    <div class="card-item">
-                        <h2>${edu[1].deg}</h2>
-                        <h4 class="text-warning mt-1">${edu[1].uni}</h4>
-                        <h3 class="text-warning">${edu[1].year}</h3>
-                        <button id="education-2" class="btn btn-sm detail-btn btn-dark my-1">Detail</button>
-                        <hr class="bg-warning text-warning my-1">
-                    </div>
-                    <div class="milestone"></div>
-                    <div class="card-item">
-                        <h2>${edu[2].deg}</h2>
-                        <h4 class="text-warning mt-1">${edu[2].uni}</h4>
-                        <h3 class="text-warning">${edu[2].year}</h3>
-                        <button id="education-3" class="btn btn-sm detail-btn btn-dark my-1">Detail</button>
-                    </div>
-                </div>`;
-
-            const con = this.contentData[5];
-            let contactOutput = 
-                `<div id="contact-about" class="contact-card hidden fade">
-                    <h1 class="text-center">Pleasure to meet you!</h1>
-                    <div class="avatar">
-                        <object class="mb-1" type="image/svg+xml" data="./images/me.svg"></object>
-                    </div> 
-                    <div class="cta-panel contact-panel">
-                        <h4 class="p-2 text-left">Download CV</h4>
-                        <button class="btn btn-l btn-light mx-1" onclick="window.open('./downloadable/C_Utsahajit_CV19.pdf')"><i class="fas fa-download"></i></button>
-                    </div>
-                    <div class="cta-panel contact-panel">
-                        <h4 class="p-2 text-left">${con.email}</h4>
-                        <button class="btn btn-l btn-light mx-1" onclick="window.open('mailto:bzkwork1993@gmail.com')">Email</button>
-                    </div>
-                    <div class="cta-panel contact-panel">
-                        <h4 class="p-2 text-left">${con.mobile}</h4>
-                        <button class="btn btn-l btn-light mx-1" onclick="window.open('tel:+447956982635')">Call</button>
-                    </div>
-                    <div class="social-media">
-                        <button class="btn btn-l btn-dark" onclick="window.open('https://github.com/bbazukun123')"><i class="fab fa-github"></i>&nbsp;Github</button>
-                        <button class="btn btn-l btn-dark" onclick="window.open('https://www.linkedin.com/in/chanodom-utsahajit/')"><i class="fab fa-linkedin"></i>&nbsp;Linkedin</button>
-                    </div>
-                </div>`;
-            
-            this.aboutElem.innerHTML = expOutput + eduOutput + contactOutput;
-
-        });
                 
     }
 
@@ -356,7 +370,7 @@ export default class ContentManager{
 
             });
 
-            document.querySelectorAll(".card-item.Web").forEach(item => {
+            document.querySelectorAll(".card-item.Dev").forEach(item => {
                 
                 show(item);
 
@@ -377,7 +391,7 @@ export default class ContentManager{
 
             });
 
-            document.querySelectorAll(".card-item.Web").forEach(item => {
+            document.querySelectorAll(".card-item.Dev").forEach(item => {
 
                 hide(item);
                 
@@ -390,7 +404,7 @@ export default class ContentManager{
             });
 
         }
-        else if(inField === "Web"){
+        else if(inField === "Dev"){
 
             document.querySelectorAll(".card-item.UX").forEach(item => {
                     
@@ -398,7 +412,7 @@ export default class ContentManager{
 
             });
 
-            document.querySelectorAll(".card-item.Web").forEach(item => {
+            document.querySelectorAll(".card-item.Dev").forEach(item => {
 
                 show(item);
 
@@ -417,7 +431,7 @@ export default class ContentManager{
 
             });
 
-            document.querySelectorAll(".card-item.Web").forEach(item => {
+            document.querySelectorAll(".card-item.Dev").forEach(item => {
 
                 hide(item);
 
@@ -536,7 +550,7 @@ export default class ContentManager{
                     <h3 class="${(field => {
                         if(field === "UX")
                             return "text-success";
-                        else if(field === "Web")
+                        else if(field === "Dev")
                             return"text-danger";
                         else if(field === "Design")
                             return "text-warning";
@@ -669,7 +683,7 @@ export default class ContentManager{
                 if(m.type === "image"){
 
                     detailContent += 
-                        `<div id="media-${tempCounter}" class="media-image" style="background-image: url(./images/${m.link})"></div>`;
+                        `<div id="media-${tempCounter}" class="media-image" style="background-image: url(./images/adventure/${d.id}/${m.link})"></div>`;
 
                 }
                 else if(m.type === "video"){
@@ -778,7 +792,13 @@ export default class ContentManager{
                 <hr class="mt-1 mb-1">
                 <h3 class="m-2">${d.year}</h3>
                 <h3 class="m-2 text-warning"><i class="fas fa-award"></i>&nbsp;${d.honour}</h3>
-                <h4 class="detail-content px-5 mt-8 mb-4 text-paragraph text-dark-muted"><span class="text-danger">Key Modules:&nbsp;</span>${d.modules}</h4><br> 
+                ${(award => {
+                    if(typeof award !== "undefined")
+                        return `<h4 class="m-2 px-4 text-danger"><i class="fas fa-medal"></i>&nbsp;${award}</h3>`;
+                    else
+                        return "";
+                })(d.award)}
+                <h4 class="detail-content px-5 mt-6 mb-4 text-paragraph text-dark-muted"><span class="text-danger">Key Modules:&nbsp;</span>${d.modules}</h4><br> 
                 <div class="cta-panel dissertation-panel">
                     <h3><i class="fas fa-book"></i></h3>
                     <h3 class="p-2">Dissertation</h3>
@@ -787,8 +807,10 @@ export default class ContentManager{
                 <div class="height-filler"></div>`;
 
             this.detailElem.innerHTML = detailContent;
-
         }
+
+        this.detailElem.scrollTop = 0;
+
     }
 
     //Update toolkit pop-up card to match the content of the select toolkit
@@ -799,15 +821,100 @@ export default class ContentManager{
 
         if(id === "ux-screen")    
             d = this.contentData[6][0];
-        else if(id === "web-screen")
-            d = this.contentData[6][0];
+        else if(id === "dev-screen")
+            d = this.contentData[6][1];
         else if(id === "business-screen")
-            d = this.contentData[6][0];
+            d = this.contentData[6][2];
 
         toolkitContent +=
-            ``;
+            `<h1 class="mt-5 mb-4">${d.title}</h1>
+            <hr class="mt-1 mb-1">
+            <h4 class="detail-content px-5 mt-4 mb-4 text-paragraph text-dark-muted">${d.desc}</h4><br>`;
+
+        let setCount = 1;
+
+        d.toolkit.forEach(set => {
+
+            toolkitContent +=
+            `<div class="cta-panel cta-${d.color} toolkit-panel">
+                <h3 class="pl-1"><i class="fas fa-${set.fa}"></i></h3>
+                <h3 class="p-2 text-left">${set.set}</h3>
+                <button id="set${setCount}-btn" class="btn btn-l btn-light mx-1 toggle-btn toolkit-toggle toggled"><i class="fas fa-chevron-down"></i></button>
+            </div>
+            <div id="set${setCount}" class="list-content list-${d.color}">`;
+
+            set.tools.forEach(tool => {
+                toolkitContent +=
+                    `<h4>${tool.tool}</h4>`;
+
+            });
+
+            toolkitContent += "</div>";
+
+            setCount++;
+        });
+
+        this.toolkitElem.innerHTML = toolkitContent + `<div class="height-filler"></div>`;
+        this.toolkitElem.scrollTop = 0;
+
+        //Setup toolkit toggles
+        document.querySelectorAll(".toolkit-toggle").forEach(btn => {
+
+            btn.addEventListener("click", e => {
+
+                let outputElem = document.getElementById(e.target.id.replace("-btn",""));
                 
-        this.toolkitElem.innerHTML = toolkitContent;
+                if(outputElem.classList.contains("hidden")){
+
+                    outputElem.style.height = outputElem.scrollHeight + "px";
+
+                    const expand = ["transitionend", e => {
+
+                        outputElem.removeEventListener(...expand);
+                        outputElem.style.height = null;
+
+                    }];
+
+                    outputElem.addEventListener(...expand);
+
+                    outputElem.classList.remove("hidden");
+                    e.target.classList.add("toggled");
+
+                    
+                    
+                }
+                else{
+
+                    const transitionExtract = outputElem.style.transition;
+                    outputElem.style.transition = "";
+
+                    requestAnimationFrame(() => {
+
+                        outputElem.style.height = outputElem.scrollHeight + "px";
+                        outputElem.style.transition = transitionExtract;
+
+                        requestAnimationFrame(() => {
+
+                            outputElem.style.height = 0 + "px";
+
+                        });
+
+                    });
+
+                    const collapse = ["transitionend", e => {
+
+                        outputElem.removeEventListener(...collapse);
+                        outputElem.classList.add("hidden");
+
+                    }];
+
+                    outputElem.addEventListener(...collapse);  
+                    e.target.classList.remove("toggled");          
+
+                }
+
+            });
+        })
 
     }
     

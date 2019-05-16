@@ -4,9 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "gulp syncViews && gulp syncContent && gulp syncImages && concurrently --kill-others \"parcel src/index.html --public-url .\" \"gulp\"",
-    "build": "parcel build src/index.html --public-url . && gulp buildViews && gulp buildContent && gulp syncImages",
-    "deploy":"gh-pages -d dist"
+    "start": "gulp cleanAll && gulp syncViews && gulp syncContent && gulp syncImages && concurrently --kill-others \"parcel src/index.html\" \"gulp\"",
+    "build": "gulp cleanAll && parcel build src/index.html --public-url . && gulp buildViews && gulp buildContent && gulp syncImages"
   },
   "repository": {
     "type": "git",
@@ -23,6 +22,7 @@
     "@babel/plugin-transform-runtime": "^7.4.4",
     "autoprefixer": "^9.5.1",
     "concurrently": "^4.1.0",
+    "del": "^4.1.1",
     "gulp": "^4.0.1",
     "gulp-htmlmin": "^5.0.1",
     "gulp-imagemin": "^5.0.3",
@@ -31,7 +31,6 @@
     "sass": "^1.19.0"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.4",
-    "gh-pages": "^2.0.1"
+    "@babel/runtime": "^7.4.4"
   }
 }

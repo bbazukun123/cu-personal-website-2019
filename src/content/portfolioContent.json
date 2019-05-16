@@ -1,10 +1,36 @@
 [
 
         {
+            "id":"8",
+            "title": "Personal Website",
+            "desc": "Design & Development of this website",
+            "field": "Dev",
+            "type": "Personal Project",
+            "year": "2019",
+            "action": "https://github.com/bbazukun123/cu-personal-website-2019",
+            "content":{
+                "media":[
+                    {"type":"image","link":"img01.png"}
+                ],
+                "detail":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam quasi quo iure voluptate sint saepe unde explicabo repellendus, doloremque aspernatur.",
+                "challenges":[
+                    {"challenge":"Lorem ipsum dolor sit amet"},
+                    {"challenge":"Lorem ipsum dolor sit amet"}
+                ],
+                "tools":[
+                    {"tool":"VS Code (HTML/CSS/JS)"},
+                    {"tool":"Adobe XD (CC)"},
+                    {"tool":"Adobe Illustrator (CC)"},
+                    {"tool":"Netlify (Hosting & CDN)"}
+                ]
+                
+            }
+        },
+        {
             "id":"7",
             "title": "Memento",
             "desc": "Web2Print E-Commerce Website",
-            "field": "Web",
+            "field": "Dev",
             "type": "Freelance Project",
             "year": "2019",
             "action": "https://github.com/bbazukun123/mementoprototype",
@@ -12,9 +38,10 @@
                 "media":[
                     {"type":"image","link":"img01.jpg"}
                 ],
-                "detail":"-- Work in Progress --",
+                "detail":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam quasi quo iure voluptate sint saepe unde explicabo repellendus, doloremque aspernatur.",
                 "challenges":[
-                    {"challenge":"-- Work in Progress --"}
+                    {"challenge":"Lorem ipsum dolor sit amet"},
+                    {"challenge":"Lorem ipsum dolor sit amet"}
                 ],
                 "tools":[
                     {"tool":"VS Code (HTML/CSS/JS)"},
@@ -149,7 +176,7 @@
                     {"type":"video","link":"https://www.youtube.com/embed/tIaZx2g8AgU"},
                     {"type":"video","link":"https://www.youtube.com/embed/NKDcrdOGW6Y"}
                 ],
-                "detail":"A module project that aimed at developing a digital solution to an existing problem of choice.<br><br>• • •<br><br>The ZINK project explored productivity issues at a personal level and pivoted towards a solution that would reduce task management effort and allow users for more productivity while remaining as little intrusive as possible to their usual routine. ZINK prioritised bringing an innovation through recombination and refinement of existing solutions rather than introducing a radical task management practice.<br><br>Zink transformed into an email client/application that specialises in smart task and material management",
+                "detail":"A module project that aimed at developing a digital solution to an existing problem of choice.<br><br>The ZINK project explored productivity issues at a personal level and pivoted towards a solution that would reduce task management effort and allow users for more productivity while remaining as little intrusive as possible to their usual routine. ZINK prioritised bringing an innovation through recombination and refinement of existing solutions rather than introducing a radical task management practice.<br><br>Zink transformed into an email client/application that specialises in smart task and material management",
                 "challenges":[
                     {"challenge":"Managing and tackling an abstract set of problems"},
                     {"challenge":"Working with qualitative insights"},

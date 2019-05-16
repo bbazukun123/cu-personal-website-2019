@@ -52,6 +52,7 @@ object{
 }
 
 #app,
+.desktop-msg,
 .view,
 .sup-view,
 .detail-view,
@@ -116,15 +117,13 @@ object{
 .detail-view{
     position: absolute;
     pointer-events: none;
-    transform: scale(0.95);
-    //bottom: -100%;
+    transform: scale(0.9);
     opacity: 0;
     background-color: $light-color;
     transition: all 0.25s ease-in-out;
 
     &.pop-up{
         opacity: 1;
-        //transform: translateY(-100%);
         transform: scale(1);
         pointer-events: auto;
     }
@@ -139,9 +138,30 @@ object{
 
     &.pop-up{
         opacity: 1;
-        //transform: translateY(-100%);
         transform: scale(1);
         pointer-events: auto;
+    }
+
+}
+
+.desktop-msg{
+    display: none;
+    text-align: center;
+    padding: 5rem;
+    padding-top: 25vh;
+    background-color: $light-color;
+    position: absolute;
+    z-index: 20;
+
+    hr{
+        margin: auto;
+        width: 50%;
+    }
+
+    @media only screen and (min-width: 490px){
+
+            display: initial;
+    
     }
 
 }
