@@ -68,18 +68,8 @@ export default class AppController{
             //Wait for all the content data to be fetched and injected before setting up their functionalities
             Promise.all(this.contentManager.fetchArray).then(() => {
 
-                const loadedEvent = ["loaded", e => {
+                console.log("Done init content!++++++");
 
-                    this.loadingScreenElem.removeEventListener(...loadedEvent);
-        
-                    console.log("Done Loading Imgs");
-                    this.loadingScreenElem.classList.add("loaded");
-                    
-                }];
-        
-                this.loadingScreenElem.addEventListener(...loadedEvent);
-
-                this.contentManager.preloadImages();
                 generateBG();
                 this.setupButtons();
                 this.setupScrollCards();
@@ -312,8 +302,8 @@ export default class AppController{
         //Setup enter button on loading screen
         document.getElementById("enter-btn").addEventListener("click",e => {
 
-            /* if(navigator.userAgent.match(/Android|BlackBerry|iPhone|iPod|Opera Mini|IEMobile/i))
-                document.documentElement.requestFullscreen(); */
+            if(navigator.userAgent.match(/Android|BlackBerry|iPhone|iPod|Opera Mini|IEMobile/i))
+                document.documentElement.requestFullscreen();
 
             this.loadingScreenElem.classList.add("entered");
 
@@ -343,7 +333,11 @@ export default class AppController{
 
         if(window.location.hash.replace("#","") !== "about"){
 
-            if(window.location.hash.length > 0){
+            if(window.location.hash.length > 0 ){
+
+                this.loadingScreenElem.classList.add("loaded");
+                this.loadingScreenElem.classList.add("entered");
+
 
                 for(let i = 0, length = r.length; i < length; i++){
                     
@@ -359,16 +353,27 @@ export default class AppController{
                 
             }
             else{
-                
 
-                for (let i = 0, length = r.length; i < length; i++){
+                const loadedEvent = ["loaded", e => {
 
-                    const route = r[i];
+                    this.loadingScreenElem.removeEventListener(...loadedEvent);
+        
+                    console.log("Done Loading Imgs");
+                    this.loadingScreenElem.classList.add("loaded");
 
-                    if(route.defaultRoute)
-                        this.updateView(route);
+                    for (let i = 0, length = r.length; i < length; i++){
 
-                }
+                        const route = r[i];
+
+                        if(route.defaultRoute)
+                            window.location.hash = "#" + route.name;
+    
+                    }
+                    
+                }];
+        
+                this.loadingScreenElem.addEventListener(...loadedEvent);
+                this.contentManager.preloadImages();
 
             }
 

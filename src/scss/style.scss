@@ -169,11 +169,12 @@ object{
 
 .loading-screen{
     position: absolute;
-    z-index: 20;
+    z-index: 19;
     //background-color: black;
     color: $light-color;
     text-align: center;
-    transition: transform 0.5s ease-in-out 1s, opacity 1s ease-out 1.6s;
+    transition: transform 0.5s ease-in-out 1s;
+    /* , opacity 1s ease-out 1.6s */
 
     & > h1{
         transition: all 0.5s ease-in-out;
@@ -359,7 +360,7 @@ object{
     &.entered{
 
         transform: scale(1.1);
-        opacity: 0;
+        //opacity: 0;
         pointer-events: none;
 
         .loaded-dialog{

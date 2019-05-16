@@ -2,13 +2,13 @@ export default class ContentManager{
 
     constructor(router){
 
-        this.contentData = [];
+        this.contentData = [6];
         this.fetchArray = [];
 
     }
 
      //Grab all the content data from JSON files & render all base content
-    initContent(){
+    async initContent(){
 
         //Grab all output elements
         this.portfolioElem = document.getElementById("portfolio-card");
@@ -26,7 +26,7 @@ export default class ContentManager{
             .then(res => res.json())
             .then(data => {
 
-                this.contentData.push(data);
+                this.contentData[0] = data;
 
                 //Render portfolio content ---------------------------------
                 let portfolioOutput = "<div>";
@@ -67,6 +67,8 @@ export default class ContentManager{
                 );
 
                 this.portfolioElem.innerHTML = portfolioOutput + "</div>";
+
+                console.log("Done Portfolio!");
             })
             .catch(err => {
                 throw err;
@@ -77,7 +79,7 @@ export default class ContentManager{
             .then(res => res.json())
             .then(data => {
 
-                this.contentData.push(data);
+                this.contentData[1] = data;
 
                 //Render adventure content ------------------------------  
                 let advOutput = `<div id="adventure-logs">`;
@@ -101,6 +103,8 @@ export default class ContentManager{
                 advOutput += "</div>"; 
                 this.logsElem.innerHTML += advOutput;
 
+                console.log("Done Adventure!");
+
             })
             .catch(err => {
                 throw err;
@@ -111,7 +115,7 @@ export default class ContentManager{
             .then(res => res.json())
             .then(data => {
 
-                this.contentData.push(data);
+                this.contentData[2] = data;
 
                 //Render upgrade content ------------------------------  
                 const inProgressList = data.filter(item => (item.status === "progress")).sort((a,b) => b.id - a.id);
@@ -169,6 +173,8 @@ export default class ContentManager{
                 upgradeOutput += "</div></div>"; 
                 this.logsElem.innerHTML += upgradeOutput;
 
+                console.log("Done Upgrade!");
+
             })
             .catch(err => {
                 throw err;
@@ -179,7 +185,7 @@ export default class ContentManager{
             .then(res => res.json())
             .then(data => {
 
-                this.contentData.push(data);
+                this.contentData[3] = data;
 
                 //Render about content --------------------------------
                 let expOutput = `<div id="experience-about">`;
@@ -203,6 +209,8 @@ export default class ContentManager{
 
                 this.aboutElem.innerHTML += expOutput;
 
+                console.log("Done About!");
+
             })
             .catch(err => {
                 throw err;
@@ -213,7 +221,7 @@ export default class ContentManager{
             .then(res => res.json())
             .then(data => {
 
-                this.contentData.push(data);
+                this.contentData[4] = data;
 
                 //Render about content --------------------------------
 
@@ -245,6 +253,8 @@ export default class ContentManager{
                     </div>`;
 
                     this.aboutElem.innerHTML += eduOutput;
+
+                    console.log("Done Education!");
                 
             })
             .catch(err => {
@@ -256,7 +266,7 @@ export default class ContentManager{
             .then(res => res.json())
             .then(data => {
 
-                this.contentData.push(data);
+                this.contentData[5] = data;
 
                 //Render about content --------------------------------
                 let contactOutput = 
@@ -285,6 +295,8 @@ export default class ContentManager{
                 
                 this.aboutElem.innerHTML += contactOutput;
 
+                console.log("Done Contact!");
+
             })
             .catch(err => {
                 throw err;
@@ -302,28 +314,31 @@ export default class ContentManager{
                 
     }
 
-    //Pre-cache images into users' browser
+    //Pre-cache immediately needed images into users' browser
     preloadImages(){
+
+        console.log("Enter Preload Img!");
 
         let linkList = [];
 
         //Accumulate portfolio image links
         this.contentData[0].forEach(d => {
 
-            d.content.media.forEach(img => {
+            console.log(d.content.media[0].type);
 
-                if(img.type === "image")
-                    linkList.push(`portfolio/${d.id}/${img.link}`);
-            })
+            if(d.content.media[0].type === "image")
+                linkList.push(`portfolio/${d.id}/${d.content.media[0].link}`);
+        
 
         })
 
         //Accumulate adventure image links
         this.contentData[1].forEach(d => {
 
-            d.diary.media.forEach(img => {
-                linkList.push(`adventure/${d.id}/${img.link}`);
-            })
+            linkList.push(`adventure/${d.id}/${d.cover}`);
+
+            if(d.diary.media[0].type === "image")
+                linkList.push(`adventure/${d.id}/${d.diary.media[0].link}`);
 
         })
         
@@ -345,6 +360,7 @@ export default class ContentManager{
                 }
 
                 counter--;
+                console.log(counter);
 
                 if(counter == 0)
                     document.querySelector(".loading-screen").dispatchEvent(new Event("loaded"));
