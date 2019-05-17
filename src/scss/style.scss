@@ -7,12 +7,22 @@
     padding: 0;
 }
 
+html{
+
+    @media only screen and (max-width: 365px){
+        font-size: 0.9rem;
+    }
+
+}
+
 body{
     font-family: 'VT323', monospace;
     font-size: 1rem;
     letter-spacing: 0.1rem;
     text-transform: uppercase;
     color: $dark-color;
+    width: 100vw;
+    height: 100vh;
 }
 
 a{
@@ -173,8 +183,20 @@ object{
     //background-color: black;
     color: $light-color;
     text-align: center;
-    transition: transform 0.5s ease-in-out 1s;
+    transition: transform 1s ease-in-out 1s;
     /* , opacity 1s ease-out 1.6s */
+
+    &::before{
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background-color: hsla(0, 0, 0, 0.8);
+        z-index: -3;
+        transition: opacity 1s ease-in-out 1s;
+    }
 
     & > h1{
         transition: all 0.5s ease-in-out;
@@ -190,7 +212,8 @@ object{
 
         //Fall-back**
         background-color: lighten($warning-color,25%);
-        background: repeating-linear-gradient(45deg, lighten($warning-color,25%) 0 4%, darken($success-color,10%) 0 8%);
+        /* background: repeating-linear-gradient(45deg, lighten($warning-color,25%) 0 4%, darken($success-color,10%) 0 8%); */
+        background: repeating-linear-gradient(45deg, lighten($warning-color,25%) 0,lighten($warning-color,25%) 4%, darken($success-color,10%) 0,darken($success-color,10%) 8%);
 
         border: 1rem solid $dark-color;
         outline: 0.5rem solid $warning-color;
@@ -230,7 +253,8 @@ object{
 
     .door-right{
         right: 0;
-        background: repeating-linear-gradient(-45deg, lighten($warning-color,25%) 0 4%, darken($success-color,10%) 0 8%);
+        /* background: repeating-linear-gradient(-45deg, lighten($warning-color,25%) 0 4%, darken($success-color,10%) 0 8%); */
+        background: repeating-linear-gradient(-45deg, lighten($warning-color,25%) 0,lighten($warning-color,25%) 4%, darken($success-color,10%) 0,darken($success-color,10%) 8%);
 
         &::after{
             left: 8%;
@@ -359,9 +383,13 @@ object{
 
     &.entered{
 
-        transform: scale(1.1);
+        transform: scale(1.2);
         //opacity: 0;
         pointer-events: none;
+
+        &::before{
+            opacity: 0;
+        }
 
         .loaded-dialog{
             transition: all 0.5s ease-out;  

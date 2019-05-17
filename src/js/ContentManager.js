@@ -2,7 +2,7 @@ export default class ContentManager{
 
     constructor(router){
 
-        this.contentData = [6];
+        this.contentData = [7];
         this.fetchArray = [];
 
     }
@@ -306,7 +306,7 @@ export default class ContentManager{
         this.fetchArray.push(fetch("content/toolkitContent.json")
             .then(res => res.json())
             .then(data => {
-                this.contentData.push(data);
+                this.contentData[6] = data;
             })
             .catch(err => {
                 throw err;

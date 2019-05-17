@@ -180,8 +180,6 @@ export default class AppController{
                     outputElem.classList.remove("hidden");
                     e.target.classList.add("toggled");
 
-                    
-                    
                 }
                 else{
 
@@ -303,7 +301,7 @@ export default class AppController{
         document.getElementById("enter-btn").addEventListener("click",e => {
 
             if(navigator.userAgent.match(/Android|BlackBerry|iPhone|iPod|Opera Mini|IEMobile/i))
-                document.documentElement.requestFullscreen();
+                document.querySelector("body").requestFullscreen();
 
             this.loadingScreenElem.classList.add("entered");
 
@@ -366,7 +364,8 @@ export default class AppController{
                         const route = r[i];
 
                         if(route.defaultRoute)
-                            window.location.hash = "#" + route.name;
+                            this.updateView(route);
+                            //window.location.hash = "#" + route.name;
     
                     }
                     
@@ -421,6 +420,9 @@ export default class AppController{
     updateView(r){
 
             if(!document.querySelector(".sup-view-active")){
+
+                /* if(window.location.hash.length === 0)
+                    window.location.hash = "#" + r.name; */
 
                 const viewClasses = this.viewElem.classList;
 
