@@ -40,17 +40,20 @@ export default class AppController{
     //Render the base screens' content ------------------------------------------
     renderViews(r){
 
+        this.orderedData = [r.length];
+
         //Sort route base on assigned view position
-        const orderedRoutes = r.sort((a,b) => a.viewPos - b.viewPos);
+        //const orderedRoutes = r.sort((a,b) => a.viewPos - b.viewPos);
 
         //Grab base HTML for main screens, including about screen (** use map instead of foreach to return an array of promises **)
-        Promise.all(orderedRoutes.map(async route => {
+        Promise.all(r.map(async route => {
 
             if(Math.sign(route.viewPos) !== -1){
 
                 const res = await fetch(`views/${route.htmlName}`);
                 const data = await res.text();
-                this.viewElem.innerHTML += data;
+                this.orderedData[route.viewPos - 1] = data;
+                //this.viewElem.innerHTML += data;
 
             }
             else{
@@ -61,6 +64,11 @@ export default class AppController{
 
             }
         })).then(() => {
+
+            //console.log(this.orderedData);
+            this.orderedData.forEach(data => {
+                this.viewElem.innerHTML += data;
+            })
 
             //Once base HTMLs are in place, move on to inject content into those structure 
             this.contentManager.initContent();
@@ -300,7 +308,7 @@ export default class AppController{
         //Setup enter button on loading screen
         document.getElementById("enter-btn").addEventListener("click",e => {
 
-            if(navigator.userAgent.match(/Android|BlackBerry|iPhone|iPod|Opera Mini|IEMobile/i))
+            if(navigator.userAgent.match(/Android|BlackBerry|Opera Mini|IEMobile/i))
                 document.querySelector("body").requestFullscreen();
 
             this.loadingScreenElem.classList.add("entered");
