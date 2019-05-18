@@ -40,6 +40,9 @@ export default class AppController{
     //Render the base screens' content ------------------------------------------
     renderViews(r){
 
+        if(navigator.userAgent.match(/iPhone|iPod/i))
+            document.getElementById("fullscreen-msg").style.display = "none";
+
         this.orderedData = [r.length];
 
         //Sort route base on assigned view position

@@ -1,1 +1,58 @@
-[{"id":"1","title":"Viker","role":"UX / Creative Intern","months":"Feb-Apr 2018","location":"London","detail":"Involved directly in hypercasual mobile game developments, assisting in user experience design process and graphical assets creation. Created early Unity-based prototypes, UA videos and App Store contents for published games.","gain":"Wireframing & Interactive Prototyping"},{"id":"2","title":"Precision Printing","role":"Creative Intern","months":"Oct 2016-Jan 2017","location":"London","detail":"In charge of the production of graphical materials for blogs, and the visual redesign of customer artwork guideline documents for the purpose of better comprehension and modernisation.","gain":"Information Architecture & Typography"},{"id":"3","title":"PwC UK","role":"Consulting Intern","months":"Jun-Aug 2016","location":"London","detail":"Acted as a visual UX designer for ‘Startup Journey’ project, responsible for potential customer research and analysis, and prototyping which includes UI redesign wireframing and introductory video production.","gain":"Qualitative Research & Media Prototyping"},{"id":"4","title":"CyberPrint Group","role":"Consulting Intern","months":"Jun-Aug 2015","location":"Bangkok","detail":"Assisted in the company’s adoption of digital printing. Further led the planning of personalised promotional offerings and print prototyping for Mother’s Day and National Book Exhibition Week.","gain":"Business Model Innovation"},{"id":"5","title":"Chomasoft","role":"Co-Founder","months":"Jun 2014-Jan 2016","location":"Bangkok","detail":"Acted as a co-project manager for the mobile game development of ‘Rubber Dash Story’. Experimented with Scrum to lead the development process. Involved in the UI and gameplay concept ideation process, and minor front-end code edits.","gain":"Agile Project Management"},{"id":"6","title":"Samaggi Samagom","role":"Media Creator Volunteer","months":"Sep 2013-Jul 2014","location":"London","detail":"Responsible for the production of advertisement materials such as posters and videos for charity and public events. Co-produced promotional video for Samaggi Concert feat. LIPTA and social media posters for Samaggi Games 2014.","gain":"Team Building & Collaborating Under Pressure"}]
+[
+
+    {
+        "id":"1",
+        "title": "Viker",
+        "role": "UX / Creative Intern",
+        "months": "Feb-Apr 2018",
+        "location": "London",
+        "detail": "Involved directly in hypercasual mobile game developments, assisting in user experience design process and graphical assets creation. Created early Unity-based prototypes, UA videos and App Store contents for published games.",
+        "gain":"Wireframing & Interactive Prototyping"
+    },
+    {
+        "id":"2",
+        "title": "Precision Printing",
+        "role": "Creative Intern",
+        "months": "Oct 2016-Jan 2017",
+        "location": "London",
+        "detail": "In charge of the production of graphical materials for blogs, and the visual redesign of customer artwork guideline documents for the purpose of better comprehension and modernisation.",
+        "gain":"Information Architecture & Typography"
+    },
+    {
+        "id":"3",
+        "title": "PwC UK",
+        "role": "Consulting Intern",
+        "months": "Jun-Aug 2016",
+        "location": "London",
+        "detail": "Acted as a visual UX designer for ‘Startup Journey’ project, responsible for potential customer research and analysis, and prototyping which includes UI redesign wireframing and introductory video production.",
+        "gain":"Qualitative Research & Media Prototyping"
+    },
+    {
+        "id":"4",
+        "title": "CyberPrint Group",
+        "role": "Consulting Intern",
+        "months": "Jun-Aug 2015",
+        "location": "Bangkok",
+        "detail": "Assisted in the company’s adoption of digital printing. Further led the planning of personalised promotional offerings and print prototyping for Mother’s Day and National Book Exhibition Week.",
+        "gain":"Business Model Innovation"
+    },
+    {
+        "id":"5",
+        "title": "Chomasoft",
+        "role": "Co-Founder",
+        "months": "Jun 2014-Jan 2016",
+        "location": "Bangkok",
+        "detail": "Acted as a co-project manager for the mobile game development of ‘Rubber Dash Story’. Experimented with Scrum to lead the development process. Involved in the UI and gameplay concept ideation process, and minor front-end code edits.",
+        "gain":"Agile Project Management"
+    },
+    {
+        "id":"6",
+        "title": "Samaggi Samagom",
+        "role": "Media Creator Volunteer",
+        "months": "Sep 2013-Jul 2014",
+        "location": "London",
+        "detail": "Responsible for the production of advertisement materials such as posters and videos for charity and public events. Co-produced promotional video for Samaggi Concert feat. LIPTA and social media posters for Samaggi Games 2014.",
+        "gain":"Team Building & Collaborating Under Pressure"
+    }
+
+]
