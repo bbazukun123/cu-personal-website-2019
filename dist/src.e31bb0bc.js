@@ -1643,10 +1643,10 @@ function () {
       window.addEventListener("hashchange", function (e) {
         _this.routeChanged(_this.routes);
       });
-      window.addEventListener("resize", function (e) {
-        document.querySelector("body").style.height = window.clientHeight;
-        document.querySelector("body").style.width = window.clientWidth;
-      });
+      /* window.addEventListener("resize", e => {
+          document.querySelector("body").style.height = window.clientHeight;
+          document.querySelector("body").style.width = window.clientWidth
+      }); */
     } //Render the base screens' content ------------------------------------------
 
   }, {
@@ -1727,6 +1727,16 @@ function () {
 
         Promise.all(_this2.contentManager.fetchArray).then(function () {
           console.log("Done init content!++++++");
+
+          _this2.loadingScreenElem.addEventListener("transitionend", function (e) {
+            var eventElem = e.target;
+
+            if (eventElem === _this2.loadingScreenElem) {
+              eventElem.parentElement.removeChild(_this2.loadingScreenElem);
+              _this2.loadingScreenElem = null;
+            }
+          });
+
           (0, _generateBG.default)();
 
           _this2.setupButtons();
@@ -1906,8 +1916,10 @@ function () {
 
       if (window.location.hash.replace("#", "") !== "about") {
         if (window.location.hash.length > 0) {
-          this.loadingScreenElem.classList.add("loaded");
-          this.loadingScreenElem.classList.add("entered");
+          if (this.loadingScreenElem) {
+            this.loadingScreenElem.classList.add("loaded");
+            this.loadingScreenElem.classList.add("entered");
+          }
 
           for (var i = 0, length = r.length; i < length; i++) {
             var route = r[i];

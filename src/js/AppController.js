@@ -34,10 +34,10 @@ export default class AppController{
 
         });
 
-        window.addEventListener("resize", e => {
+        /* window.addEventListener("resize", e => {
             document.querySelector("body").style.height = window.clientHeight;
             document.querySelector("body").style.width = window.clientWidth
-        });
+        }); */
 
 
     }
@@ -85,6 +85,17 @@ export default class AppController{
             Promise.all(this.contentManager.fetchArray).then(() => {
 
                 console.log("Done init content!++++++");
+    
+                this.loadingScreenElem.addEventListener("transitionend", e => {
+
+                    const eventElem = e.target
+
+                    if(eventElem === this.loadingScreenElem){
+                        eventElem.parentElement.removeChild(this.loadingScreenElem);
+                        this.loadingScreenElem = null;
+                    }
+                    
+                });
 
                 generateBG();
                 this.setupButtons();
@@ -349,8 +360,10 @@ export default class AppController{
 
             if(window.location.hash.length > 0 ){
 
-                this.loadingScreenElem.classList.add("loaded");
-                this.loadingScreenElem.classList.add("entered");
+                if(this.loadingScreenElem){
+                    this.loadingScreenElem.classList.add("loaded");
+                    this.loadingScreenElem.classList.add("entered");
+                }
 
 
                 for(let i = 0, length = r.length; i < length; i++){

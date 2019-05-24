@@ -17,12 +17,13 @@ html{
 
 body{
     font-family: 'VT323', monospace;
-    font-size: 1rem;
+    //font-size: 1rem;
     letter-spacing: 0.1rem;
     text-transform: uppercase;
     color: $dark-color;
     width: 100vw;
     height: 100vh;
+    overflow: hidden;
 }
 
 a{
@@ -61,15 +62,9 @@ object{
     pointer-events: none;
 }
 
-.desktop-msg,
-.loading-screen{
-    height: 100vh;
-    width: 100vw;
-    position: relative;
-    overflow: hidden;
-}
-
 #app,
+.desktop-msg,
+.loading-screen,
 .view,
 .sup-view,
 .detail-view,
@@ -168,7 +163,7 @@ object{
     padding-top: 25vh;
     background-color: $light-color;
     position: absolute;
-    z-index: 20;
+    z-index: 3;
 
     hr{
         margin: auto;
@@ -177,7 +172,7 @@ object{
 
     @media only screen and (min-width: 490px){
 
-            display: initial;
+            display: unset;
     
     }
 
@@ -185,7 +180,7 @@ object{
 
 .loading-screen{
     position: absolute;
-    z-index: 19;
+    z-index: 2;
     //background-color: black;
     color: $light-color;
     text-align: center;
