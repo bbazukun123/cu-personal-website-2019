@@ -17,7 +17,6 @@ html{
 
 body{
     font-family: 'VT323', monospace;
-    //font-size: 1rem;
     letter-spacing: 0.1rem;
     text-transform: uppercase;
     color: $dark-color;
@@ -180,6 +179,7 @@ object{
 
 .loading-screen{
     position: absolute;
+    height: 100vh;
     z-index: 2;
     //background-color: black;
     color: $light-color;

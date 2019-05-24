@@ -435,7 +435,7 @@
             "action": "none",
             "content":{
                 "media":[
-                    {"type":"image","link":"img02.png"},
+                    {"type":"image","link":"img02.jpg"},
                     {"type":"image","link":"img01.jpg"}
                 ],
                 "detail":"Risking Transition was a logo design I have made for London School of Economics' (LSE) German Society. The logo was to be used for The German Symposium event in 2017 and the theme revolves around 'transition'. The requirements for the logo were that it should convey the meaning of 'Risk in Transition', 'Risking Transition', and that the letter G should be recognisable as 'German'.<br><br>The most suitable one has been selected by the head of the committee himself (1st image), and had undergone a series of minor alterations for optimisation.",
@@ -529,9 +529,7 @@
             "action": "https://github.com/bbazukun123/KCL-final-project",
             "content":{
                 "media":[
-                    {"type":"image","link":"img01.png"},
-                    {"type":"image","link":"img02.png"},
-                    {"type":"image","link":"img03.png"}
+                    {"type":"image","link":"img02.png"}
                 ],
                 "detail":"A final project for my computer science course that involves designing an experiment to observe how changing the visual fidelity of a virtual reality environment can affect the interaction performance of users. The project utilises Oculus Rift DK2 headset and Unity to develop a VR simulation to serve the experimentation under the defined scope. The simulation was also experimented with the original Xbox Kinect and a Wii Remote for hand tracking but was replaced with simple mouse interactions in a staged 2D plane due to the time limit and the sheer complexity of the prior devices.<br><br>The simulation was successfully conducted on a set number of categorised testers and the result does show a small but recognisable correlation between the two where lower fidelity environment allowed users to complete tasks in fast times. However, it can clearly be said that there are countless other factors that come into play like the type of interaction for instance and that the experiment was too simplified for a valid conclusion.",
                 "challenges":[
