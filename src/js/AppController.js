@@ -34,6 +34,11 @@ export default class AppController{
 
         });
 
+        window.addEventListener("resize", e => {
+            document.querySelector("body").style.height = window.clientHeight;
+            document.querySelector("body").style.width = window.clientWidth
+        });
+
 
     }
     

@@ -1643,6 +1643,10 @@ function () {
       window.addEventListener("hashchange", function (e) {
         _this.routeChanged(_this.routes);
       });
+      window.addEventListener("resize", function (e) {
+        document.querySelector("body").style.height = window.clientHeight;
+        document.querySelector("body").style.width = window.clientWidth;
+      });
     } //Render the base screens' content ------------------------------------------
 
   }, {
@@ -2117,7 +2121,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51661" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51954" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
