@@ -31,7 +31,7 @@ export default function updateNav(pageName){
 
     //Fade out navigation bar & update navigation bar content as soon as fade finishes (0.25s hard coded timing)
     navElem.classList.add("fade");
-    setTimeout(() => {
+    /* setTimeout(() => {
 
         if(navItems[0] === "bottom")
             navElem.classList.remove("nav-top");
@@ -52,7 +52,7 @@ export default function updateNav(pageName){
             }
         }
 
-    }, 250);
+    }, 250); */
 
     
 

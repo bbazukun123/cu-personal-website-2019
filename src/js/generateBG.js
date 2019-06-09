@@ -1,7 +1,7 @@
 //A feature module to generate the room background graphic for the main screens
 export default function generateBG(){
 
-    document.querySelectorAll(".container .room-bg").forEach(bg => {
+    document.querySelectorAll(".room-bg").forEach(bg => {
 
         const column = bg.getAttribute("column");
         let wallpaperOutput = "";

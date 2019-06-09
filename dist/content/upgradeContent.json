@@ -1,1 +1,74 @@
-[{"title":"Svelte.js","status":"que","id":"13"},{"title":"TensorFlow.js","status":"que","id":"12"},{"title":"Vue.js - Basics","status":"progress","id":"11"},{"title":"React.js - Basics","status":"que","id":"10"},{"title":"Node.js & Express.js","status":"que","id":"9"},{"title":"NoSQL Database & MongoDB","status":"que","id":"8"},{"title":"MERN / MERV Stacks","status":"que","id":"7"},{"title":"Three.js (3D)","status":"que","id":"6"},{"title":"Pixi.js (2D)","status":"que","id":"5"},{"title":"Sprite & SVG Animations","status":"progress","id":"4"},{"title":"React Native","status":"que","id":"3"},{"title":"Sass & Bootstrap 4","status":"completed","id":"2"},{"title":"Advanced JS Concepts","status":"completed","id":"1"},{"title":"ES6+ Vanilla JS Fundamentals","status":"completed","id":"0"}]
+[
+
+    {
+        "title": "Svelte.js",
+        "status": "que",
+        "id": "13"
+    },
+    {
+        "title": "TensorFlow.js",
+        "status": "que",
+        "id": "12"
+    },
+    {
+        "title": "Vue.js - Basics",
+        "status": "progress",
+        "id": "11"
+    },
+    {
+        "title": "React.js - Basics",
+        "status": "que",
+        "id": "10"
+    },
+    {
+        "title": "Node.js & Express.js",
+        "status": "que",
+        "id": "9"
+    },
+    {
+        "title": "NoSQL Database & MongoDB",
+        "status": "que",
+        "id": "8"
+    },
+    {
+        "title": "MERN / MERV Stacks",
+        "status": "que",
+        "id": "7"
+    },
+    {
+        "title": "Three.js (3D)",
+        "status": "que",
+        "id": "6"
+    },
+    {
+        "title": "Pixi.js (2D)",
+        "status": "que",
+        "id": "5"
+    },
+    {
+        "title": "Sprite & SVG Animations",
+        "status": "progress",
+        "id": "4"
+    },
+    {
+        "title": "React Native",
+        "status": "que",
+        "id": "3"
+    },
+    {
+        "title": "Sass & Bootstrap 4",
+        "status": "completed",
+        "id": "2"
+    },
+    {
+        "title": "Advanced JS Concepts",
+        "status": "completed",
+        "id": "1"
+    },
+    {
+        "title": "ES6+ Vanilla JS Fundamentals",
+        "status": "completed",
+        "id": "0"
+    }
+
+]
