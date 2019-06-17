@@ -16,7 +16,7 @@ export default class ContentManager{
         this.aboutElem = document.querySelector("#about-content .content-list");
         this.detailElem = document.querySelector(".detail-card");
         this.toolkitElem = document.querySelector(".toolkit-card");
-
+        
         //Empty the innerHTML of multi-block output elements
         this.logsElem.innerHTML = "";
         this.aboutElem.innerHTML = "";
@@ -595,6 +595,11 @@ export default class ContentManager{
 
         }
 
+        document.querySelector("#portfolio-content > div").scroll({
+            top: 0,
+            behavior: "smooth"
+        });
+
     }
 
     //Switch the logs content between the adventure and upgrade tabs
@@ -970,6 +975,9 @@ export default class ContentManager{
     //Update toolkit pop-up card to match the content of the select toolkit
     updateToolkit(id){
 
+        console.log("Toolkit elm = " + this.toolkitElem +", and height = "+ this.toolkitElem.scrollTop);
+
+
         if(id === "ux-screen"){
 
             this.toolkitElem.firstElementChild.classList.add("active");
@@ -983,67 +991,8 @@ export default class ContentManager{
             this.toolkitElem.lastElementChild.classList.add("active");
         }
 
-        console.log(this.toolkitElem.scrollTop);
-        this.toolkitElem.scrollTop = 0;
-
-        //Setup toolkit toggles
-        document.querySelectorAll(".toolkit-toggle").forEach(btn => {
-
-            btn.addEventListener("click", e => {
-
-                let outputElem = document.getElementById(e.target.id.replace("-btn",""));
-                
-                if(outputElem.classList.contains("hidden")){
-
-                    outputElem.style.height = outputElem.scrollHeight + "px";
-
-                    const expand = ["transitionend", e => {
-
-                        outputElem.removeEventListener(...expand);
-                        outputElem.style.height = null;
-
-                    }];
-
-                    outputElem.addEventListener(...expand);
-
-                    outputElem.classList.remove("hidden");
-                    e.target.classList.add("toggled");
-
-                    
-                    
-                }
-                else{
-
-                    const transitionExtract = outputElem.style.transition;
-                    outputElem.style.transition = "";
-
-                    requestAnimationFrame(() => {
-
-                        outputElem.style.height = outputElem.scrollHeight + "px";
-                        outputElem.style.transition = transitionExtract;
-
-                        requestAnimationFrame(() => {
-
-                            outputElem.style.height = 0 + "px";
-
-                        });
-
-                    });
-
-                    const collapse = ["transitionend", e => {
-
-                        outputElem.removeEventListener(...collapse);
-                        outputElem.classList.add("hidden");
-
-                    }];
-
-                    outputElem.addEventListener(...collapse);  
-                    e.target.classList.remove("toggled");          
-
-                }
-
-            });
-        })
+        /* console.log(this.toolkitElem.firstElementChild.scrollTop); */
+        /* this.toolkitElem.parentElement = 0; */
 
     }
     

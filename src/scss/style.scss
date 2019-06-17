@@ -9,6 +9,8 @@
 
 html{
 
+    scroll-behavior: smooth;
+
     @media only screen and (max-width: 365px){
         font-size: 0.9rem;
     }
@@ -540,6 +542,97 @@ i{
     .landscape-dialog{
         display: flex;
     }
+
+}
+
+@media only screen and (max-height: 600px) and (orientation: portrait) {
+
+    .nav{
+        height: 3.6rem;
+    }
+
+    .main-content{
+
+        h1{
+            font-size: 2.5rem;
+            //padding: 1rem;
+        }
+    }
+
+    .content-group{
+
+        padding: 1rem 0;
+
+        .content-box{
+
+            margin-bottom: 0rem;
+            border-bottom: none;
+            padding-bottom: 0.2rem;
+
+            &::after{
+                bottom: 0.2rem;
+            }
+
+            h2{
+                font-size: 1.5rem !important;
+            }
+
+            h4{
+                font-size: 1rem !important;
+            }
+
+            .content-item{
+
+                & > div:first-child{
+                    padding: 0.8rem 1.2rem !important;
+                }
+
+                & > div:last-child{
+                    height: 3rem !important;
+
+                    /* button{
+                        padding: 0.3rem 0;
+                    }
+ */
+                }
+
+            }
+
+        }
+
+        .controller-box{
+
+            height: 3rem;
+
+            & > div{
+                font-size: 1.2rem;
+            }
+
+            &#about-controller{
+                & > div{
+                    line-height: 2 !important;
+                }
+                
+            }
+
+        }
+
+    }
+
+    .desk{
+
+        .structure{
+
+            .left-leg{
+                height: 14vh !important;
+            }
+
+            .right-leg{
+                height: 14vh !important;
+            }
+        }
+
+    } 
 
 }
 

@@ -154,6 +154,19 @@ export default class AppController{
 
         }
 
+        document.onfullscreenchange = function (e){
+
+            if(document.fullscreenElement){
+
+                document.getElementById("fullscreen-toggle").classList.add("fullscreen");
+
+            }
+            else{
+                document.getElementById("fullscreen-toggle").classList.remove("fullscreen");
+            }
+
+        }
+
         const mq = window.matchMedia("screen and (min-width: 1024px) and (orientation: landscape)");
         mq.addListener(this.mediaChange);
         this.mediaChange(mq);
@@ -168,6 +181,13 @@ export default class AppController{
                     //Hacky Solution, Please find a way to fix this propperly!!! ***********
                     setTimeout(() => {
                         this.updateScrollCard(document.querySelector("#portfolio-content > div"));  
+
+                       /*  document.querySelector("#portfolio-content > div").scrollTop = 0; */
+
+                        /* document.querySelector("#portfolio-content > div").scroll({
+                            top: 0,
+                            behavior: "smooth"
+                        }); */
 
                         document.getElementById("portfolio-controller").style.pointerEvents = "unset";
                         /* document.querySelector("#portfolio-content > div").scrollTop = 0;  */
@@ -222,6 +242,16 @@ export default class AppController{
         //this.aboutBtns = document.querySelector(".about-selector-items");
         this.toggles = document.querySelectorAll(".toggle-btn");
         this.detailBtns = document.querySelectorAll(".detail-btn");
+
+        document.getElementById("fullscreen-toggle").addEventListener("click", e => {
+
+            if(!document.fullscreenElement){
+                document.querySelector("body").requestFullscreen();
+            }
+            else{
+                document.exitFullscreen();
+            }
+        })
 
         Array.from(document.querySelectorAll(".selector-btn")).forEach(btn => {
 
@@ -455,7 +485,6 @@ export default class AppController{
         cardLists.forEach(list => {
 
             list.parentElement.addEventListener("scroll",(e) => {
-                console.log("Scroll " + e.target);
                 this.updateScrollCard(e.target);
             });
 
