@@ -123,7 +123,7 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
     }
 
     &-lowercase{
-        text-transform: lowercase;
+        text-transform: none;
     }
 
     &-paragraph{
@@ -198,43 +198,103 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
 //Key components
 .nav{
     position: fixed;
-    display: grid;
-    grid-template-columns: repeat(3,1fr); 
     width: 100vw;
-    height: 4em;
+    height: 4rem;
     bottom: 0;
     z-index: 1;
     pointer-events: none;
     transition: opacity 0.25s ease-out;
-    background-color: pink;
+    //background-color: pink;
     
+    #mobile-nav{
+        height: 100%;
+        width: 90%;
+        margin: auto;
+        display: grid; 
+        grid-template-columns: repeat(3,1fr);
+        align-items: center;
 
-    .nav-btn{
-        pointer-events: auto;
-        text-align: center;
+        .nav-btn{
+            pointer-events: auto;
+            text-align: center;
 
-        & > div{
-            display: inline-flex;
-            flex-direction: column;
-        }
+            & > div{
+                display: inline-flex;
+                flex-direction: column;
 
-        &:nth-child(1){
-            justify-self: start;
-        }
+                object{
+                    display: inline-block;
+                }
+            }
 
-        &:nth-child(2){
-            justify-self: center;
-        }
+            &:nth-child(1){
+                justify-self: start;
+            }
 
-        &:nth-child(3){
-            justify-self: end;
+            &:nth-child(2){
+                justify-self: center;
+            }
+
+            &:nth-child(3){
+                justify-self: end;
+            }
+
         }
 
     }
 
+    #desktop-nav{
+        display: none;
+        height: 100%;
+        text-align: center;
+        flex-direction: column;
+        justify-content: center;
+        //align-items: center;
+
+        a{
+            pointer-events: auto;
+            color: $dark-color;
+            flex: 1;
+            cursor: pointer;
+
+            div{
+                height: 100%;
+                padding: 1.5rem 0;  
+                line-height: 1.5;
+                position: relative;
+
+                &::after{
+                    content: "";
+                    position: absolute;
+                    height: 100%;
+                    width: 100%;
+                    z-index: -1;
+                    top: 0;
+                    left: 0;
+                    background-color: $dark-color;
+                    transform: translateX(100%);
+                    opacity: 0;
+                    transition: all 0.25s ease-out;
+                }
+            }
+
+            &.active{
+
+                pointer-events: none;
+                color: $light-color;
+
+                div::after{
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+
+            }
+        }
+    }
+
     &.hidden{
-        visibility: unset;
-        opacity: 0;
+        visibility: none;
+        //opacity: 0;
 
         .nav-btn{
             pointer-events: none;
@@ -281,6 +341,9 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
     position: relative;
     width: 100vw;
     height: 100vh;
+
+    //Full Viewport Hack
+    height: calc(var(--vh, 1vh) * 100);
     
     /* &#about-t{
         transition: opacity 0.35s ease-out;
@@ -309,6 +372,11 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
 
             h1{
                 display: inline-block;
+            }
+
+            h1:last-child{
+                @include set-background($light-color);
+                border-bottom: 0.4rem solid #B8B8B8;
             }
         }
 
@@ -380,6 +448,10 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
                     position: relative;
                     background-color: #2D2D2D;
                     padding: 0.25rem;
+
+                    .screen{
+                        cursor: pointer;
+                    }
 
                     &::after{
                         content: "";
@@ -540,380 +612,7 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
                 clip-path: polygon(3% 0, 97% 0, 100% 100%, 0% 100%);
                 background: linear-gradient(hsla(0, 0, 0, 0.3),hsla(0, 0, 0, 0.15))
             }
-        }
-
-        //Portfolio Page
-
-        .content-card,
-        .selector-card{
-            width: 88%;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .about-fix{
-            width: 100%;
-            height:100%;
-            padding-top: 3%;
-        }
-
-        .content-card{
-            $padding: 0.6rem;
-            height: 60%;
-            padding: $padding;
-            position: relative;
-
-            &::before{
-                content: "";
-                position: absolute;
-                left: $padding;
-                right: $padding;
-                top: $padding;
-                height: 3%;
-                background: linear-gradient(hsla(0,0,0,0.6),hsla(0,0,0,0));
-                transition: opacity 0.25s ease-out;
-                z-index: 1;
-            }
-
-            &::after{
-                content: "";
-                position: absolute;
-                left: $padding;
-                right: $padding;
-                bottom: $padding;
-                height: 3%;
-                background: linear-gradient(hsla(0,0,0,0),hsla(0,0,0,0.6));
-                transition: opacity 0.25s ease-out;
-            }
-
-            &.no-scroll-shadow-top::before{
-                opacity: 0;
-            }
-
-            &.no-scroll-shadow-bottom::after{
-                opacity: 0;
-            }
-
-            &.about-card{
-                //top:10%;
-                margin-top: 22%;
-                height: 75%;
-            }
-            
-            & > div {
-                width: 100%;
-                height: 100%;
-                /* overflow: scroll;
-                overscroll-behavior: contain; */
-                //overflow-style: hidden;
-                position: relative;
-
-                
-            }
-
-            .card-list{
-                width: 100%;
-                height: 100%;
-                margin: auto;
-                /* display: grid;
-                grid-template-columns: 1fr;
-                grid-gap: 0.6rem;
-                justify-items: center; */
-                position: relative;
-                overflow: scroll;
-                overscroll-behavior: contain;
-                
-                & > div{
-                    position: absolute;
-                    display: grid;
-                    grid-template-columns: 1fr;
-                    grid-gap: 0.6rem;
-                    justify-items: center;
-                    width: 100%;
-                    opacity: 1;
-                    transition: opacity 0.15s ease-out;
-
-                    div{
-                        height: auto;
-                        overflow: hidden;
-                        transition: height 0.25s ease-in-out;
-
-                        &.hidden{
-                            /* opacity: 0;
-                            transform: scaleX(0.9); */
-                            height: 0;
-                            //display: none;
-                        }
-                    }
-
-                    &.fade{
-                        opacity: 0;
-                        //display: inherit;
-                    }
-
-                    &.hidden{
-                        display: none;
-                    }
-
-                    &.education-card{
-                        padding: 0.6rem;
-                        grid-template-columns: 1fr 4fr;
-                        grid-gap: 0.2rem 1rem;
-                        position: relative;
-                        
-                        .milestone{
-                            background-color: $warning-color;
-                            width: 35px;
-                            height: calc(35px + 6.4px);
-                            border-bottom: 0.4rem solid darken($warning-color,20%);
-                            margin-top: 0.3rem;
-                            position: relative;
-
-                            &::after{
-                                content: "";
-                                position: absolute;
-                                background-color: $dark-color;
-                                top: 25%;
-                                bottom: 25%;
-                                left: 25%;
-                                right: 25%
-                            }
-                        }
-
-                        .card-item{
-                            background-color: transparent;
-                            padding-right: 0.6rem;
-                            
-                            hr{
-                                width: 90%;
-                                border-width: 0.06rem;
-                            }
-
-                            button{
-                                padding: 0.3rem;
-                                padding-left: 1rem;
-                                padding-right: 1rem;
-                            }
-                        }
-
-                        &::before{
-                            content: "";
-                            position: absolute;
-                            //height: 100%;
-                            width:4%;
-                            bottom: -4.5%;
-                            top: 5%;
-                            left: 10%;
-                            background: linear-gradient($dark-color, hsla(0,53,53,0.3) 85%, hsla(0,53,53,0));
-                        }
-                    }
-
-                    &.contact-card{
-                        grid-template-columns: 1fr;
-                        grid-gap: 0.2rem 1rem;
-                        text-align: center;
-
-                        div{
-                            margin-top: 0.25rem;
-                        }
-
-                        h1{
-                            font-size: 2.5rem;
-                            padding: 1.5rem 1.5rem;
-                        }
-
-                        button{
-                            padding-top: 0.25rem;
-                            padding-bottom: 0.25rem;
-                        }
-
-                        a{
-                            color: $warning-color;
-                        }
-
-                        .avatar{
-                            width: 100%;
-                            height: 24vh;
-                            //background-color: pink;
-                            overflow: hidden;
-                            position: relative;
-
-                            object{
-                                position: absolute;
-                                width:115%;
-                            }
-                        }
-
-                        .social-media{
-                            width: 100%;
-                            display: grid;
-                            grid-template-columns: 1fr 1fr;
-                            grid-gap: 0.5rem; 
-
-
-                            button{
-                                padding: 0.9rem;
-                                padding-top: 0.6rem;
-                                padding-bottom: 0.6rem;
-                                margin-bottom: 0.5rem;
-                            }
-                            
-                        }
-                    }
-                }
-
-                .card-item{
-                    width: 100%;
-                    @include set-background($primary-color);
-                    //transition: transform 0.25s ease-out;
-
-                    &.hidden{
-                        display: none;
-                        //transform: scaleY(0);
-                    }
-
-                    .card-photo{
-                        height: 20vh;
-                        position: relative;
-                        background-position: center;
-                        background-size: cover; 
-
-                        & > div{
-                            position: absolute;
-                            bottom: 0;
-                            z-index: 1;
-                        }
-
-                        &::after{
-                            content: "";
-                            position: absolute;
-                            top: 0;
-                            bottom: 0;
-                            left: 0;
-                            right: 0;
-                            background: hsla(0, 0, 0, 0.3);
-                            //background: rgba(255, 255, 255, 0.3);
-                        }
-
-                    }
-                    
-                }
-            }
-
-            //Upgrade-specific card items
-            .upgrade-items{
-                width: 95%;
-                height: auto;
-                /* transform-origin: 50% 0;
-                transition: scaleY 0.25s ease-out; */
-                overflow: hidden;
-                transition: height 0.25s ease-out;
-
-                div{
-
-                    &:nth-child(odd){
-                        @include set-background($primary-color);
-                    }
-
-                    &:nth-child(even){
-                        @include set-background(darken($primary-color,15%));
-                    }
-                }
-
-                &.hidden{
-                    height: 0;
-                }
-
-                /* &.disable-transition{
-                    transition: none;
-                } */
-
-            }
-
-            //Contact-specific card
-            
-        }
-
-        .selector-card{
-            height: 8%;
-            font-size: 1.4rem;
-
-            .selector-card-items{
-                height: 100%;
-                display: flex;
-                align-items: center;                
-
-                div{
-                    display: inline-block;
-                    cursor: pointer;
-                    pointer-events: inherit;
-                    position: relative;
-                    z-index: 0;
-
-                    &.selected{
-                        cursor: inherit;
-                        pointer-events: none;
-                        color: $light-color;
-                    }
-
-                    &::before{
-                        content:"";
-                        position: absolute;
-                        top: 0;
-                        bottom: 0;
-                        left: 0;
-                        right: 0;
-                        z-index: -1;
-                        @include set-background($dark-color);
-                        transform: scaleX(0);
-                        opacity: 0;
-                        transition: all 0.25s ease-out;
-
-                    }
-
-                    &.selected::before {
-                        cursor: inherit;
-                        pointer-events: none;
-                        opacity: 1;
-                        transform: scaleX(1);
-                    }
-                    
-                }
-
-                &.portfolio-selector-items{
-                    justify-content: space-between;
-
-                    div{
-                        padding: 0.5rem;
-                        padding-left: 1rem;
-                        padding-right: 1rem;
-                    }
-                }
-
-                &.logs-selector-items{
-                    justify-content: space-around;
-
-                    div{
-                        padding: 0.5rem;
-                        padding-left: 1.5rem;
-                        padding-right: 1.5rem;
-                    }
-                }
-
-                &.about-selector-items{
-                    justify-content: space-around;
-
-                    div{
-                        padding: 0.5rem;
-                        padding-left: 0.5rem;
-                        padding-right: 0.5rem;
-                        font-size: 1.2rem;
-                    }
-                }
-
-            }
-
-        }
+        }       
 
     }
     
@@ -975,6 +674,12 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
     height: 100vh;
     text-align: center;
     overflow: scroll;
+    overflow-x:hidden;
+    overscroll-behavior: contain;
+    background-color: $light-color;
+
+    //Full Viewport Hack
+    height: calc(var(--vh, 1vh) * 100);
 
     h1{
         word-wrap: break-word;
@@ -1020,7 +725,11 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
     }
 
     /* .detail-content{
-        line-height: 1.6;
+
+        h4{
+            font-size: 1.2rem;
+        }
+
     } */
 
     .detail-gallery{
@@ -1115,6 +824,11 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
     background-color: $light-color;
     //border-bottom: 0.4rem solid #B8B8B8;
     overflow: scroll;
+    overflow-x:hidden;
+    overscroll-behavior: contain;
+    /* display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 0.6rem; */
 
     hr{
         width: 60%;
@@ -1124,161 +838,22 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
     .height-filler{
         height: 4.6rem;
     }
-}
 
-.list-content{
+    /* h4{
+        font-size: 1.2rem;
+    } */
 
-    width: 82%;
-    margin: auto;
-    margin-bottom: 1.5rem;
-    text-align: left;
-    height: auto;
-    overflow: hidden;
-    transition: height 0.25s ease-out;
+    & > div{
 
-    &.hidden{
-        height: 0;
+        display: none;
+
+        &.active{
+            display: block;
+        }
     }
-
-    h4:nth-child(odd){
-        margin: 0.5rem 0;
-        padding: 0.8rem;
-        display: block;
-        width: 100%;
-        @include set-background($primary-color);
-        //color: transparentize($dark-color, 0.2);
-    }
-
-    h4:nth-child(even){
-        margin: 0.5rem 0;
-        padding: 0.8rem;
-        display: block;
-        width: 100%;
-        @include set-background(darken($primary-color, 15%));
-        //color: transparentize($dark-color, 0.2);
-    }
-
-    &.list-danger h4:nth-child(odd){
-        padding-left: 1rem;
-        background-color: lighten($danger-color, 55%);
-        color: transparentize($dark-color, 0.2);
-    }
-
-    &.list-danger h4:nth-child(even){
-        padding-left: 1rem;
-        background-color: lighten($danger-color, 45%);
-        color: transparentize($dark-color, 0.2);
-    }
-
-    &.list-warning h4:nth-child(odd){
-        padding-left: 1rem;
-        background-color: lighten($warning-color, 55%);
-        color: transparentize($dark-color, 0.2);
-    }
-
-    &.list-warning h4:nth-child(even){
-        padding-left: 1rem;
-        background-color: lighten($warning-color, 45%);
-        color: transparentize($dark-color, 0.2);
-    }
-
-    &.list-success h4:nth-child(odd){
-        padding-left: 1rem;
-        background-color: lighten($success-color, 55%);
-        color: transparentize($dark-color, 0.2);
-    }
-
-    &.list-success h4:nth-child(even){
-        padding-left: 1rem;
-        background-color: lighten($success-color, 45%);
-        color: transparentize($dark-color, 0.2);
-    }
-
 }
 
 //Other components
-.cta-panel{
-    width: 100%;
-    @include set-background($dark-color);
-    display: grid;
-    align-items: center;
-
-    &.cta{
-
-        &-success{
-            @include set-background($success-color);
-        }
-
-        &-warning{
-            @include set-background($warning-color);
-        }
-
-        &-danger{
-            @include set-background($danger-color);
-        }
-    }
-
-    &.portfolio-panel{
-        grid-template-columns: 1fr 3fr 1fr 1.5fr;
-    }
-
-    &.adventure-panel{
-        grid-template-columns: 5fr 2fr;
-    }
-
-    &.upgrade-panel{
-        grid-template-columns: 4fr 1fr;
-    }
-
-    &.experience-panel{
-        grid-template-columns: 3fr 2.5fr 2fr;
-    }
-
-    &.contact-panel{
-        grid-template-columns: 4fr 2fr;
-    }
-
-    &.challenges-panel,
-    &.tools-panel,
-    &.key-learning-panel,
-    &.dissertation-panel{
-        //padding: 1rem;
-        margin: 0.5rem auto;
-        width: 90%;
-        justify-items: start;
-        grid-template-columns: 1fr 6fr;
-
-        i{
-            padding-left: 1.2rem;
-            display: block;
-            width: 100%;
-        }
-
-    }
-
-    &.key-learning-panel,
-    &.dissertation-panel{
-        margin-bottom: 0;
-    }
-
-    &.toolkit-panel{
-        margin: 0.5rem auto;
-        width: 90%;
-        grid-template-columns: 1fr 4fr 1.2fr;
-
-        /* i{
-            padding-left: 1.2rem;
-            display: block;
-            width: 100%;
-        } */
-    }
-
-}
-
-.card{
-    @include set-background($light-color);
-    border-bottom: 0.4rem solid #B8B8B8;
-}
 
 .btn{
     font-family: inherit;
@@ -1287,6 +862,7 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
     border-bottom: 0.4rem solid #B8B8B8;
     transition: all 0.05s ease-out;
     border-radius: 0.25rem;
+    cursor: pointer;
 
     &.btn-l{
         font-size: 1.1rem;
@@ -1365,6 +941,7 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
     box-shadow: 0 0.5rem 0.5rem hsla(0,0,0,0.3);
     transition: opacity 0.25s ease-out;
     transition: all 0.05s ease-out;
+    cursor: pointer;
 
     /* &.toolkit-btn{
         bottom: 1rem;
@@ -1391,6 +968,10 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
     
 }
 
+.detail-content{
+    font-size: 1.2rem;
+}
+
 //---------------------------------------NEW----------------
 .content-group{
 
@@ -1403,15 +984,468 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
     display: flex;
     flex-direction: column;
 
+    .content-box,
+    .controller-box{
+        background-color: $light-color;
+        border-bottom: 0.4rem solid #B8B8B8;
+    }
+
     .content-box{
-        background-color: red;
+        $padding: 0.8rem;
         flex: 1;
-        margin-bottom: 1.4rem;
+        margin-bottom: 1.2rem;
+        padding: $padding;
+        overflow: hidden;
+        position: relative;
+        
+        &::before{
+            content: "";
+            position: absolute;
+            left: $padding;
+            right: $padding;
+            top: $padding;
+            height: 3%;
+            background: linear-gradient(hsla(0,0,0,0.4),hsla(0,0,0,0));
+            transition: opacity 0.25s ease-out;
+            z-index: 1;
+        }
+
+        &::after{
+            content: "";
+            position: absolute;
+            left: $padding;
+            right: $padding;
+            bottom: $padding;
+            height: 3%;
+            background: linear-gradient(hsla(0,0,0,0),hsla(0,0,0,0.4));
+            transition: opacity 0.25s ease-out;
+        }
+
+        &.no-scroll-shadow-top::before{
+            opacity: 0;
+        }
+
+        &.no-scroll-shadow-bottom::after{
+            opacity: 0;
+        }
+
+        & > div{
+            height: 100%;
+            overflow: scroll;
+            overflow-x:hidden;
+            overscroll-behavior: contain;
+            //background-color: darken($light-color, 5%);
+
+            .content-list{
+
+                display: grid;
+                grid-template-columns: 1fr;
+                grid-gap: 0.6rem;
+
+                #adventure-logs,
+                #upgrade-logs,
+                #experience-about,
+                #education-about,
+                #connect-about{
+
+                    display: grid;
+                    grid-template-columns: 1fr;
+                    grid-gap: 0.6rem;
+
+                    //opacity: 1;
+                    transition: opacity 0.15s ease-out;
+
+                    &.fade{
+                        opacity: 0;
+                        //display: inherit;
+                    }
+
+                    &.hidden{
+                        display: none;
+                    }
+
+                }
+
+                .content-item{
+
+                    height: auto;
+                    overflow: hidden;
+                    transition: all 0.25s ease-in-out;
+
+                    &.hidden{
+                        display: none;
+                    }
+
+                    & > div:first-child{
+                        text-align: left;
+                        background-color: $primary-color;
+                        padding: 1rem 1.2rem;
+                    }
+
+                    & > div:last-child{
+                        @include set-background($dark-color);
+                        display: flex;
+                        align-items: center;
+                        height: 3.5rem;
+                    }
+
+                    &.portfolio-item{
+
+                        & > div:first-child{
+                            
+                            h2{
+                                font-size: 1.6rem;
+                                margin-bottom: 0.4rem;
+                                line-height: 1.3;
+                            }
+
+                            h4{
+                                font-size: 1.1rem;
+                            }
+
+                        }
+    
+                        & > div:last-child{
+
+                            h3{
+                                width: 6rem;
+                                height: 100%;
+                                line-height: 3.5rem;
+                                vertical-align: middle;
+                            }
+
+                            h5{
+                                flex: 1;
+                                text-align: left;
+                                padding-left: 1rem;
+                            }
+
+                            button{
+                                width: 3rem;
+                            }
+
+                        }
+                    }
+
+                    &.adventure-item{
+
+                        & > div:first-child{
+
+                            height: 10rem;
+
+                            position: relative;
+                            background-position: center;
+                            background-size: cover; 
+
+                            & > div{
+                                position: absolute;
+                                bottom: 1.2rem;
+                                z-index: 1;
+
+                                h2{
+                                    font-size: 1.6rem;
+                                    margin-bottom: 0.4rem;
+                                }
+    
+                                h4{
+                                    font-size: 1.1rem;
+                                }
+
+                            }
+
+                            &::after{
+                                content: "";
+                                position: absolute;
+                                top: 0;
+                                bottom: 0;
+                                left: 0;
+                                right: 0;
+                                background: hsla(0, 0, 0, 0.3);
+                                //background: rgba(255, 255, 255, 0.3);
+                            }
+
+                        }
+    
+                        & > div:last-child{
+
+                            h3{
+                                flex: 1;
+                                text-align: left;
+                                padding-left: 1.2rem;
+                            }
+
+                            button{
+                                width: 5rem;
+                            }
+
+                        }
+                    }
+
+                    &.experience-item{
+
+                        & > div:first-child{
+                            
+                            h2{
+                                font-size: 1.6rem;
+                                margin-bottom: 0.4rem;
+                                line-height: 1.2;
+                            }
+
+                            h4{
+                                font-size: 1.1rem;
+                            }
+
+                        }
+    
+                        & > div:last-child{
+
+                            h5:first-child{
+                                //flex: 1;
+                                width: 6.5rem;
+                                text-align: left;
+                                padding-left: 1rem;
+                            }
+
+                            h4{
+                                flex: 1;
+                                //width: 10rem;
+                                text-align: left;
+                                padding-left: 1rem;
+                            }
+
+                            button{
+                                width: 5rem;
+                            }
+
+                        }
+
+                    }
+
+                }
+
+                #education-about{
+                    padding: 0.6rem;
+                    grid-template-columns: 1fr 4fr;
+                    grid-gap: 0.2rem 1rem;
+                    position: relative;
+                    //background-color: $light-color;
+                    overflow: hidden;
+                    
+                    .milestone{
+                        background-color: $warning-color;
+                        width: 35px;
+                        height: calc(35px + 6.4px);
+                        border-bottom: 0.4rem solid darken($warning-color,20%);
+                        margin: 0.3rem auto 0 auto;
+                        position: relative;
+                        z-index: 1;
+
+                        &::after{
+                            content: "";
+                            position: absolute;
+                            background-color: $dark-color;
+                            top: 25%;
+                            bottom: 25%;
+                            left: 25%;
+                            right: 25%
+                        }
+                    }
+
+                    .education-item{
+                        padding-right: 0.6rem;
+                        text-align: left;
+
+                        h3:first-child{
+                            width: 10.5rem;
+                            position: relative;      
+                            margin: 0.7rem 0 1.2rem 0;
+                            font-size: 1.5rem;
+                            display: inline-block;
+                            z-index: 0;
+                            color: $light-color;
+                            padding: 0.3rem 0;
+
+                            &::before{
+                                position: absolute;
+                                content: "";
+                                height: 100%;
+                                width: 100%;
+                                top: 0;
+                                left: 0;
+                                background: linear-gradient(to right, darken($warning-color,20%) 0%, darken($warning-color,20%) 1%, $warning-color 10%, $warning-color 100%);
+                                transform: translateX(-1.7rem);
+                                z-index: -1;
+                                border-radius: 0 0.3rem 0.3rem 0;
+                                box-shadow: 0 0.1rem 0.05rem hsla(0, 0, 0, 0.7);
+                                opacity: 0.8;
+                            }
+                        }
+
+                        div{
+
+                            margin: 0.5rem 0;
+                            height: 4rem;
+
+                            button{
+                                //height: 100%;
+                                width: 6.5rem;
+                                padding: 0.5rem;
+
+                                &:active{
+                                    border-bottom-width: 0;
+                                    transform: translateY(30%);
+                                }
+                            }
+
+                        }
+                        
+                    }
+
+                    &::before{
+                        content: "";
+                        position: absolute;
+                        //height: 100%;
+                        width:4%;
+                        bottom: 0;
+                        top: 5%;
+                        left: 10%;
+                        background: linear-gradient($dark-color, hsla(0,53,53,0.3) 85%, hsla(0,53,53,0));
+                    }
+
+                }
+
+                #connect-about{
+
+                    grid-template-columns: 1fr;
+                    grid-gap: 0.2rem 1rem;
+                    text-align: center;
+                    //background-color: $light-color;
+
+                    div{
+                        margin-top: 0.25rem;
+                    }
+
+                    h1{
+                        font-size: 2.5rem;
+                        padding: 1.5rem 1.5rem;
+                    }
+
+                    .contact-panel{
+                        height: 3.5rem;
+                        display: flex;
+                        align-items: center;
+                        
+                        @include set-background($dark-color);
+
+                        h4{
+                            flex: 1;
+                        }
+
+                        button{
+                            width: 5rem;
+                            padding-top: 0.4rem;
+                            padding-bottom: 0.4rem;
+                        }
+
+                    }
+
+                    a{
+                        color: $warning-color;
+                    }
+
+                    .avatar{
+                        width: 100%;
+                        height: 24vh;
+                        //background-color: pink;
+                        overflow: hidden;
+                        position: relative;
+
+                        object{
+                            position: absolute;
+                            width:115%;
+                        }
+                    }
+
+                    .social-media{
+                        height: 3rem;
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        grid-gap: 0.5rem; 
+
+
+                        button{
+                            padding: 0.9rem;
+                            padding-top: 0.6rem;
+                            padding-bottom: 0.6rem;
+                            margin-bottom: 0.5rem;
+                        }
+                        
+                    }
+
+                }
+
+            }
+        }
     }
 
     .controller-box{
-        background-color: green;
+
         height: 3.5rem;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        padding: 0 1rem;
+        font-size: 1.4rem;
+
+        &#about-controller{
+
+            padding: 0 0.5rem;
+            font-size: 1.2rem;
+            
+            .selector-btn{
+                line-height: 2.5;
+            }
+        }
+
+        .selector-btn{
+
+            flex-grow: 1;
+            height: 100%;
+            line-height: 2;
+            z-index: 0;
+            position: relative;
+            cursor: pointer;
+
+            &::after{
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 0;
+                width: 100%;
+                height: 75%;
+                opacity: 0;
+                transform: translateY(-50%) scaleX(0);
+                z-index: -1;
+                background-color: $dark-color;
+                //transform: scaleX(0);
+                transition: all 0.25s ease-out;
+                //background-color: #000F33;
+            }
+
+            &.selected{
+
+                color: $light-color;
+                cursor: default;
+                pointer-events: none;
+                
+                &::after{
+                    transform: translateY(-50%) scaleX(1);
+                    opacity: 1;
+                }
+                
+            }
+
+        }
     }
 
     @media only screen and (min-width: 600px){
@@ -1433,5 +1467,161 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
     justify-content: center;
     align-self: center;
 
+}
+
+.toggle-header{
+    height: 3.5rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: 1.2rem;
+    color: $light-color;
+    text-align: left;
+
+    button{
+
+        width: 3.5rem;
+
+        i{
+            transform: rotateZ(-90deg);
+            transition: transform 0.15s ease-out;
+        }
+        
+        &.toggled i{
+            
+                transform: rotateZ(0);
+
+        }
+
+    }
+
+    &.upgrade-header{
+
+        h2{
+            flex: 1;
+        }
+
+    }
+
+    &.toolkit-header,
+    &.detail-header{
+        width: 90%;
+        margin: auto;
+
+        margin-bottom: 0.6rem;
+
+        h3:first-child{
+            width: 2.8rem;
+        }
+
+        h3:nth-child(2){
+            flex: 1;
+        }
+
+        button{
+            width: 3rem;
+        }
+    }
+
+    &.key-header{
+
+        width: 90%;
+        margin: auto;
+
+        h3:first-child{
+            width: 2.8rem;
+        }
+
+        h3:nth-child(2){
+            flex: 1;
+        }
+
+    }
+
+}
+
+.toggle-item{
+
+    margin: auto;
+    width: 95%;
+    height: auto;
+    overflow: hidden;
+    transition: height 0.25s ease-out;
+
+    &.hidden{
+        display: unset;
+        height: 0;
+    }
+
+    &.upgrade-item{
+        
+        div{
+
+            margin-bottom: 0.4rem;
+
+            &:nth-child(odd){
+                @include set-background($primary-color);
+            }
+
+            &:nth-child(even){
+                @include set-background(darken($primary-color,15%));
+            }
+        }
+
+    }
+
+    &.toolkit-item,
+    &.detail-item{
+
+        width: 85%;
+
+        //margin-top: 0.6rem;
+        margin-bottom: 2rem;
+
+        div{
+            margin-bottom: 0.4rem;
+        }
+
+        div:nth-child(odd){
+            @include set-background($primary-color);
+            //color: transparentize($dark-color, 0.2);
+        }
+    
+        div:nth-child(even){
+            @include set-background(darken($primary-color, 15%));
+            //color: transparentize($dark-color, 0.2);
+        }
+        
+        &.item-danger div:nth-child(odd){
+            background-color: lighten($danger-color, 55%);
+            color: transparentize($dark-color, 0.2);
+        }
+    
+        &.item-danger div:nth-child(even){
+            background-color: lighten($danger-color, 45%);
+            color: transparentize($dark-color, 0.2);
+        }
+    
+        &.item-warning div:nth-child(odd){
+            background-color: lighten($warning-color, 55%);
+            color: transparentize($dark-color, 0.2);
+        }
+    
+        &.item-warning div:nth-child(even){
+            background-color: lighten($warning-color, 45%);
+            color: transparentize($dark-color, 0.2);
+        }
+    
+        &.item-success div:nth-child(odd){
+            background-color: lighten($success-color, 55%);
+            color: transparentize($dark-color, 0.2);
+        }
+    
+        &.item-success div:nth-child(even){
+            background-color: lighten($success-color, 45%);
+            color: transparentize($dark-color, 0.2);
+        }
+    }
+    
 }
 

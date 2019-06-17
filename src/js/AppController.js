@@ -14,6 +14,7 @@ export default class AppController{
         this.supViewElem = document.querySelector(".sup-view");
         this.detailViewElem = document.querySelector(".detail-view");
         this.toolkitViewElem = document.querySelector(".toolkit-view");
+        this.backdrop = document.getElementById("disabled-backdrop");
         this.navElem = document.querySelector(".nav");
         this.loadingScreenElem = document.querySelector(".loading-screen");
 
@@ -34,10 +35,36 @@ export default class AppController{
 
         });
 
-        /* window.addEventListener("resize", e => {
-            document.querySelector("body").style.height = window.clientHeight;
-            document.querySelector("body").style.width = window.clientWidth
-        }); */
+        if(navigator.userAgent.match(/iPhone|iPod|iPad|Android|BlackBerry|Opera Mini|IEMobile|Windows Phone|webOS|playbook|silk/i) /* || (window.innerWidth <= 800 && window.innerHeight <= 600) */){
+        
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+
+            (function() {
+                var throttle = function(type, name, obj) {
+                    obj = obj || window;
+                    var running = false;
+                    var func = function() {
+                        if (running) { return; }
+                        running = true;
+                        requestAnimationFrame(function() {
+                            obj.dispatchEvent(new CustomEvent(name));
+                            running = false;
+                        });
+                    };
+                    obj.addEventListener(type, func);
+                };
+
+                throttle("resize", "optimizedResize");
+            })();
+
+            window.addEventListener("optimizedResize", (e) => {
+                let vh = window.innerHeight * 0.01;
+                document.documentElement.style.setProperty('--vh', `${vh}px`);
+                //alert("Resized");
+            });
+
+        }
 
 
     }
@@ -45,7 +72,7 @@ export default class AppController{
     //Render the base screens' content ------------------------------------------
     renderViews(r){
 
-        if(navigator.userAgent.match(/iPhone|iPod/i))
+        if(navigator.userAgent.match(/iPhone|iPod|iPad/i))
             document.getElementById("fullscreen-msg").style.display = "none";
 
         this.orderedData = [r.length];
@@ -98,6 +125,7 @@ export default class AppController{
                 });
 
                 generateBG();
+                this.setupListeners();
                 this.setupButtons();
                 this.setupScrollCards();
                 this.routeChanged(r);
@@ -107,98 +135,154 @@ export default class AppController{
         
     }
 
+    setupListeners(){
+
+        // media query change
+        this.mediaChange = function(mq) {
+
+            if (mq.matches) {
+                this.deviceType = "desktop";
+                this.routes.find(r => r.name === "portfolio").defaultRoute = true;
+                this.viewElem.appendChild(document.getElementById("about-t"));
+                //console.log("Desktop Screen");
+            } else {
+                this.deviceType = "mobile";
+                this.routes.find(r => r.name === "desk").defaultRoute = true;
+                this.supViewElem.appendChild(document.getElementById("about-t"));
+                //console.log("Mobile Screen");
+            }
+
+        }
+
+        const mq = window.matchMedia("screen and (min-width: 1024px) and (orientation: landscape)");
+        mq.addListener(this.mediaChange);
+        this.mediaChange(mq);
+
+        Array.from(document.querySelectorAll(".content-list")).forEach(cl => {
+            
+            if(cl.parentElement.parentElement.id === "portfolio-content"){
+
+                cl.addEventListener("faded", e => {
+                    console.log("Should update!!!");
+
+                    //Hacky Solution, Please find a way to fix this propperly!!! ***********
+                    setTimeout(() => {
+                        this.updateScrollCard(document.querySelector("#portfolio-content > div"));  
+
+                        document.getElementById("portfolio-controller").style.pointerEvents = "unset";
+                        /* document.querySelector("#portfolio-content > div").scrollTop = 0;  */
+                    }, 1);
+
+
+                    
+                });
+
+            }
+            else if(cl.parentElement.parentElement.id === "logs-content"){
+
+                cl.addEventListener("faded", e => {
+
+                    const logsScroll = document.querySelector("#logs-content > div");
+
+                    this.updateScrollCard(logsScroll);  
+                    logsScroll.scrollTop = 0;
+
+                    document.getElementById("logs-controller").style.pointerEvents = "unset";
+        
+                });
+        
+
+            }
+            else if(cl.parentElement.parentElement.id === "about-content"){
+
+                cl.addEventListener("faded", e => {
+
+                    const aboutScroll = document.querySelector("#about-content > div");
+
+                    this.updateScrollCard(aboutScroll);  
+                    aboutScroll.scrollTop = 0;
+
+                    document.getElementById("about-controller").style.pointerEvents = "unset";
+        
+                });
+        
+
+            }
+
+        });
+
+    }
+
     //Setup all the selector & item buttons' actions ------------------------------------------
     setupButtons(){
 
         //Grab button elements
-        this.portfolioBtns = document.querySelector(".portfolio-selector-items");
-        this.logsBtns = document.querySelector(".logs-selector-items");
-        this.aboutBtns = document.querySelector(".about-selector-items");
-        this.upgradeToggles = document.querySelectorAll(".upgrade-toggle");
+        //this.portfolioBtns = document.querySelector(".portfolio-selector-items");
+        //this.logsBtns = document.querySelector(".logs-selector-items");
+        //this.aboutBtns = document.querySelector(".about-selector-items");
+        this.toggles = document.querySelectorAll(".toggle-btn");
         this.detailBtns = document.querySelectorAll(".detail-btn");
 
-        //Setup buttons on portfolio screen
-        Array.from(this.portfolioBtns.children).forEach(btn => {
+        Array.from(document.querySelectorAll(".selector-btn")).forEach(btn => {
 
             btn.addEventListener("click", e => {
 
-                const portfolioCard = document.getElementById("portfolio-card");
+                const controllerElem = e.target.parentElement;
 
-                const transitionEvent = ["faded", e => {
+                controllerElem.style.pointerEvents = "none";
 
-                    portfolioCard.removeEventListener(...transitionEvent);
+                /*
+                setTimeout(() => {
+                    controllerElem.style.pointerEvents = "unset";
+                }, 250); */
 
-                    //Hacky Solution, Please find a way to fix this propperly!!! ***********
-                    setTimeout(() => {
-                        this.updateScrollCard(portfolioCard);  
-                    }, 1);
-                    
-                }];
-
-                portfolioCard.addEventListener(...transitionEvent);
-
-                this.contentManager.updatePortfolio(e.target.id);
-
-                Array.from(this.portfolioBtns.children).forEach(btn => {
-
-                    if(btn.classList.contains("selected"))
-                        btn.classList.remove("selected");
-
-                })
+                controllerElem.querySelector(".selected").classList.remove("selected");
 
                 e.target.classList.add("selected");
-                
+
+                switch(controllerElem.id){
+                    
+                    case "portfolio-controller":
+                        this.contentManager.updatePortfolio(e.target.id);
+                        break;
+                    case "logs-controller":
+                        this.contentManager.updateLogs(e.target.id);
+                        break;
+                    case "about-controller":
+                        this.contentManager.updateAbout(e.target.id);
+                        break;
+                    default:
+                        break;
+                }
+
             })
 
-        })
+        });
+
+        
+
+        //Setup buttons on portfolio screen
 
         //Setup buttons on logs screen
-        Array.from(this.logsBtns.children).forEach(btn => {
+
+        this.toggles.forEach(btn => {
 
             btn.addEventListener("click", e => {
 
-                const logsCard = document.getElementById("logs-card");
-
-                const transitionEvent = ["faded", e => {
-
-                    logsCard.removeEventListener(...transitionEvent);
-                    this.updateScrollCard(logsCard);  
-                    logsCard.scrollTop = 0;
-
-                }];
-
-                logsCard.addEventListener(...transitionEvent);
-
-                this.contentManager.updateLogs(e.target.id);          
-
-                Array.from(this.logsBtns.children).forEach(btn => {
-
-                    if(btn.classList.contains("selected"))
-                        btn.classList.remove("selected");
-
-                })
-
-                e.target.classList.add("selected");
-                
-            })
-
-        })
-        
-        this.upgradeToggles.forEach(btn => {
-
-            btn.addEventListener("click", e => {
-
-                let outputElem = document.getElementById(e.target.id.replace("-btn",""));
+                let outputElem = btn.parentElement.nextElementSibling;
+                console.log(outputElem);
                 
                 if(outputElem.classList.contains("hidden")){
 
                     outputElem.style.height = outputElem.scrollHeight + "px";
+                    //outputElem.style.height = "96px";
+                    //outputElem.style.height = null;
 
                     const expand = ["transitionend", e => {
 
                         outputElem.removeEventListener(...expand);
                         outputElem.style.height = null;
-                        this.updateScrollCard(document.getElementById("logs-card"));
+                        this.updateScrollCard(document.querySelector("#logs-content > div"));
 
                     }];
 
@@ -230,7 +314,7 @@ export default class AppController{
 
                         outputElem.removeEventListener(...collapse);
                         outputElem.classList.add("hidden");
-                        this.updateScrollCard(document.getElementById("logs-card"));
+                        this.updateScrollCard(document.querySelector("#logs-content > div"));
 
                     }];
 
@@ -242,38 +326,65 @@ export default class AppController{
             });
         })
 
-        //Setup buttons on about screen
-        Array.from(this.aboutBtns.children).forEach(btn => {
+        /* this.upgradeToggles.forEach(btn => {
 
             btn.addEventListener("click", e => {
 
-                const aboutCard = document.getElementById("about-card");
+                let outputElem = document.getElementById(e.target.id.replace("-btn",""));
                 
-                const transitionEvent = ["faded", e => {
+                if(outputElem.classList.contains("hidden")){
 
-                    aboutCard.removeEventListener(...transitionEvent);
-                    this.updateScrollCard(aboutCard);  
-                    aboutCard.scrollTop = 0;
+                    outputElem.style.height = outputElem.scrollHeight + "px";
 
-                }];
+                    const expand = ["transitionend", e => {
 
-                aboutCard.addEventListener(...transitionEvent);
+                        outputElem.removeEventListener(...expand);
+                        outputElem.style.height = null;
+                        this.updateScrollCard(document.querySelector("#logs-content > div"));
 
-                this.contentManager.updateAbout(e.target.id);
-                
+                    }];
 
-                Array.from(this.aboutBtns.children).forEach(btn => {
+                    outputElem.addEventListener(...expand);
 
-                    if(btn.classList.contains("selected"))
-                        btn.classList.remove("selected");
+                    outputElem.classList.remove("hidden");
+                    e.target.classList.add("toggled");
 
-                })
+                }
+                else{
 
-                e.target.classList.add("selected");
-                
-            })
+                    const transitionExtract = outputElem.style.transition;
+                    outputElem.style.transition = "";
 
-        })
+                    requestAnimationFrame(() => {
+
+                        outputElem.style.height = outputElem.scrollHeight + "px";
+                        outputElem.style.transition = transitionExtract;
+
+                        requestAnimationFrame(() => {
+
+                            outputElem.style.height = 0 + "px";
+
+                        });
+
+                    });
+
+                    const collapse = ["transitionend", e => {
+
+                        outputElem.removeEventListener(...collapse);
+                        outputElem.classList.add("hidden");
+                        this.updateScrollCard(document.querySelector("#logs-content > div"));
+
+                    }];
+
+                    outputElem.addEventListener(...collapse);  
+                    e.target.classList.remove("toggled");          
+
+                }
+
+            });
+        }) */
+
+        //Setup buttons on about screen
         
         //Setup more info, detail & diary action buttons for list elements
         this.detailBtns.forEach(btn => {
@@ -327,7 +438,7 @@ export default class AppController{
         //Setup enter button on loading screen
         document.getElementById("enter-btn").addEventListener("click",e => {
 
-            if(navigator.userAgent.match(/Android|BlackBerry|Opera Mini|IEMobile/i))
+            if(navigator.userAgent.match(/iPhone|iPod|Android|BlackBerry|Opera Mini|IEMobile/i))
                 document.querySelector("body").requestFullscreen();
 
             this.loadingScreenElem.classList.add("entered");
@@ -339,15 +450,16 @@ export default class AppController{
     //Setup all scrollable card elements ------------------------------------------
     setupScrollCards(){
 
-        const cardLists = document.querySelectorAll(".card-list");
+        const cardLists = document.querySelectorAll(".content-list");
 
         cardLists.forEach(list => {
 
-            list.addEventListener("scroll",(e) => {
+            list.parentElement.addEventListener("scroll",(e) => {
+                console.log("Scroll " + e.target);
                 this.updateScrollCard(e.target);
             });
 
-            this.updateScrollCard(list);
+            this.updateScrollCard(list.parentElement);
 
         })
 
@@ -363,6 +475,16 @@ export default class AppController{
                 if(this.loadingScreenElem){
                     this.loadingScreenElem.classList.add("loaded");
                     this.loadingScreenElem.classList.add("entered");
+
+                    if(this.deviceType === "desktop"){
+                        [document.getElementById("portfolio-container"),
+                        document.getElementById("logs-container")].forEach(con => {
+                            con.style.display = "none";
+                            con.style.opacity = "0";
+                        });
+
+                    }
+                    
                 }
 
 
@@ -388,6 +510,14 @@ export default class AppController{
                     console.log("Done Loading Imgs");
                     this.loadingScreenElem.classList.add("loaded");
 
+                    if(this.deviceType === "desktop"){
+                        [document.getElementById("portfolio-container"),
+                        document.getElementById("logs-container")].forEach(con => {
+                            con.style.display = "none";
+                            con.style.opacity = "0";
+                        });
+                    }
+
                     for (let i = 0, length = r.length; i < length; i++){
 
                         const route = r[i];
@@ -407,7 +537,27 @@ export default class AppController{
 
         }
         else{
+            if(this.loadingScreenElem){
+                this.loadingScreenElem.classList.add("loaded");
+                this.loadingScreenElem.classList.add("entered");
+
+                if(this.deviceType === "desktop"){
+                    [document.getElementById("portfolio-container"),
+                    document.getElementById("logs-container")].forEach(con => {
+                        con.style.display = "none";
+                        con.style.opacity = "0";
+                    });
+                }
+            }
+
             this.showAbout();
+
+            /* if(this.deviceType === "desktop"){
+                this.updateView(route);
+            }
+            else{
+                this.showAbout();
+            } */
         }
     }
 
@@ -418,28 +568,28 @@ export default class AppController{
 
             if(scrollTop === 0){   
             
-                parentElement.parentElement.classList.add("no-scroll-shadow-top");   
-                parentElement.parentElement.classList.remove("no-scroll-shadow-bottom"); 
+                parentElement.classList.add("no-scroll-shadow-top");   
+                parentElement.classList.remove("no-scroll-shadow-bottom"); 
 
             }
             else if(scrollTop !== 0 && (scrollTop + clientHeight) < scrollHeight){
 
-                parentElement.parentElement.classList.remove("no-scroll-shadow-top");   
-                parentElement.parentElement.classList.remove("no-scroll-shadow-bottom"); 
+                parentElement.classList.remove("no-scroll-shadow-top");   
+                parentElement.classList.remove("no-scroll-shadow-bottom"); 
 
             }
             else{
 
-                parentElement.parentElement.classList.remove("no-scroll-shadow-top");   
-                parentElement.parentElement.classList.add("no-scroll-shadow-bottom"); 
+                parentElement.classList.remove("no-scroll-shadow-top");   
+                parentElement.classList.add("no-scroll-shadow-bottom"); 
 
             }
 
         }
         else{
 
-            parentElement.parentElement.classList.add("no-scroll-shadow-top");   
-            parentElement.parentElement.classList.add("no-scroll-shadow-bottom");
+            parentElement.classList.add("no-scroll-shadow-top");   
+            parentElement.classList.add("no-scroll-shadow-bottom");
 
         }
 
@@ -456,9 +606,52 @@ export default class AppController{
                 const viewClasses = this.viewElem.classList;
 
                 if(viewClasses[1] !== `view-${r.viewPos}`){
+                    
 
-                    viewClasses.replace(viewClasses[1],`view-${r.viewPos}`);  
+                    if(this.deviceType === "desktop"){
 
+                        const activeContainer = [document.getElementById("portfolio-container"),
+                        document.getElementById("logs-container"),
+                        document.getElementById("about-t")].find(con => window.getComputedStyle(con).display === "block");
+
+                        const targetContainer= document.getElementById(`${r.name}-container`);
+            
+                        if(activeContainer){
+            
+                            const desktopFade = ["transitionend", e => {
+                                console.log(targetContainer);
+                                e.target.removeEventListener(...desktopFade);
+                                
+                                //EXTREMELY SLOPPY FIX. PLEASE FIND OUT WHY!!!!
+                                if(e.target.id !== "about-content"){
+                                    e.target.style.display = "none";
+                                    targetContainer.style.display = "block";
+                                    setTimeout(() => {
+                                        
+                                        targetContainer.style.opacity = "1";
+                                    }, 1);
+                                }
+                                
+            
+                            }];
+            
+                            activeContainer.addEventListener(...desktopFade);
+
+                            activeContainer.style.opacity = "0";
+                            
+                        }
+                        
+                    }
+                    else{
+                        viewClasses.replace(viewClasses[1],`view-${r.viewPos}`);
+                    }
+                    
+                    /* if(activeContainer){
+                        console.log(activeContainer);
+                        setTimeout(() => {
+                            activeContainer.style.display = "none";
+                        }, 250);
+                    } */
                 }
 
                 if(!viewClasses.contains("animate"))
@@ -470,11 +663,28 @@ export default class AppController{
                 document.querySelector(".sup-view-active").classList.remove("sup-view-active");
 
                 this.supViewElem.classList.remove("roll-in");
-                this.viewElem.classList.remove("disabled");
+                this.backdrop.classList.remove("active");
 
             }
 
-        updateNav(r.htmlName);
+        if(this.deviceType !== "desktop")
+            updateNav(r.htmlName);
+        else{
+
+            const desktopNav = document.getElementById("desktop-nav");
+
+            if(desktopNav.querySelector(".active"))
+                desktopNav.querySelector(".active").classList.remove("active");
+
+            Array.from(desktopNav.children).forEach(btn => {
+
+                if(btn.getAttribute("href") === `#${r.htmlName.replace(".html","")}`)
+                    btn.classList.add("active");
+
+            });
+
+
+        }
 
         
 
@@ -483,16 +693,55 @@ export default class AppController{
     //Roll in the about screen ------------------------------------------
     showAbout(){
 
-        const routeClasses = document.getElementById("about-t").classList;
-        if(!routeClasses.contains("sup-view-active")){
+        if(this.deviceType !== "desktop"){
+            const routeClasses = document.getElementById("about-t").classList;
+            if(!routeClasses.contains("sup-view-active")){
 
-            routeClasses.add("sup-view-active");
-            this.supViewElem.classList.add("roll-in");
-            this.viewElem.classList.add("disabled");
+                routeClasses.add("sup-view-active");
+                this.supViewElem.classList.add("roll-in");
+                this.backdrop.classList.add("active");
 
+            }
+            updateNav("about.html");
         }
-            
-        updateNav("about.html");
+        else{
+
+            const activeContainer = [document.getElementById("portfolio-container"),
+            document.getElementById("logs-container")].find(con => window.getComputedStyle(con).display === "block");
+
+            const targetContainer= document.getElementById("about-t");
+
+            if(activeContainer){
+
+                const desktopFade = ["transitionend", e => {
+                    console.log(targetContainer);
+                    e.target.removeEventListener(...desktopFade);
+
+                    e.target.style.display = "none";
+
+                    targetContainer.style.display = "block";
+                    setTimeout(() => {
+                        targetContainer.style.opacity = "1";
+                    }, 1);
+
+                }];
+
+                activeContainer.addEventListener(...desktopFade);
+                activeContainer.style.opacity = "0";
+            }
+
+            const desktopNav = document.getElementById("desktop-nav");
+
+            if(desktopNav.querySelector(".active"))
+                desktopNav.querySelector(".active").classList.remove("active");
+
+            Array.from(desktopNav.children).forEach(btn => {
+
+                if(btn.getAttribute("href") === `#about`)
+                    btn.classList.add("active");
+
+            });
+        }
 
     }
 
@@ -501,7 +750,10 @@ export default class AppController{
 
         this.contentManager.updateDetail(id);
         this.detailViewElem.classList.add("pop-up");
-        this.navElem.classList.add("hidden");
+        this.backdrop.classList.add("active");
+
+        if(!this.deviceType === "desktop")
+            this.navElem.classList.add("hidden");  
 
     }
 
@@ -510,7 +762,10 @@ export default class AppController{
 
         this.contentManager.updateToolkit(id);
         this.toolkitViewElem.classList.add("pop-up");
-        this.navElem.classList.add("hidden");
+        this.backdrop.classList.add("active");
+
+        if(!this.deviceType === "desktop")
+            this.navElem.classList.add("hidden");
 
     }
 
@@ -518,7 +773,10 @@ export default class AppController{
     hideDetail(){
 
         this.detailViewElem.classList.remove("pop-up");
-        this.navElem.classList.remove("hidden");
+        this.backdrop.classList.remove("active");
+
+        if(!this.deviceType === "desktop")
+            this.navElem.classList.remove("hidden");
 
     }
 
@@ -526,7 +784,11 @@ export default class AppController{
     hideToolkit(){
 
         this.toolkitViewElem.classList.remove("pop-up");
-        this.navElem.classList.remove("hidden");
+        this.toolkitViewElem.querySelector(".active").classList.remove("active");
+        this.backdrop.classList.remove("active");
+
+        if(!this.deviceType === "desktop")
+            this.navElem.classList.remove("hidden");
         
     }
 

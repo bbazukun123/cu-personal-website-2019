@@ -56,7 +56,7 @@
             },
             {
                 "set":"Core Methodologies",
-                "fa":"cogs fa-lg",
+                "fa":"cogs fa-m",
                 "tools": [
                     {"tool":"Lean UX"},
                     {"tool":"Design Thinking"},

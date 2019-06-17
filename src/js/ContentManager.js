@@ -11,9 +11,9 @@ export default class ContentManager{
     async initContent(){
 
         //Grab all output elements
-        this.portfolioElem = document.getElementById("portfolio-card");
-        this.logsElem = document.getElementById("logs-card");
-        this.aboutElem = document.getElementById("about-card");
+        this.portfolioElem = document.querySelector("#portfolio-content .content-list");
+        this.logsElem = document.querySelector("#logs-content .content-list");
+        this.aboutElem = document.querySelector("#about-content .content-list");
         this.detailElem = document.querySelector(".detail-card");
         this.toolkitElem = document.querySelector(".toolkit-card");
 
@@ -29,17 +29,34 @@ export default class ContentManager{
                 this.contentData[0] = data;
 
                 //Render portfolio content ---------------------------------
-                let portfolioOutput = "<div>";
 
+                /* let portfolioFragment = document.createDocumentFragment();
+                data.forEach(p => {
+
+                    const item = document.createElement("div");
+                    item.className = `content-item portfolio-item" ${p.field}`;
+                        const header = document.createElement("div");
+                            header.appendChild(document.createElement("h2").innerText = `${p.title} (${p.year})`);
+                            header.appendChild(document.createElement("h4").innerText = p.desc);
+                        const body = document.createElement("div");
+                            const fieldBadge = document.createElement("h3");
+                            fieldBadge.className = ``;
+
+                    console.log(header);
+                    portfolioFragment.appendChild(item);
+                });
+ */
+                let portfolioOutput = "";
+                
                 data.forEach(p=>
                     portfolioOutput +=
-                        `<div class="card-item ${p.field}">
-                            <div class="p-2">
-                                <h2>${p.title} (${p.year})</h2>
+                        `<div class="content-item portfolio-item ${p.field}">
+                            <div>
+                                <h2><span style="font-size: 1.4rem; background-color: #fff; color: #000F33; padding: 0.2rem 0.4rem 0.2rem 0.5rem; border-radius: 0.3rem;">${p.year}</span> ${p.title}</h2>
                                 <h4>${p.desc}</h4>
                             </div>
-                            <div class="cta-panel portfolio-panel">
-                                <h3 class="p-2 bg-${(function(field){
+                            <div>
+                                <h3 class="bg-${(function(field){
                                     if(field === "UX")
                                         return "success";
                                     else if(field === "Design")
@@ -47,7 +64,7 @@ export default class ContentManager{
                                     else if(field === "Dev")
                                         return "danger";
                                 })(p.field)}">${p.field}</h3>
-                                <h5 class="px-2">${p.type.replace(" ","<br>")}</h5>
+                                <h5>${p.type.replace(" ","<br>")}</h5>
                                 <button class="btn btn-l btn-light" ${(function(action){
                                     if(action !== "none")
                                         return `onClick="window.open('${action}')"`;
@@ -66,7 +83,7 @@ export default class ContentManager{
                         </div>`
                 );
 
-                this.portfolioElem.innerHTML = portfolioOutput + "</div>";
+                this.portfolioElem.innerHTML = portfolioOutput;
 
                 console.log("Done Portfolio!");
             })
@@ -86,7 +103,22 @@ export default class ContentManager{
 
                 data.forEach(a =>
                     advOutput +=
-                        `<div class="card-item">
+                        `<div class="content-item adventure-item">
+                            <div style="background-image: url(./images/adventure/${a.id}/${a.cover})">
+                                <div class="text-light text-drop-shadow">
+                                    <h2>${a.title}</h2>
+                                    <h4>${a.desc}</h4>
+                                </div>
+                            </div>
+                            <div>
+                                <h3>${a.month}</h3>
+                                <button id="adventure-${a.id}" class="btn btn-l detail-btn btn-light mx-1">Diary</button>
+                            </div>
+                        </div>`
+                );
+                /* data.forEach(a =>
+                    advOutput +=
+                        `<div class="content-item adventure-item">
                             <div class="card-photo" style="background-image: url(./images/adventure/${a.id}/${a.cover})">
                                 <div class="p-2 text-light text-drop-shadow">
                                     <h2>${a.title}</h2>
@@ -98,7 +130,7 @@ export default class ContentManager{
                                 <button id="adventure-${a.id}" class="btn btn-sm detail-btn btn-light mx-1">Diary</button>
                             </div>
                         </div>`
-                );
+                ); */
 
                 advOutput += "</div>"; 
                 this.logsElem.innerHTML += advOutput;
@@ -124,11 +156,11 @@ export default class ContentManager{
 
                 let upgradeOutput =
                     `<div id="upgrade-logs" class="hidden fade">
-                        <div class="cta-panel cta-warning upgrade-panel">
-                            <h2 class="p-2">In Progress</h2>
-                            <button id="progress-btn" class="btn btn-l btn-light mx-1 toggle-btn upgrade-toggle toggled"><i class="fas fa-chevron-down"></i></button>
+                        <div class="toggle-header upgrade-header bg-warning">
+                            <h2>In Progress</h2>
+                            <button class="btn btn-l btn-light mx-1 toggle-btn toggled"><i class="fas fa-chevron-down"></i></button>
                         </div>
-                        <div id="progress" class="upgrade-items">`;
+                        <div class="toggle-item upgrade-item">`;
 
                 inProgressList.forEach(item => {
                     upgradeOutput +=
@@ -139,11 +171,11 @@ export default class ContentManager{
 
                 upgradeOutput +=
                     `</div>
-                    <div class="cta-panel cta-danger upgrade-panel">
-                        <h2 class="p-2">Knowledge Wishlist</h2>
-                        <button id="wish-btn" class="btn btn-l btn-light mx-1 toggle-btn upgrade-toggle"><i class="fas fa-chevron-down"></i></button>
+                    <div class="toggle-header upgrade-header bg-danger">
+                        <h2>Knowledge Wishlist</h2>
+                        <button class="btn btn-l btn-light mx-1 toggle-btn"><i class="fas fa-chevron-down"></i></button>
                     </div>
-                    <div id="wish" class="upgrade-items hidden">`;
+                    <div class="toggle-item upgrade-item hidden">`;
 
                 wishList.forEach(item => {
 
@@ -155,11 +187,11 @@ export default class ContentManager{
                 });
                 upgradeOutput +=
                     `</div>
-                    <div class="cta-panel cta-success upgrade-panel">
-                        <h2 class="p-2">Recently Completed</h2>
-                        <button id="completed-btn" class="btn btn-l btn-light mx-1 toggle-btn upgrade-toggle"><i class="fas fa-chevron-down"></i></button>
+                    <div class="toggle-header upgrade-header bg-success">
+                        <h2>Recently Completed</h2>
+                        <button class="btn btn-l btn-light mx-1 toggle-btn"><i class="fas fa-chevron-down"></i></button>
                     </div>
-                    <div id="completed" class="upgrade-items hidden">`;
+                    <div class="toggle-item upgrade-item hidden">`;
 
                 completedList.forEach(item => {
 
@@ -192,15 +224,15 @@ export default class ContentManager{
 
                 this.contentData[3].forEach(exp =>
                     expOutput +=
-                        `<div class="card-item">
-                            <div class="p-2">
+                        `<div class="content-item experience-item">
+                            <div>
                                 <h2>${exp.title}</h2>
                                 <h4>${exp.role}</h4>
                             </div>
-                            <div class="cta-panel experience-panel">
-                                <h5 class="p-2">${exp.months}</h5>
-                                <h5 class="px-2"><i class="fas fa-map-marker-alt"></i>&nbsp;${exp.location}</h5>
-                                <button id="experience-${exp.id}" class="btn btn-sm detail-btn btn-light mx-1">Detail</button>
+                            <div>
+                                <h5>${exp.months}</h5>
+                                <h4 class="px-2"><i class="fas fa-map-marker-alt"></i>&nbsp;${exp.location}</h4>
+                                <button id="experience-${exp.id}" class="btn btn-l detail-btn btn-light mx-1">Detail</button>
                             </div>
                         </div>`
                 );
@@ -226,29 +258,33 @@ export default class ContentManager{
                 //Render about content --------------------------------
 
                 let eduOutput = 
-                    `<div id="education-about" class="education-card hidden fade">
+                    `<div id="education-about" class="hidden fade">
                         <div class="milestone"></div>
-                        <div class="card-item">
+                        <div class="education-item">
+                            <h3>${data[0].year}</h3>
                             <h2>${data[0].deg}</h2>
-                            <h4 class="text-warning mt-1">${data[0].uni}</h4>
-                            <h3 class="text-warning">${data[0].year}</h3>
-                            <button id="education-1" class="btn btn-sm detail-btn btn-dark my-1 px-2">Detail</button>
-                            <hr class="bg-warning text-warning my-1">
+                            <h3 class="text-warning mt-1">${data[0].uni}</h3>
+                            <div>
+                                <button id="education-1" class="btn btn-l detail-btn btn-dark my-1 px-2">Detail</button>
+                            </div>
                         </div>
                         <div class="milestone"></div>
-                        <div class="card-item">
+                        <div class="education-item">
+                        <h3>${data[0].year}</h3>
                             <h2>${data[1].deg}</h2>
-                            <h4 class="text-warning mt-1">${data[1].uni}</h4>
-                            <h3 class="text-warning">${data[1].year}</h3>
-                            <button id="education-2" class="btn btn-sm detail-btn btn-dark my-1">Detail</button>
-                            <hr class="bg-warning text-warning my-1">
+                            <h3 class="text-warning mt-1">${data[1].uni}</h3>
+                            <div>
+                                <button id="education-2" class="btn btn-l detail-btn btn-dark my-1">Detail</button>
+                            </div>
                         </div>
                         <div class="milestone"></div>
-                        <div class="card-item">
+                        <div class="education-item">
+                            <h3>${data[0].year}</h3>
                             <h2>${data[2].deg}</h2>
-                            <h4 class="text-warning mt-1">${data[2].uni}</h4>
-                            <h3 class="text-warning">${data[2].year}</h3>
-                            <button id="education-3" class="btn btn-sm detail-btn btn-dark my-1">Detail</button>
+                            <h3 class="text-warning mt-1">${data[2].uni}</h3>
+                            <div>
+                                <button id="education-3" class="btn btn-l detail-btn btn-dark my-1">Detail</button>
+                            </div>
                         </div>
                     </div>`;
 
@@ -269,21 +305,21 @@ export default class ContentManager{
                 this.contentData[5] = data;
 
                 //Render about content --------------------------------
-                let contactOutput = 
-                    `<div id="contact-about" class="contact-card hidden fade">
+                let connectOutput = 
+                    `<div id="connect-about" class="hidden fade">
                         <h1 class="text-center">Pleasure to meet you!</h1>
                         <div class="avatar">
                             <object class="mb-1" type="image/svg+xml" data="./images/me.svg"></object>
                         </div> 
-                        <div class="cta-panel contact-panel">
+                        <div class="contact-panel">
                             <h4 class="p-2 text-left">Download CV</h4>
                             <button class="btn btn-l btn-light mx-1" onclick="window.open('./downloadable/C_Utsahajit_CV19.pdf')"><i class="fas fa-download"></i></button>
                         </div>
-                        <div class="cta-panel contact-panel">
+                        <div class="contact-panel">
                             <h4 class="p-2 text-left">${data.email}</h4>
                             <button class="btn btn-l btn-light mx-1" onclick="window.open('mailto:bzkwork1993@gmail.com')">Email</button>
                         </div>
-                        <div class="cta-panel contact-panel">
+                        <div class="contact-panel">
                             <h4 class="p-2 text-left">${data.mobile}</h4>
                             <button class="btn btn-l btn-light mx-1" onclick="window.open('tel:+447956982635')">Call</button>
                         </div>
@@ -293,7 +329,7 @@ export default class ContentManager{
                         </div>
                     </div>`;
                 
-                this.aboutElem.innerHTML += contactOutput;
+                this.aboutElem.innerHTML += connectOutput;
 
                 console.log("Done Contact!");
 
@@ -307,6 +343,46 @@ export default class ContentManager{
             .then(res => res.json())
             .then(data => {
                 this.contentData[6] = data;
+
+                [this.contentData[6][0], this.contentData[6][1], this.contentData[6][2]].forEach(d => {
+
+                    let toolkitContent = "";
+
+                    toolkitContent +=
+                    `<div>
+                    <h1 class="mt-5 mb-4">${d.title}</h1>
+                    <hr class="mt-1 mb-1">
+                    <h4 class="detail-content px-5 mt-4 mb-4 text-paragraph text-dark-muted text-lowercase">${d.desc}</h4><br>`;
+
+                    let setCount = 1;
+
+                    d.toolkit.forEach(set => {
+
+                        toolkitContent +=
+                        `<div class="toggle-header toolkit-header bg-${d.color}">
+                            <h3><i class="fas fa-${set.fa}"></i></h3>
+                            <h3>${set.set}</h3>
+                            <button class="btn btn-l btn-light mx-1 toggle-btn toggled"><i class="fas fa-chevron-down"></i></button>
+                        </div>
+                        <div class="toggle-item toolkit-item item-${d.color}">`;
+
+                        set.tools.forEach(tool => {
+                            toolkitContent +=
+                                `<div class="p-2">
+                                    <h4>${tool.tool}</h4>
+                                </div>`;
+
+                        });
+
+                        toolkitContent += "</div>";
+
+                        setCount++;
+                    });
+
+                    this.toolkitElem.innerHTML += toolkitContent + `<div class="height-filler"></div></div>`;
+                    
+                });
+
             })
             .catch(err => {
                 throw err;
@@ -392,6 +468,7 @@ export default class ContentManager{
                     requestAnimationFrame(() => {
 
                         item.style.height = 0 + "px";
+                        item.style.opacity = "0";
 
                     });
 
@@ -402,7 +479,7 @@ export default class ContentManager{
                     item.removeEventListener(...collapse);
                     item.classList.add("hidden");   
                     
-                    document.getElementById("portfolio-card").dispatchEvent(new Event("faded"));
+                    document.querySelector("#portfolio-content .content-list").dispatchEvent(new Event("faded"));
 
                 }];
 
@@ -418,13 +495,14 @@ export default class ContentManager{
 
                 item.classList.remove("hidden")
                 item.style.height = item.scrollHeight + "px";
+                item.style.opacity = "1";
 
                 const expand = ["transitionend", e => {
 
                     item.removeEventListener(...expand);
                     item.style.height = null;
 
-                    document.getElementById("portfolio-card").dispatchEvent(new Event("faded"));
+                    document.querySelector("#portfolio-content .content-list").dispatchEvent(new Event("faded"));
 
                 }];
 
@@ -436,19 +514,19 @@ export default class ContentManager{
         
         if(inField === "all"){
 
-            document.querySelectorAll(".card-item.UX").forEach(item => {
+            document.querySelectorAll(".portfolio-item.UX").forEach(item => {
 
                 show(item);
 
             });
 
-            document.querySelectorAll(".card-item.Dev").forEach(item => {
+            document.querySelectorAll(".portfolio-item.Dev").forEach(item => {
                 
                 show(item);
 
             });
 
-            document.querySelectorAll(".card-item.Design").forEach(item => {
+            document.querySelectorAll(".portfolio-item.Design").forEach(item => {
                 
                 show(item);
 
@@ -457,19 +535,19 @@ export default class ContentManager{
         }
         else if(inField === "UX"){
 
-            document.querySelectorAll(".card-item.UX").forEach(item => {
+            document.querySelectorAll(".portfolio-item.UX").forEach(item => {
 
                 show(item);
 
             });
 
-            document.querySelectorAll(".card-item.Dev").forEach(item => {
+            document.querySelectorAll(".portfolio-item.Dev").forEach(item => {
 
                 hide(item);
                 
             });
 
-            document.querySelectorAll(".card-item.Design").forEach(item => {
+            document.querySelectorAll(".portfolio-item.Design").forEach(item => {
 
                 hide(item);
 
@@ -478,38 +556,38 @@ export default class ContentManager{
         }
         else if(inField === "Dev"){
 
-            document.querySelectorAll(".card-item.UX").forEach(item => {
+            document.querySelectorAll(".portfolio-item.UX").forEach(item => {
                     
                 hide(item);
 
             });
 
-            document.querySelectorAll(".card-item.Dev").forEach(item => {
+            document.querySelectorAll(".portfolio-item.Dev").forEach(item => {
 
                 show(item);
 
             });
 
-            document.querySelectorAll(".card-item.Design").forEach(item => {
+            document.querySelectorAll(".portfolio-item.Design").forEach(item => {
                 hide(item);
             });
 
         }
         else if(inField === "Design"){
 
-            document.querySelectorAll(".card-item.UX").forEach(item => {
+            document.querySelectorAll(".portfolio-item.UX").forEach(item => {
 
                 hide(item);
 
             });
 
-            document.querySelectorAll(".card-item.Dev").forEach(item => {
+            document.querySelectorAll(".portfolio-item.Dev").forEach(item => {
 
                 hide(item);
 
             });
 
-            document.querySelectorAll(".card-item.Design").forEach(item => {
+            document.querySelectorAll(".portfolio-item.Design").forEach(item => {
 
                 show(item);
 
@@ -535,7 +613,7 @@ export default class ContentManager{
                 outElem.classList.add("hidden");
                 inElem.classList.remove("fade"); 
 
-                document.getElementById("logs-card").dispatchEvent(new Event("faded"));
+                document.querySelector("#logs-content .content-list").dispatchEvent(new Event("faded"));
 
             }];
 
@@ -559,6 +637,8 @@ export default class ContentManager{
     //Switch the about card content between the experience, education, & contact tabs
     updateAbout(tab){
 
+        console.log(tab);
+
         //Define transition sequence between tabs
         const fade = (inElem,outElem) => {
 
@@ -572,7 +652,9 @@ export default class ContentManager{
                 outElem.classList.add("hidden");    
                 inElem.classList.remove("fade"); 
 
-                document.getElementById("about-card").dispatchEvent(new Event("faded"));
+                document.querySelector("#about-content .content-list").dispatchEvent(new Event("faded"));
+
+                /* document.getElementById("about-controller").style.pointerEvents = "unset"; */
 
             }];
 
@@ -582,17 +664,17 @@ export default class ContentManager{
 
         if(tab === "Experience"){
 
-            fade(document.getElementById("experience-about"),Array.from( document.getElementById("about-card").children).filter(item => !item.classList.contains("hidden"))[0]);    
+            fade(document.getElementById("experience-about"),Array.from( document.querySelector("#about-content .content-list").children).filter(item => !item.classList.contains("hidden"))[0]);    
 
         }
         else if(tab === "Education"){
             
-            fade(document.getElementById("education-about"),Array.from( document.getElementById("about-card").children).filter(item => !item.classList.contains("hidden"))[0]);    
+            fade(document.getElementById("education-about"),Array.from( document.querySelector("#about-content .content-list").children).filter(item => !item.classList.contains("hidden"))[0]);    
             
         }
-        else if(tab === "Contact"){
+        else if(tab === "Connect"){
 
-            fade(document.getElementById("contact-about"),Array.from( document.getElementById("about-card").children).filter(item => !item.classList.contains("hidden"))[0]);    
+            fade(document.getElementById("connect-about"),Array.from( document.querySelector("#about-content .content-list").children).filter(item => !item.classList.contains("hidden"))[0]);    
 
         }
 
@@ -661,30 +743,30 @@ export default class ContentManager{
                     <h3 id="gallery-counter">1 / ${d.content.media.length}</h3>
                     <button id="media-right-btn" class="btn btn-l btn-dark mx-1"><i class="fas fa-chevron-right"></i></button>
                 </div>
-                <h4 class="detail-content px-5 mb-5 text-paragraph text-dark-muted">${d.content.detail}</h4><br> 
-                <div class="cta-panel cta-danger challenges-panel">
+                <h4 class="detail-content px-5 mb-5 text-paragraph text-dark-muted text-lowercase">${d.content.detail}</h4><br> 
+                <div class="toggle-header detail-header bg-danger">
                     <h3><i class="fas fa-mountain"></i></h3>
                     <h3 class="p-2">Challenges</h3>
                 </div>
-                <div class="list-content list-danger">`;
+                <div class="toggle-item detail-item item-danger">`;
 
             d.content.challenges.forEach(c => {
 
-                detailContent += `<h4>${c.challenge}</h4>`;
+                detailContent += `<div class="p-2"><h4>${c.challenge}</h4></div>`;
 
             });
 
             detailContent +=
                 `</div>
-                <div class="cta-panel tools-panel">
+                <div class="toggle-header detail-header bg-dark">
                     <h3><i class="fas fa-tools"></i></h3>
                     <h3 class="p-2">Tools</h3>
                 </div>
-                <div class="list-content">`;
+                <div class="toggle-item detail-item">`;
 
             d.content.tools.forEach(t => {
 
-                detailContent += `<h4>${t.tool}</h4>`;
+                detailContent += `<div class="p-2"><h4>${t.tool}</h4></div>`;
 
             });
 
@@ -777,7 +859,7 @@ export default class ContentManager{
                     <h3 id="gallery-counter">1 / ${d.diary.media.length}</h3>
                     <button id="media-right-btn" class="btn btn-l btn-dark mx-1"><i class="fas fa-chevron-right"></i></button>
                 </div>
-                <h4 class="detail-content px-5 mb-5 text-paragraph text-dark-muted">${d.diary.text}</h4><br> 
+                <h4 class="detail-content px-5 mb-5 text-paragraph text-dark-muted text-lowercase">${d.diary.text}</h4><br> 
                 <div class="height-filler"></div>`;
 
             this.detailElem.innerHTML = detailContent;
@@ -834,8 +916,8 @@ export default class ContentManager{
                 <hr class="mt-1 mb-1">
                 <h3 class="m-2">${d.months.replace("-"," - ")}</h3>
                 <h3 class="m-1 text-danger"><i class="fas fa-map-marker-alt"></i>&nbsp;${d.location}</h3>
-                <h4 class="detail-content px-5 mt-8 mb-4 text-paragraph text-dark-muted">${d.detail}</h4><br> 
-                <div class="cta-panel key-learning-panel">
+                <h4 class="detail-content px-5 mt-8 mb-4 text-paragraph text-dark-muted text-lowercase">${d.detail}</h4><br> 
+                <div class="toggle-header key-header bg-dark">
                     <h3><i class="fas fa-key"></i></h3>
                     <h3 class="p-2">Key Learning</h3>
                 </div>
@@ -871,7 +953,7 @@ export default class ContentManager{
                         return "";
                 })(d.award)}
                 <h4 class="detail-content px-5 mt-6 mb-4 text-paragraph text-dark-muted"><span class="text-danger">Key Modules:&nbsp;</span>${d.modules}</h4><br> 
-                <div class="cta-panel dissertation-panel">
+                <div class="toggle-header key-header bg-dark">
                     <h3><i class="fas fa-book"></i></h3>
                     <h3 class="p-2">Dissertation</h3>
                 </div>
@@ -888,45 +970,20 @@ export default class ContentManager{
     //Update toolkit pop-up card to match the content of the select toolkit
     updateToolkit(id){
 
-        let d;
-        let toolkitContent = "";
+        if(id === "ux-screen"){
 
-        if(id === "ux-screen")    
-            d = this.contentData[6][0];
-        else if(id === "dev-screen")
-            d = this.contentData[6][1];
-        else if(id === "business-screen")
-            d = this.contentData[6][2];
+            this.toolkitElem.firstElementChild.classList.add("active");
+        }
+        else if(id === "dev-screen"){
 
-        toolkitContent +=
-            `<h1 class="mt-5 mb-4">${d.title}</h1>
-            <hr class="mt-1 mb-1">
-            <h4 class="detail-content px-5 mt-4 mb-4 text-paragraph text-dark-muted">${d.desc}</h4><br>`;
+            this.toolkitElem.firstElementChild.nextElementSibling.classList.add("active");
+        }
+        else if(id === "business-screen"){
 
-        let setCount = 1;
+            this.toolkitElem.lastElementChild.classList.add("active");
+        }
 
-        d.toolkit.forEach(set => {
-
-            toolkitContent +=
-            `<div class="cta-panel cta-${d.color} toolkit-panel">
-                <h3 class="pl-1"><i class="fas fa-${set.fa}"></i></h3>
-                <h3 class="p-2 text-left">${set.set}</h3>
-                <button id="set${setCount}-btn" class="btn btn-l btn-light mx-1 toggle-btn toolkit-toggle toggled"><i class="fas fa-chevron-down"></i></button>
-            </div>
-            <div id="set${setCount}" class="list-content list-${d.color}">`;
-
-            set.tools.forEach(tool => {
-                toolkitContent +=
-                    `<h4>${tool.tool}</h4>`;
-
-            });
-
-            toolkitContent += "</div>";
-
-            setCount++;
-        });
-
-        this.toolkitElem.innerHTML = toolkitContent + `<div class="height-filler"></div>`;
+        console.log(this.toolkitElem.scrollTop);
         this.toolkitElem.scrollTop = 0;
 
         //Setup toolkit toggles

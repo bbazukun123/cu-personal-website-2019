@@ -6,7 +6,7 @@ import Route from "./js/route";
 //Instantiate & run app controller ------------------------------------------
 const appController = new AppController([
     //Pass in main screens as routes
-    new Route("desk","desk.html",2,true),
+    new Route("desk","desk.html",2),
     new Route("about","about.html",-1),
     new Route("portfolio","portfolio.html",3),
     new Route("logs","logs.html",1)

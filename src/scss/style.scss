@@ -23,6 +23,9 @@ body{
     width: 100vw;
     height: 100vh;
     overflow: hidden;
+
+    //Full Viewport Hack
+    height: calc(var(--vh, 1vh) * 100);
 }
 
 a{
@@ -62,8 +65,8 @@ object{
 }
 
 #app,
-.desktop-msg,
 .loading-screen,
+.landscape-dialog,
 .view,
 .sup-view,
 .detail-view,
@@ -74,9 +77,113 @@ object{
     overflow: hidden;
 }
 
+.landscape-dialog{
+
+    display: none;
+    //flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    outline: 0.2rem solid $warning-color;
+    outline-offset: -1rem; 
+    background-color: $light-color;
+    z-index: 10;
+
+    & > div{
+        display: flex;
+        align-items: center;
+        height: 100%;
+        width: 25%;
+
+        .phone-rotate-anim{
+            height: 5rem;
+            width: 9rem;
+            border-radius: 0.5rem;
+            background-color: #c8d7d8;
+            //border-right: 0.5rem solid $dark-color;
+            box-shadow: 0.4rem 0 0 hsla(0, 0, 0, 0.7);
+            position: relative;
+            animation: orientate 3s infinite ease-out; 
+
+            &::after{
+                content: "";
+                position: absolute;
+                top: 0.6rem;
+                bottom: 0.6rem;
+                left: 0.9rem;
+                right: 1.0rem;
+                background: linear-gradient(to right, $dark-color,lighten($dark-color,50%));
+
+            }
+        }
+
+        @keyframes orientate{
+
+            0%{
+                opacity: 0;
+                transform: rotateZ(0);
+            }
+
+            20%{
+                opacity: 0;
+                transform: rotateZ(0);
+            }
+
+            30%{
+                opacity: 1;
+                transform: rotateZ(0);
+            }
+
+            70%{
+                opacity: 1;
+                transform: rotateZ(90deg);
+            }
+
+            80%{
+                opacity: 1;
+                transform: rotateZ(90deg);
+            }
+
+            100%{
+                opacity: 0;
+                transform: rotateZ(90deg);
+            }
+        }
+
+    }
+
+    h1{
+        padding: 2rem;
+        font-size: 2.5rem;
+        //text-align: center;
+        line-height: 1.2;
+
+        span{
+            color: $danger-color;
+        }
+    }
+
+}
+
 #app{
     /* overflow: hidden; */
-    //background-color: black;
+    background-color: black;
+}
+
+#disabled-backdrop{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    background-color: hsla(0, 0, 0, 0.9);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease-out;
+
+    &.active{
+        pointer-events: unset;
+        opacity: 1;
+    }
+    
 }
 
 .view{
@@ -84,15 +191,9 @@ object{
     width: 300%;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    transition: opacity 0.25s ease-out;
 
     &.animate{
         transition: transform 0.25s ease-out;
-    }
-
-    &.disabled{
-        pointer-events: none;
-        opacity: 0.2;
     }
 
     &-1{
@@ -130,8 +231,9 @@ object{
     pointer-events: none;
     transform: scale(0.9);
     opacity: 0;
-    background-color: $light-color;
+    //background-color: $light-color;
     transition: all 0.25s ease-in-out;
+    z-index: 10;
 
     &.pop-up{
         opacity: 1;
@@ -146,33 +248,12 @@ object{
     transform: scale(0.9);
     opacity: 0;
     transition: all 0.25s ease-in-out;
+    z-index: 10;
 
     &.pop-up{
         opacity: 1;
         transform: scale(1);
         pointer-events: auto;
-    }
-
-}
-
-.desktop-msg{
-    display: none;
-    text-align: center;
-    padding: 5rem;
-    padding-top: 25vh;
-    background-color: $light-color;
-    position: absolute;
-    z-index: 3;
-
-    hr{
-        margin: auto;
-        width: 50%;
-    }
-
-    @media only screen and (min-width: 490px){
-
-            //display: unset;
-    
     }
 
 }
@@ -187,6 +268,9 @@ object{
     transition: transform 1s ease-in-out 1s;
     /* , opacity 1s ease-out 1.6s */
 
+    //Full Viewport Hack
+    height: calc(var(--vh, 1vh) * 100);
+
     &::before{
         content: "";
         position: absolute;
@@ -199,9 +283,121 @@ object{
         transition: opacity 1s ease-in-out 1s;
     }
 
-    & > h1{
+    h1{
+        //width: 300px;
         transition: all 0.5s ease-in-out;
         transform: translateY(30%);
+    }
+
+    h2{
+        font-size: 2rem;
+    }
+ 
+    .loading-wrapper{
+        margin: auto;
+        width: 80%;
+        max-width: 300px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        .btn{
+            font-size: 2.5rem;
+            padding-left: 3rem;
+            padding-right: 3rem;
+        }
+    
+        .loaded-dialog{
+            opacity: 0;
+            //transform: translateY(-100%);
+            transition: all 0.5s ease-out 0.5s;    
+
+            & > div{
+                //background-color: red;
+                height: 4rem;
+            }
+
+        }
+    
+        .loading-dialog{
+    
+            transform: translateY(30%);
+            transition: opacity 0.5s ease-out; 
+
+    
+            .animated-loader-icon{
+        
+                & > div{
+        
+                    width: 8rem;
+                    height: 8rem;
+                    margin: auto;
+                    border: 1rem solid $danger-color;
+                    box-shadow: 0 0 2rem hsla(4, 88%, 61%, 0.6);
+    
+                    animation: spin 5s infinite linear;
+    
+                    & > div{
+    
+                        width: 6rem;
+                        height: 6rem;
+                        border: 1rem solid $warning-color;
+                        box-shadow: 0 0 2rem rgba(231, 206, 121, 0.6);
+    
+                        animation: spin 2s reverse infinite linear;
+    
+                        & > div{
+    
+                            width: 4rem;
+                            height: 4rem;
+                            border: 1rem solid $success-color;
+                            background-color: hsla(255, 255, 255, 0.25);
+                            box-shadow: 0 0 1.5rem rgba(146, 232, 235, 0.6);
+    
+                            animation: spin 1.5s infinite linear;
+    
+                        }
+    
+                    }
+        
+                    @keyframes spin {
+        
+                        0%{
+                            transform: rotate(0deg);
+                        }
+        
+                        100%{
+                            transform: rotate(360deg);
+                        }
+        
+                    }
+        
+                }
+                
+            }
+    
+            & > h3{
+                animation: blink 2s infinite ease-in-out;
+    
+                @keyframes blink {
+    
+                    0%{
+                        opacity: 0;
+                    }
+    
+                    50%{
+                        opacity: 1;
+                    }
+    
+                    100%{
+                        opacity: 0;
+                    }
+                    
+                }
+            }
+    
+        }
     }
 
     .door{
@@ -275,109 +471,22 @@ object{
         transition: opacity 0.5s ease-out;
     }
     
-    .btn{
-        font-size: 2.5rem;
-        padding-left: 3rem;
-        padding-right: 3rem;
-    }
-
-    .loaded-dialog{
-        opacity: 0;
-        transform: translateY(-50%);
-        transition: all 0.5s ease-out 0.5s;    
-    }
-
-    .loading-dialog{
-
-        transform: translateY(30%);
-        transition: opacity 0.5s ease-out; 
-
-        .animated-loader-icon{
     
-            & > div{
-    
-                width: 8rem;
-                height: 8rem;
-                margin: auto;
-                border: 1rem solid $danger-color;
-                box-shadow: 0 0 2rem hsla(4, 88%, 61%, 0.6);
-
-                animation: spin 5s infinite linear;
-
-                & > div{
-
-                    width: 6rem;
-                    height: 6rem;
-                    border: 1rem solid $warning-color;
-                    box-shadow: 0 0 2rem rgba(231, 206, 121, 0.6);
-
-                    animation: spin 2s reverse infinite linear;
-
-                    & > div{
-
-                        width: 4rem;
-                        height: 4rem;
-                        border: 1rem solid $success-color;
-                        background-color: hsla(255, 255, 255, 0.25);
-                        box-shadow: 0 0 1.5rem rgba(146, 232, 235, 0.6);
-
-                        animation: spin 1.5s infinite linear;
-
-                    }
-
-                }
-    
-                @keyframes spin {
-    
-                    0%{
-                        transform: rotate(0deg);
-                    }
-    
-                    100%{
-                        transform: rotate(360deg);
-                    }
-    
-                }
-    
-            }
-            
-        }
-
-        & > h3{
-            animation: blink 2s infinite ease-in-out;
-
-            @keyframes blink {
-
-                0%{
-                    opacity: 0;
-                }
-
-                50%{
-                    opacity: 1;
-                }
-
-                100%{
-                    opacity: 0;
-                }
-                
-            }
-        }
-
-    }
 
     &.loaded{
         
-        & > h1{
+        h1{
             transform: translateY(0);
         }
 
         .loaded-dialog{
             opacity: 1;
-            transform: translateY(-100%);
+            transform: translateY(-120%);
         }
 
         .loading-dialog{
             opacity: 0;
+            //display: none;
         }
 
     }
@@ -397,7 +506,7 @@ object{
             opacity: 0;
         }
 
-        & > h1{
+        h1{
             transition: all 0.5s ease-out;
             opacity: 0;
         }
@@ -426,7 +535,27 @@ i{
     pointer-events: none;
 }
 
+@media only screen and (max-width: 1024px) and (orientation: landscape) {
+
+    .landscape-dialog{
+        display: flex;
+    }
+
+}
+
 @media only screen and (min-width: 1024px) and (orientation: landscape) {
+
+    #fullscreen-msg{
+        display: none;
+    }
+    
+    #app{
+        background-color: unset;
+    }
+
+    #disabled-backdrop{
+        z-index: 2;
+    }
 
     .view{
         width: 100%;
@@ -438,6 +567,13 @@ i{
             .room-bg{
                 display: none;
             }
+        }
+
+        #logs-container,
+        #portfolio-container,
+        #about-t{
+            transform: translateX(-5rem);
+            transition: opacity 0.15s ease-in-out;
         }
 
         #desk-container{
@@ -456,24 +592,18 @@ i{
             order: 4;
         }
 
-        &-1{
-            transform: unset;
-            #logs-container{
-
-            }
-        }
-    
-        &-2{
+        &-1,
+        &-2,
+        &-3,
+        &-4{
             transform: unset;
         }
     
-        &-3{
-            transform: unset;
-            #portfolio-container{
-                
-            }
-        }
         
+    }
+
+    .detail-content{
+        padding: 0 5rem;
     }
 
     .main-content{
@@ -482,11 +612,126 @@ i{
     }
 
     .nav{
-        display: none;
+        //display: none;
+        position: fixed;
+        height: 40%;
+        width: 6rem;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 1;
+        pointer-events: none;
+        transition: opacity 0.25s ease-out;
+        background-color: #fff;
+        //box-shadow: 0 0.5rem 0 #d16f6f;
+        box-shadow: 0 0 0.5rem hsla(0, 0, 0, 0.3);
+
+        //Full Viewport Hack
+        //height: calc(var(--vh, 1vh) * 60);
+
+        #desktop-nav{
+            display: flex;
+        }
+
+        #mobile-nav{
+            display: none;
+        }
     }
 
     .content-group{
         padding: 1.5rem 2rem 3rem 2rem;
+
+        .experience-item{
+
+            & > div:last-child{
+
+                h5:first-child{
+                    width: 8rem !important;
+                }
+            }
+
+        }
+
+    }
+
+    .detail-view,
+    .toolkit-view{
+        display: flex;
+    }
+
+    .toolkit-card,
+    .detail-card{
+        
+        margin: auto;
+        max-width: 700px;
+        height: 90%;
+        //margin-top: 5%;
+
+    }
+
+    #education-about{
+        
+        .milestone{
+            width: 45px !important;
+            height: calc(45px + 6.4px) !important;
+        }
+
+        .education-item{
+
+            padding-right: 1.5rem !important;
+
+            h3:first-child{
+                width: 11rem !important;
+                margin: 0.8rem 0 1.2rem 0 !important;
+                padding: 0.5rem 0 !important;
+
+                &::before{
+                    transform: translateX(-1.9rem) !important;
+                }
+            }
+
+            div{
+
+                button{
+                    width: 6.5rem !important;
+                    padding: 0.6rem !important;
+                }
+
+            }
+            
+        }
+
+    }
+
+    .toolkit-card,
+    .detail-card{
+
+        h1{
+            padding: 0 8rem;
+            margin: 4rem; 
+        }
+
+        h3{
+            font-size: 1.6rem;
+        }
+
+        .detail-gallery{
+            transform: scale(0.9);
+        }
+
+        .media-control{
+            padding: 0 1.8rem;
+        }
+
+    }
+
+    .key-header{
+
+        h3{
+            padding: 1.5rem;
+        }
+
+
     }
 
 }   
@@ -498,7 +743,8 @@ i{
     }
 
     .view{
-        width: 80%; 
+        width: 90%; 
+        max-width: 1200px;
         /* max-height: 768px; */
         top: 50%;
         left: 50%;
@@ -508,10 +754,75 @@ i{
             padding: 2% 0;
         }
 
+        #logs-container,
+        #portfolio-container,
+        #about-t{
+            transform: translateX(-2rem);
+        }
+
     }
 
     .content-group{
         padding: 1.5rem 2rem 6rem 2rem;
+
+        .experience-item{
+
+            & > div:last-child{
+
+                h5:first-child{
+                    width: 8.5rem !important;
+                }
+
+            }
+        }
+
+    }
+
+    .nav{
+        height: 35%;
+    }
+
+    .toolkit-card,
+    .detail-card{
+        
+        max-width: 900px;
+        height: 85%;
+        //margin-top: 5%;
+
+    }
+
+    #education-about{
+        
+        .milestone{
+            width: 50px !important;
+            height: calc(50px + 6.4px) !important;
+        }
+
+        .education-item{
+
+            padding-right: 1.5rem !important;
+
+            h3:first-child{
+                width: 11rem !important;
+                margin: 0.7rem 0 1.2rem 0 !important;
+                padding: 0.4rem 0 !important;
+
+                &::before{
+                    transform: translateX(-1.8rem) !important;
+                }
+            }
+
+            div{
+
+                button{
+                    width: 6.5rem !important;
+                    padding: 0.6rem !important;
+                }
+
+            }
+            
+        }
+
     }
 
 }   
