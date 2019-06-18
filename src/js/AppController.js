@@ -72,8 +72,10 @@ export default class AppController{
     //Render the base screens' content ------------------------------------------
     renderViews(r){
 
-        if(navigator.userAgent.match(/iPhone|iPod|iPad/i))
+        if(navigator.userAgent.match(/iPhone|iPod|iPad/i)){
             document.getElementById("fullscreen-msg").style.display = "none";
+            document.getElementById("fullscreen-toggle").style.display = "none";
+        }
 
         this.orderedData = [r.length];
 
@@ -468,7 +470,7 @@ export default class AppController{
         //Setup enter button on loading screen
         document.getElementById("enter-btn").addEventListener("click",e => {
 
-            if(navigator.userAgent.match(/iPhone|iPod|Android|BlackBerry|Opera Mini|IEMobile/i))
+            if(navigator.userAgent.match(/Android|BlackBerry|Opera Mini|IEMobile/i))
                 document.querySelector("body").requestFullscreen();
 
             this.loadingScreenElem.classList.add("entered");

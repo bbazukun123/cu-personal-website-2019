@@ -1326,8 +1326,27 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
                     }
 
                     h1{
+                        color: $light-color;
                         font-size: 2.5rem;
                         padding: 1.5rem 1.5rem;
+                        background-color: $warning-color;
+                        border-radius: 0.8rem;
+                        position: relative;
+
+                        &::after{
+                            content: "";
+                            position: absolute;
+                            width: 0; 
+                            height: 0; 
+                            border-left: 20px solid transparent;
+                            border-right: 20px solid transparent;
+                
+                            border-top: 20px solid $warning-color;
+                            bottom: -1.2rem;
+                            left: 50%;
+                            transform: translateX(-50%);
+                        }
+
                     }
 
                     .contact-panel{
@@ -1355,15 +1374,52 @@ $spaceamounts: (1,2,3,4,5,6,7,8,9,10);
 
                     .avatar{
                         width: 100%;
-                        height: 24vh;
+                        height: 12rem;
                         //background-color: pink;
                         overflow: hidden;
-                        position: relative;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
 
-                        object{
-                            position: absolute;
-                            width:115%;
+                        div{
+                            width: calc(512px/3);
+                            height: calc((7168px/3)/14);
+                            background: url("../images/charSprite2.png");
+                            background-size: calc(512px/3) calc(7168px/3);
+                            animation: idleY 1.8s steps(14) infinite;
+
+                            /* width: calc((1536px/3)/3);
+                            height: calc((2560px/3)/5);
+                            background: url("../images/charSprite.png");
+                            background-size: calc(1536px/3) calc(2560px/3);
+                            animation: idleY 6s steps(5) infinite, idleX 0.4s steps(3) infinite;
+ */
                         }
+
+                        /* @keyframes idleX{
+
+                            0%{
+                                background-position-x: 0px;
+                            }
+
+                            100%{
+                                background-position-x: calc(-1536px/3);
+                            }
+
+                        } */
+
+                        @keyframes idleY{
+
+                            0%{
+                                background-position-y: 0px;
+                            }
+
+                            100%{
+                                background-position-y: calc(-7168px/3);
+                            }
+
+                        }
+
                     }
 
                     .social-media{

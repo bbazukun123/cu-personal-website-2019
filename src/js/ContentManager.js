@@ -309,7 +309,7 @@ export default class ContentManager{
                     `<div id="connect-about" class="hidden fade">
                         <h1 class="text-center">Pleasure to meet you!</h1>
                         <div class="avatar">
-                            <object class="mb-1" type="image/svg+xml" data="./images/me.svg"></object>
+                            <div></div>
                         </div> 
                         <div class="contact-panel">
                             <h4 class="p-2 text-left">Download CV</h4>

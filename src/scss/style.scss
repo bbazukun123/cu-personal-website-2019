@@ -554,14 +554,14 @@ i{
     .main-content{
 
         h1{
-            font-size: 2.5rem;
+            font-size: 2.6rem;
             //padding: 1rem;
         }
     }
 
     .content-group{
 
-        padding: 1rem 0;
+        padding: 0.8rem 0;
 
         .content-box{
 
@@ -596,6 +596,151 @@ i{
  */
                 }
 
+                &.portfolio-item{
+                    
+                    & > div:last-child{
+                        
+                        h3{
+                            width: 5rem !important;
+                            line-height: 3rem !important;
+                        }
+
+                    }
+
+                }
+
+                &.adventure-item{
+
+                    & > div:first-child{
+
+                        height: 7rem !important;
+
+                        & > div{
+                            bottom: 1rem !important;
+
+                            h2{
+                                margin-bottom: 0.2rem !important;
+                            }
+
+                            h4{
+                                font-size: 1.1rem;
+                            }
+
+                        }
+
+                        &::after{
+                            background: hsla(0, 0, 0, 0.4) !important;
+                        }
+
+                    }
+
+                    button{
+                        width: 4rem !important;
+                        padding: 0.2rem 0;
+                    }
+
+
+                }
+
+                &.experience-item{
+
+                    & > div:first-child{
+                        
+                        h2{
+                            font-size: 1.6rem;
+                            margin-bottom: 0.4rem;
+                            line-height: 1.2;
+                        }
+
+                        h4{
+                            font-size: 1.1rem;
+                        }
+
+                    }
+
+                    & > div:last-child{
+
+                        h5:first-child{
+                            width: 7rem !important;
+                        }
+
+                        h4{
+                            font-size: 0.9rem !important;
+                        }
+
+                        button{
+                            width: 4rem !important;
+                            padding: 0.2rem 0;
+                        }
+
+                    }
+
+                }
+
+            }
+
+            .education-item{
+
+                h2{
+                    font-size: 1.4rem !important;
+                }
+
+                h3{
+                    font-size: 1.2rem !important;
+                }
+
+                h3:first-child{
+                    font-size: 1.5rem !important;
+                }
+
+                div{
+
+                    height: 3.5rem !important;
+
+                    button{
+                        width: 5rem !important; 
+                        padding: 0.5rem !important;
+
+                        &:active{
+                            transform: translateY(20%) !important;
+                        }
+                    }
+
+                }
+            }
+
+            #connect-about{
+
+                h1{
+                    //margin-top: 0.5rem;
+                    font-size: 1.8rem !important;
+                    padding: 1.5rem 4rem !important;
+                }
+
+                .contact-panel{
+                    height: 3rem !important;
+
+                    button{
+                        width: 4rem !important;
+                        padding-top: 0.3rem !important;
+                        padding-bottom: 0.3rem !important;
+                    }
+
+                }
+
+                /* .avatar{
+                    width: 100%;
+                    height: 24vh;
+                    //background-color: pink;
+                    overflow: hidden;
+                    position: relative;
+
+                    object{
+                        position: absolute;
+                        width:115%;
+                    }
+                } */
+
             }
 
         }
@@ -610,7 +755,7 @@ i{
 
             &#about-controller{
                 & > div{
-                    line-height: 2 !important;
+                    line-height: 2.2 !important;
                 }
                 
             }
@@ -633,6 +778,18 @@ i{
         }
 
     } 
+
+    .monitor{
+
+        h2{
+            font-size: 1.2rem;
+        }
+
+        object{
+            margin-bottom: 0;
+        }
+
+    }
 
 }
 
