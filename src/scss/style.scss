@@ -9,6 +9,8 @@
 
 html{
 
+    scroll-behavior: smooth;
+
     @media only screen and (max-width: 365px){
         font-size: 0.9rem;
     }
@@ -23,6 +25,10 @@ body{
     width: 100vw;
     height: 100vh;
     overflow: hidden;
+
+    //Full Viewport Hack
+    height: calc(var(--vh, 1vh) * 100);
+    position: fixed;
 }
 
 a{
@@ -62,8 +68,8 @@ object{
 }
 
 #app,
-.desktop-msg,
 .loading-screen,
+.landscape-dialog,
 .view,
 .sup-view,
 .detail-view,
@@ -74,9 +80,113 @@ object{
     overflow: hidden;
 }
 
+.landscape-dialog{
+
+    display: none;
+    //flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    outline: 0.2rem solid $warning-color;
+    outline-offset: -1rem; 
+    background-color: $light-color;
+    z-index: 10;
+
+    & > div{
+        display: flex;
+        align-items: center;
+        height: 100%;
+        width: 25%;
+
+        .phone-rotate-anim{
+            height: 5rem;
+            width: 9rem;
+            border-radius: 0.5rem;
+            background-color: #c8d7d8;
+            //border-right: 0.5rem solid $dark-color;
+            box-shadow: 0.4rem 0 0 hsla(0, 0, 0, 0.7);
+            position: relative;
+            animation: orientate 3s infinite ease-out; 
+
+            &::after{
+                content: "";
+                position: absolute;
+                top: 0.6rem;
+                bottom: 0.6rem;
+                left: 0.9rem;
+                right: 1.0rem;
+                background: linear-gradient(to right, $dark-color,lighten($dark-color,50%));
+
+            }
+        }
+
+        @keyframes orientate{
+
+            0%{
+                opacity: 0;
+                transform: rotateZ(0);
+            }
+
+            20%{
+                opacity: 0;
+                transform: rotateZ(0);
+            }
+
+            30%{
+                opacity: 1;
+                transform: rotateZ(0);
+            }
+
+            70%{
+                opacity: 1;
+                transform: rotateZ(90deg);
+            }
+
+            80%{
+                opacity: 1;
+                transform: rotateZ(90deg);
+            }
+
+            100%{
+                opacity: 0;
+                transform: rotateZ(90deg);
+            }
+        }
+
+    }
+
+    h1{
+        padding: 2rem;
+        font-size: 2.5rem;
+        //text-align: center;
+        line-height: 1.2;
+
+        span{
+            color: $danger-color;
+        }
+    }
+
+}
+
 #app{
     /* overflow: hidden; */
     background-color: black;
+}
+
+#disabled-backdrop{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    background-color: hsla(0, 0, 0, 0.9);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease-out;
+
+    &.active{
+        pointer-events: unset;
+        opacity: 1;
+    }
+    
 }
 
 .view{
@@ -84,15 +194,9 @@ object{
     width: 300%;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    transition: opacity 0.25s ease-out;
 
     &.animate{
         transition: transform 0.25s ease-out;
-    }
-
-    &.disabled{
-        pointer-events: none;
-        opacity: 0.2;
     }
 
     &-1{
@@ -130,8 +234,9 @@ object{
     pointer-events: none;
     transform: scale(0.9);
     opacity: 0;
-    background-color: $light-color;
+    //background-color: $light-color;
     transition: all 0.25s ease-in-out;
+    z-index: 10;
 
     &.pop-up{
         opacity: 1;
@@ -146,33 +251,12 @@ object{
     transform: scale(0.9);
     opacity: 0;
     transition: all 0.25s ease-in-out;
+    z-index: 10;
 
     &.pop-up{
         opacity: 1;
         transform: scale(1);
         pointer-events: auto;
-    }
-
-}
-
-.desktop-msg{
-    display: none;
-    text-align: center;
-    padding: 5rem;
-    padding-top: 25vh;
-    background-color: $light-color;
-    position: absolute;
-    z-index: 3;
-
-    hr{
-        margin: auto;
-        width: 50%;
-    }
-
-    @media only screen and (min-width: 490px){
-
-            display: unset;
-    
     }
 
 }
@@ -187,6 +271,9 @@ object{
     transition: transform 1s ease-in-out 1s;
     /* , opacity 1s ease-out 1.6s */
 
+    //Full Viewport Hack
+    height: calc(var(--vh, 1vh) * 100);
+
     &::before{
         content: "";
         position: absolute;
@@ -199,9 +286,121 @@ object{
         transition: opacity 1s ease-in-out 1s;
     }
 
-    & > h1{
+    h1{
+        //width: 300px;
         transition: all 0.5s ease-in-out;
         transform: translateY(30%);
+    }
+
+    h2{
+        font-size: 2rem;
+    }
+ 
+    .loading-wrapper{
+        margin: auto;
+        width: 80%;
+        max-width: 300px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        .btn{
+            font-size: 2.5rem;
+            padding-left: 3rem;
+            padding-right: 3rem;
+        }
+    
+        .loaded-dialog{
+            opacity: 0;
+            transform: translateY(-60%);
+            transition: all 0.5s ease-out 0.5s;    
+
+            & > div{
+                //background-color: red;
+                height: 4rem;
+            }
+
+        }
+    
+        .loading-dialog{
+    
+            transform: translateY(30%);
+            transition: opacity 0.5s ease-out; 
+
+    
+            .animated-loader-icon{
+        
+                & > div{
+        
+                    width: 8rem;
+                    height: 8rem;
+                    margin: auto;
+                    border: 1rem solid $danger-color;
+                    box-shadow: 0 0 2rem hsla(4, 88%, 61%, 0.6);
+    
+                    animation: spin 5s infinite linear;
+    
+                    & > div{
+    
+                        width: 6rem;
+                        height: 6rem;
+                        border: 1rem solid $warning-color;
+                        box-shadow: 0 0 2rem rgba(231, 206, 121, 0.6);
+    
+                        animation: spin 2s reverse infinite linear;
+    
+                        & > div{
+    
+                            width: 4rem;
+                            height: 4rem;
+                            border: 1rem solid $success-color;
+                            background-color: hsla(255, 255, 255, 0.25);
+                            box-shadow: 0 0 1.5rem rgba(146, 232, 235, 0.6);
+    
+                            animation: spin 1.5s infinite linear;
+    
+                        }
+    
+                    }
+        
+                    @keyframes spin {
+        
+                        0%{
+                            transform: rotate(0deg);
+                        }
+        
+                        100%{
+                            transform: rotate(360deg);
+                        }
+        
+                    }
+        
+                }
+                
+            }
+    
+            & > h3{
+                animation: blink 2s infinite ease-in-out;
+    
+                @keyframes blink {
+    
+                    0%{
+                        opacity: 0;
+                    }
+    
+                    50%{
+                        opacity: 1;
+                    }
+    
+                    100%{
+                        opacity: 0;
+                    }
+                    
+                }
+            }
+    
+        }
     }
 
     .door{
@@ -275,100 +474,12 @@ object{
         transition: opacity 0.5s ease-out;
     }
     
-    .btn{
-        font-size: 2.5rem;
-        padding-left: 3rem;
-        padding-right: 3rem;
-    }
-
-    .loaded-dialog{
-        opacity: 0;
-        transform: translateY(-50%);
-        transition: all 0.5s ease-out 0.5s;    
-    }
-
-    .loading-dialog{
-
-        transform: translateY(30%);
-        transition: opacity 0.5s ease-out; 
-
-        .animated-loader-icon{
     
-            & > div{
-    
-                width: 8rem;
-                height: 8rem;
-                margin: auto;
-                border: 1rem solid $danger-color;
-                box-shadow: 0 0 2rem hsla(4, 88%, 61%, 0.6);
-
-                animation: spin 5s infinite linear;
-
-                & > div{
-
-                    width: 6rem;
-                    height: 6rem;
-                    border: 1rem solid $warning-color;
-                    box-shadow: 0 0 2rem rgba(231, 206, 121, 0.6);
-
-                    animation: spin 2s reverse infinite linear;
-
-                    & > div{
-
-                        width: 4rem;
-                        height: 4rem;
-                        border: 1rem solid $success-color;
-                        background-color: hsla(255, 255, 255, 0.25);
-                        box-shadow: 0 0 1.5rem rgba(146, 232, 235, 0.6);
-
-                        animation: spin 1.5s infinite linear;
-
-                    }
-
-                }
-    
-                @keyframes spin {
-    
-                    0%{
-                        transform: rotate(0deg);
-                    }
-    
-                    100%{
-                        transform: rotate(360deg);
-                    }
-    
-                }
-    
-            }
-            
-        }
-
-        & > h3{
-            animation: blink 2s infinite ease-in-out;
-
-            @keyframes blink {
-
-                0%{
-                    opacity: 0;
-                }
-
-                50%{
-                    opacity: 1;
-                }
-
-                100%{
-                    opacity: 0;
-                }
-                
-            }
-        }
-
-    }
 
     &.loaded{
         
-        & > h1{
-            transform: translateY(0);
+        h1{
+            transform: translateY(10%);
         }
 
         .loaded-dialog{
@@ -378,6 +489,7 @@ object{
 
         .loading-dialog{
             opacity: 0;
+            //display: none;
         }
 
     }
@@ -397,7 +509,7 @@ object{
             opacity: 0;
         }
 
-        & > h1{
+        h1{
             transition: all 0.5s ease-out;
             opacity: 0;
         }
@@ -425,3 +537,825 @@ object{
 i{
     pointer-events: none;
 }
+
+@media only screen and (max-width: 900px) and (orientation: landscape) {
+
+    .landscape-dialog{
+        display: flex;
+    }
+
+}
+
+@media only screen and (max-height: 700px) and (orientation: portrait) {
+
+    .nav{
+        height: 3.6rem;
+    }
+
+    .main-content{
+
+        .name-banner{
+            h1{
+                font-size: 3.8rem;
+            }
+        }
+
+        h1{
+            font-size: 2.6rem;
+            //padding: 1rem;
+        }
+    }
+
+    .content-group{
+
+        padding: 0.8rem 0;
+
+        .content-box{
+
+            margin-bottom: 0rem;
+            border-bottom: none;
+            padding-bottom: 0.8rem;
+
+            &::after{
+                bottom: 0.8rem;
+            }
+
+            h2{
+                font-size: 1.5rem !important;
+            }
+
+            h4{
+                font-size: 1rem !important;
+            }
+
+            .content-item{
+
+                & > div:first-child{
+                    padding: 0.8rem 1.2rem !important;
+                }
+
+                & > div:last-child{
+                    height: 3rem !important;
+
+                    /* button{
+                        padding: 0.3rem 0;
+                    }
+ */
+                }
+
+                &.portfolio-item{
+                    
+                    & > div:last-child{
+                        
+                        h3{
+                            width: 5rem !important;
+                            line-height: 3rem !important;
+                        }
+
+                    }
+
+                }
+
+                &.adventure-item{
+
+                    & > div:first-child{
+
+                        height: 7rem !important;
+
+                        & > div{
+                            bottom: 1rem !important;
+
+                            h2{
+                                margin-bottom: 0.2rem !important;
+                            }
+
+                            h4{
+                                font-size: 1.1rem;
+                            }
+
+                        }
+
+                        &::after{
+                            background: hsla(0, 0, 0, 0.4) !important;
+                        }
+
+                    }
+
+                    button{
+                        width: 4rem !important;
+                        padding: 0.2rem 0;
+                    }
+
+
+                }
+
+                &.experience-item{
+
+                    & > div:first-child{
+                        
+                        h2{
+                            font-size: 1.6rem;
+                            margin-bottom: 0.4rem;
+                            line-height: 1.2;
+                        }
+
+                        h4{
+                            font-size: 1.1rem;
+                        }
+
+                    }
+
+                    & > div:last-child{
+
+                        h5:first-child{
+                            width: 7rem !important;
+                        }
+
+                        h4{
+                            font-size: 0.9rem !important;
+                        }
+
+                        button{
+                            width: 4rem !important;
+                            padding: 0.2rem 0;
+                        }
+
+                    }
+
+                }
+
+            }
+
+            .education-item{
+
+                h2{
+                    font-size: 1.4rem !important;
+                }
+
+                h3{
+                    font-size: 1.2rem !important;
+                }
+
+                h3:first-child{
+                    font-size: 1.5rem !important;
+                }
+
+                div{
+
+                    height: 3.5rem !important;
+
+                    button{
+                        width: 5rem !important; 
+                        padding: 0.5rem !important;
+
+                        &:active{
+                            transform: translateY(20%) !important;
+                        }
+                    }
+
+                }
+            }
+
+            #connect-about{
+
+                h1{
+                    //margin-top: 0.5rem;
+                    font-size: 1.8rem !important;
+                    padding: 1.5rem 4rem !important;
+                }
+
+                .contact-panel{
+                    height: 3rem !important;
+
+                    button{
+                        width: 4rem !important;
+                        padding-top: 0.3rem !important;
+                        padding-bottom: 0.3rem !important;
+                    }
+
+                }
+
+                /* .avatar{
+                    width: 100%;
+                    height: 24vh;
+                    //background-color: pink;
+                    overflow: hidden;
+                    position: relative;
+
+                    object{
+                        position: absolute;
+                        width:115%;
+                    }
+                } */
+
+            }
+
+        }
+
+        .controller-box{
+
+            height: 3.5rem;
+            border-top: 0.16rem solid hsla(0, 0, 0, 0.1);
+
+            & > div{
+                font-size: 1.2rem;
+                line-height: 2.4 !important;
+            }
+
+            /* &#about-controller{
+                & > div{
+                    line-height: 2.2 !important;
+                }
+                
+            } */
+
+        }
+
+    }
+
+    .desk{
+
+        .structure{
+
+            .left-leg{
+                height: 14vh !important;
+            }
+
+            .right-leg{
+                height: 14vh !important;
+            }
+        }
+
+    } 
+
+    .monitor{
+
+        h2{
+            font-size: 1.2rem;
+        }
+
+        object{
+            margin-bottom: 0;
+        }
+
+    }
+
+}
+
+@media only screen and (min-height: 900px) and (orientation: portrait){
+    
+    #desk-container{
+
+        .content-wrapper{
+            transform: scale(1.25);
+        }
+
+        h1{
+            font-size: 4rem;
+        }
+    }
+
+    /* .toolkit-card,
+    .detail-card{
+
+        h1{
+            padding: 0 8rem;
+            margin: 4rem; 
+        }
+
+        h3{
+            font-size: 1.6rem;
+        }
+
+        .detail-gallery{
+            transform: scale(0.9);
+        }
+
+        .media-control{
+            padding: 0 1.8rem;
+        }
+
+    }
+
+    .key-header{
+
+        h3{
+            padding: 1.5rem;
+        }
+
+
+    } */
+
+    .content-item{
+
+        & > div:first-child{
+            padding: 1.5rem 1.8rem !important;
+
+            h2{
+                font-size: 1.8rem !important;
+            }
+
+            h4{
+                font-size: 1.2rem !important;
+            }
+        }
+
+        & > div:last-child{
+            padding-left: 0.8rem;
+            height: 4rem !important;
+
+            button{
+                width: 6rem !important;
+                font-size: 1.2rem;
+                padding: 0.5rem 0;
+            }
+        }
+    }
+
+    .portfolio-item{
+
+        & > div:last-child{
+
+            padding-left: 0rem;
+
+            h5{
+                padding-left: 2rem !important;
+                font-size: 1rem;
+            }
+
+            button{
+                padding: 0.6rem;
+                width: 4.5rem !important;
+            }
+
+        }
+
+    }
+
+    .adventure-item{
+
+        & > div:first-child{
+
+            height: 15rem !important;
+
+        }
+
+        & > div:last-child{
+
+            h3{
+                flex: 1;
+                text-align: left;
+                padding-left: 1.2rem;
+            }
+
+        }
+    }
+
+    .experience-item{
+
+        & > div:last-child{
+
+            h5:first-child{
+                width: 14rem !important;
+                font-size: 1.2rem;
+            }
+
+            h4{
+                font-size: 1.2rem;
+            }
+
+        }
+
+    }
+
+    #education-about{
+
+        padding: 1.2rem !important;
+        
+        .milestone{
+            width: 50px !important;
+            height: calc(50px + 6.4px) !important;
+
+        }
+
+        .education-item{
+
+            padding-right: 1.5rem !important;
+
+            h3:first-child{
+                width: 12rem !important;
+                margin: 0.9rem 0 1.2rem 0 !important;
+                padding: 0.5rem 0 !important;
+
+                &::before{
+                    transform: translateX(-2.5rem) !important;
+                }
+            }
+
+            h2{
+                font-size: 2rem;
+            }
+
+            div{
+                margin-top: 1rem !important;
+                height: 6rem !important;
+
+                button{
+                    width: 6.5rem !important;
+                    padding: 0.6rem !important;
+                }
+
+            }
+            
+        }
+
+        &::before{
+            transform: translateX(0.2rem);
+        }
+
+    }
+
+    #connect-about{
+
+        h1{
+            margin: 1rem 1.5rem 0 1.5rem;
+        }
+
+        .contact-panel{
+
+            height: 4rem !important;
+
+            h4{
+                padding-left: 1.8rem;
+                font-size: 1.4rem;
+            }
+
+            button{
+                font-size: 1.4rem;
+                width: 6rem !important;
+            }
+
+        }
+    
+        .avatar{
+            height: 20rem !important;
+    
+            div{
+                transform: scale(1.6);
+            }
+        }
+
+        .social-media{
+            height: 4rem !important;
+
+            button{
+                font-size: 1.4rem;
+            }
+        }
+
+    }
+
+    .controller-box{
+        height: 4.5rem !important;
+        font-size: 1.6rem !important;
+
+        .selector-btn{
+            line-height: 2.5 !important;
+        }
+    }
+
+    .detail-content{
+        padding: 0 5rem;
+    }
+
+    .toolkit-card,
+    .detail-card{
+
+        h1{
+            padding: 0 8rem;
+            margin: 4rem; 
+        }
+
+        .detail-gallery{
+            transform: scale(0.9);
+        }
+
+        .media-control{
+            padding: 0 1.8rem;
+        }
+
+    }
+
+    .toolkit-header,
+    .detail-header{
+        padding-left: 1.5rem !important;
+    }
+
+    .key-header{
+        padding-left: 2.5rem !important;
+    }
+
+}
+
+@media only screen and (min-width: 1024px) and (orientation: landscape) {
+
+    #fullscreen-msg{
+        display: none;
+    }
+    
+    #app{
+        background-color: unset;
+    }
+
+    #disabled-backdrop{
+        z-index: 2;
+    }
+
+    .view{
+        width: 100%;
+        grid-template-columns: 1fr 1fr;
+
+        .container{
+            width: 100%;
+
+            .room-bg{
+                display: none;
+            }
+        }
+
+        #logs-container,
+        #portfolio-container,
+        #about-t{
+            transform: translateX(-5rem);
+            transition: opacity 0.15s ease-in-out;
+        }
+
+        #desk-container{
+            order: 1;
+        }
+
+        #portfolio-container{
+            order: 2;
+        }
+
+        #logs-container{
+            order: 3;
+        }
+
+        #about-t{
+            order: 4;
+        }
+
+        &-1,
+        &-2,
+        &-3,
+        &-4{
+            transform: unset;
+        }
+    
+        
+    }
+
+    .detail-content{
+        padding: 0 5rem;
+    }
+
+    .main-content{
+        padding-bottom: 0 !important;
+
+    }
+
+    .nav{
+        //display: none;
+        position: fixed;
+        height: 40%;
+        width: 6rem;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 1;
+        pointer-events: none;
+        transition: opacity 0.25s ease-out;
+        background-color: #fff;
+        //box-shadow: 0 0.5rem 0 #d16f6f;
+        box-shadow: 0 0 0.5rem hsla(0, 0, 0, 0.3);
+
+        //Full Viewport Hack
+        //height: calc(var(--vh, 1vh) * 60);
+
+        #desktop-nav{
+            display: flex;
+        }
+
+        #mobile-nav{
+            display: none;
+        }
+    }
+
+    .content-group{
+        padding: 1.5rem 2rem 3rem 2rem;
+
+        .experience-item{
+
+            & > div:last-child{
+
+                h5:first-child{
+                    width: 8rem !important;
+                }
+            }
+
+        }
+
+    }
+
+    .detail-view,
+    .toolkit-view{
+        display: flex;
+    }
+
+    .toolkit-card,
+    .detail-card{
+        
+        margin: auto;
+        max-width: 700px;
+        height: 90%;
+        //margin-top: 5%;
+
+    }
+
+    #education-about{
+        
+        .milestone{
+            width: 45px !important;
+            height: calc(45px + 6.4px) !important;
+        }
+
+        .education-item{
+
+            padding-right: 1.5rem !important;
+
+            h3:first-child{
+                width: 11rem !important;
+                margin: 0.8rem 0 1.2rem 0 !important;
+                padding: 0.5rem 0 !important;
+
+                &::before{
+                    transform: translateX(-2rem) !important;
+                }
+            }
+
+            div{
+
+                button{
+                    width: 6.5rem !important;
+                    padding: 0.6rem !important;
+                }
+
+            }
+            
+        }
+
+    }
+
+    .toolkit-card,
+    .detail-card{
+
+        h1{
+            padding: 0 8rem;
+            margin: 4rem; 
+        }
+
+        h3{
+            font-size: 1.6rem;
+        }
+
+        .detail-gallery{
+            transform: scale(0.9);
+        }
+
+        .media-control{
+            padding: 0 1.8rem;
+        }
+
+    }
+
+    .key-header{
+
+        h3{
+            padding: 1.5rem;
+        }
+
+
+    }
+
+}   
+
+@media only screen and (min-width: 1280px){
+
+    html{
+        font-size: 1.2rem
+    }
+
+    .monitor{
+
+        h2{
+            font-size: 1.2rem;
+        }
+        
+    }
+
+    #desk-container{
+
+        .content-wrapper{
+            transform: scale(1.2);
+        }
+
+        /* h1{
+            font-size: 4rem;
+        } */
+    }
+
+    .view{
+        width: 90%; 
+        max-width: 1200px;
+        /* max-height: 768px; */
+        top: 50%;
+        left: 50%;
+        transform: translate3d(-50%,-50%,0);
+
+        .container{
+            padding: 2% 0;
+        }
+
+        #logs-container,
+        #portfolio-container,
+        #about-t{
+            transform: translateX(-2rem);
+        }
+
+    }
+
+    .content-group{
+        padding: 1.5rem 2rem 6rem 2rem;
+
+        .experience-item{
+
+            & > div:last-child{
+
+                h5:first-child{
+                    width: 8.5rem !important;
+                }
+
+            }
+        }
+
+    }
+
+    .nav{
+        height: 35%;
+    }
+
+    .toolkit-card,
+    .detail-card{
+        
+        max-width: 900px;
+        height: 85%;
+        //margin-top: 5%;
+
+    }
+
+    #education-about{
+        
+        .milestone{
+            width: 50px !important;
+            height: calc(50px + 6.4px) !important;
+        }
+
+        .education-item{
+
+            padding-right: 1.5rem !important;
+
+            h3:first-child{
+                width: 11rem !important;
+                margin: 0.7rem 0 1.2rem 0 !important;
+                padding: 0.4rem 0 !important;
+
+                &::before{
+                    transform: translateX(-1.8rem) !important;
+                }
+            }
+
+            div{
+
+                button{
+                    width: 6.5rem !important;
+                    padding: 0.6rem !important;
+                }
+
+            }
+            
+        }
+
+    }
+
+}   

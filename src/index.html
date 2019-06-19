@@ -3,7 +3,7 @@
 <head>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
@@ -13,25 +13,27 @@
 </head>
 <body>
 
-    <div class="desktop-msg">
-        <h1>Desktop & Tablet<br>Versions</h1><br>
-        <h2 class="text-danger">are currently unavailable</h2><br><br>
-        <hr><br><br>
-        <h2>Please view from a mobile device</h2><br>
-        <h3 class="text-success">&lt;&lt; Sorry for the inconvenience &gt;&gt;</h3>
-    </div>
-
     <div class="loading-screen p-2">
-        <h1 class="p-5 mt-4">Welcome To My Place</h1>
-        <div class="loading-dialog">
-            <div class="animated-loader-icon"><div><div><div></div></div></div></div>
-            <h3 class="mt-8">Please wait<br>•• Cleaning up my desk ••</h3>
-        </div> 
-        <div class="loaded-dialog">
-            <h2 class="mt-5">Ready to Enter ?</h2>
-            <h4 id="fullscreen-msg" class="px-2 my-1">(Fullscreen mode will be enabled for the best experience)</h4>
-            <button id="enter-btn" class="btn btn-l btn-light mt-8">Enter</button>
+
+        <div class="loading-wrapper">
+            <h1 class="mb-4">Welcome To My Place</h1>
+
+            <div class="loading-dialog">
+                <div class="animated-loader-icon"><div><div><div></div></div></div></div>
+                <h3 class="mt-8">Please wait<br>•• Cleaning up my desk ••</h3>
+            </div> 
+
+            <div class="loaded-dialog">
+                <h2 class="mb-3">Ready to Enter ?</h2>
+                <h4 class="my-3" id="fullscreen-msg">(Fullscreen mode will be enabled for the best experience)</h4>
+                <div>
+                    <button id="enter-btn" class="btn btn-l btn-light">Enter</button>
+                </div>
+                
+            </div>
+
         </div>
+        
         <div class="dark-filter"></div>
         <div class="door door-left">
             <div class="door-filter"></div>
@@ -41,12 +43,27 @@
         </div>
     </div>
 
+    <div class="landscape-dialog">
+        <div>
+            <div class="phone-rotate-anim"></div>
+        </div>
+        <h1>Please use<br><span>portrait</span><br>orientation</h1>
+    </div>
+
     <div id="app">
 
-        
+        <div class="room-bg" column="30">
+            <!-- For Rendered room background -->   
+        </div>
 
         <div class="view view-2">
             <!-- For Main Views -->    
+        </div>
+
+        <div id="disabled-backdrop"></div>
+
+        <div class="sup-view">
+            <!-- For About View -->
         </div>
 
         <div class="toolkit-view">
@@ -54,10 +71,6 @@
                 <!-- For toolkit pop ups -->        
             </div>
             <div class="back-btn toolkit-back"><i class="fas fa-times fa-2x"></i></div>
-        </div>
-
-        <div class="sup-view">
-            <!-- For About View -->
         </div>
         
         <div class="detail-view text-dark">   
@@ -69,28 +82,64 @@
 
     </div>
 
-    <div class="nav p-2">
+    <div id="fullscreen-toggle" class="min">
+        <h4>
+            <i class="fas fa-expand fa-2x"></i>
+            <i class="fas fa-times fa-2x"></i>
+        </h4>
+    </div>
 
-        <a href="" class="nav-btn">
-            <div>
-                <object class="mb-1 text-left" type="image/svg+xml" data="./images/doubleChevron.svg"></object>
-                <h4 class= "nav-text mb-1">[Left]</h4>
-            </div>
-        </a>
+    <div class="nav">
 
-        <a href="" class="nav-btn">
-            <div>
-                <object class="mb-1 tr-n90" type="image/svg+xml" data="./images/doubleChevron.svg"></object>
-                <h4 class= "nav-text mb-1">[Middle]</h4>
-            </div>
-        </a>
+        <div id="mobile-nav">
 
-        <a href="" class="nav-btn">
-            <div>
-                <object class="mb-1 tr-180 text-right" type="image/svg+xml" data="./images/doubleChevron.svg"></object>
-                <h4 class= "nav-text mb-1">[Right]</h4>
-            </div>
-        </a>
+            <a href="" class="nav-btn">
+                <div>
+                    <!-- <object class="mb-1 text-left" type="image/svg+xml" data="./images/doubleChevron.svg"></object> -->
+                    <h2 class="text-left mb-1"><i class="fas fa-chevron-left fa-lg"></i></h2>
+                    <h4 class= "nav-text mb-1">[Left]</h4>
+                </div>
+            </a>
+    
+            <a href="" class="nav-btn">
+                <div>
+                    <!-- <object class="mb-1 tr-n90" type="image/svg+xml" data="./images/doubleChevron.svg"></object> -->
+                    <h2 class="mb-1"><i class="fas fa-chevron-down fa-lg"></i></h2>
+                    <h4 class= "nav-text mb-1">[Middle]</h4>
+                </div>
+            </a>
+    
+            <a href="" class="nav-btn">
+                <div>
+                    <!-- <object class="mb-1 tr-180 text-right" type="image/svg+xml" data="./images/doubleChevron.svg"></object> -->
+                    <h2 class="text-right mb-1"><i class="fas fa-chevron-right fa-lg"></i></h2>
+                    <h4 class= "nav-text mb-1">[Right]</h4>
+                </div>
+            </a>
+
+        </div>
+
+        <div id="desktop-nav">
+
+            <a href="#portfolio" class="">
+                <div>
+                    <h4 class= "nav-text"><i class="fas fa-folder"></i><br>Portfolio</h4>
+                </div>
+            </a>
+    
+            <a href="#logs" class="">
+                <div>
+                    <h4 class= "nav-text"><i class="fas fa-stream"></i><br>Logs</h4>
+                </div>
+            </a>
+    
+            <a href="#about" class="">
+                <div>
+                    <h4 class= "nav-text"><i class="fas fa-user"></i><br>About</h4>
+                </div>
+            </a>
+
+        </div>
 
     </div>
 

@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "gulp cleanAll && gulp syncViews && gulp syncContent && gulp syncImages && concurrently --kill-others \"parcel src/index.html\" \"gulp\"",
-    "build": "gulp cleanAll && parcel build src/index.html --public-url . && gulp buildViews && gulp buildContent && gulp syncImages"
+    "start": "gulp cleanAll && gulp syncViews && gulp syncContent && gulp syncImages && gulp syncDownloadables && concurrently --kill-others \"parcel src/index.html\" \"gulp\"",
+    "build": "gulp cleanAll && parcel build src/index.html --public-url . && gulp buildViews && gulp buildContent && gulp syncImages && gulp syncDownloadables"
   },
   "repository": {
     "type": "git",

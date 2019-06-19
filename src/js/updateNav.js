@@ -11,7 +11,7 @@ export default function updateNav(pageName){
         desk: ["bottom","logs","about","portfolio"],
         logs: ["bottom","null","null","desk"],
         portfolio: ["bottom","desk","null","null"],
-        about: ["top","null","desk","null"]
+        about: ["bottom","null","desk","null"]
     };
 
     //Grab relevant navigation state according to the inputted page number
@@ -23,9 +23,9 @@ export default function updateNav(pageName){
         navElem.classList.remove("fade");
 
         //Reset scroll position of all cards
-        document.getElementById("portfolio-card").scrollTop = 0;
-        document.getElementById("logs-card").scrollTop = 0;
-        document.getElementById("about-card").scrollTop = 0;
+        document.querySelector("#portfolio-content > div").scrollTop = 0;
+        document.querySelector("#logs-content > div").scrollTop = 0;
+        document.querySelector("#about-content > div").scrollTop = 0;
 
     })
 
@@ -37,18 +37,17 @@ export default function updateNav(pageName){
             navElem.classList.remove("nav-top");
         else if(navItems[0] === "top")
             navElem.classList.add("nav-top");
-        else
-            throw("Error: Invalid nav position");
 
         for(let i = 1; i < navItems.length; i++){
 
             if(navItems[i] != "null"){
-                navBtnElem[i-1].classList.remove("hidden");
+                navBtnElem[i-1].style.visibility = "unset";
                 navBtnElem[i-1].setAttribute("href", `#${navItems[i]}`);
                 navTextElem[i-1].innerText = navItems[i]
             } 
             else{
-                navBtnElem[i-1].classList.add("hidden");
+                navBtnElem[i-1].style.visibility = "hidden";
+                //navBtnElem[i-1].classList.add("hidden");
             }
         }
 

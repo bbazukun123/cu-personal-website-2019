@@ -1,4 +1,4 @@
-<div class="container">
+<div id="logs-container" class="container">
     
     <div class="room-bg" column="11">
         <!-- For Rendered room background -->   
@@ -6,21 +6,24 @@
 
     <div class="main-content">
 
-        <h1 class="text-drop-shadow-xl text-light mt-5 mb-2">Logs</h1>
+        <h1 class="text-drop-shadow-xl text-light pt-4">Logs</h1>
 
-        <div class="card content-card my-2">
-            <div>
-                <div id="logs-card" class="card-list text-left">
-                    <!-- Logs content Injection area -->
+        <div class="content-group">
+
+            <div id="logs-content" class="content-box">
+                <div>
+                    <div class="content-list">
+
+                    </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="card selector-card">
-            <div class="selector-card-items logs-selector-items px-2 text-dark">
-                <div id="Adventure" class="selector-btn selected">Adventure</div>
-                <div id="Upgrade" class="selector-btn">Upgrade</div>
             </div>
+
+            <div id="logs-controller" class="controller-box">
+                <div id="Adventure" class="selector-btn text-dark selected">Adventure</div>
+                <div id="Upgrade" class="selector-btn text-dark">Upgrade</div>
+            </div>
+
         </div>
 
     </div>
