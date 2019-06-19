@@ -104,7 +104,7 @@ export default class ContentManager{
                 data.forEach(a =>
                     advOutput +=
                         `<div class="content-item adventure-item">
-                            <div style="background-image: url(https://res.cloudinary.com/bbazukun123/image/upload/w_auto:50:${screen.width*2}/q_auto/v1560892787/Personal%20Website/adventure/${a.id}/${a.cover})">
+                            <div style="background-image: url(https://res.cloudinary.com/bbazukun123/image/upload/w_auto:50:${Math.min(1920, Math.max(300, screen.width*2))}/q_auto/v1560892787/Personal%20Website/adventure/${a.id}/${a.cover})">
                                 <div class="text-light text-drop-shadow">
                                     <h2>${a.title}</h2>
                                     <h4>${a.desc}</h4>
@@ -444,7 +444,7 @@ export default class ContentManager{
             };
 
             loadingList.push(img);
-            img.src = `https://res.cloudinary.com/bbazukun123/image/upload/w_auto:50:${screen.width*2}/q_auto/v1560892787/Personal%20Website/` + link;
+            img.src = `https://res.cloudinary.com/bbazukun123/image/upload/w_auto:50:${Math.min(1920, Math.max(300, screen.width*2))}/q_auto/v1560892787/Personal%20Website/` + link;
 
         });
         
@@ -726,7 +726,7 @@ export default class ContentManager{
                 console.log(screen.width);
                 if(m.type === "image"){
                     detailContent += 
-                        `<div id="media-${tempCounter}" class="media-image" style="background-image: url('https://res.cloudinary.com/bbazukun123/image/upload/w_auto:50:${screen.width*2}/q_auto/v1560892787/Personal%20Website/portfolio/${d.id}/${m.link}')"></div>`;
+                        `<div id="media-${tempCounter}" class="media-image" style="background-image: url('https://res.cloudinary.com/bbazukun123/image/upload/w_auto:50:${Math.min(1920, Math.max(300, screen.width*2))}/q_auto/v1560892787/Personal%20Website/portfolio/${d.id}/${m.link}')"></div>`;
                     
                 }
                 else if(m.type === "video"){
@@ -841,7 +841,7 @@ export default class ContentManager{
                 if(m.type === "image"){
 
                     detailContent += 
-                        `<div id="media-${tempCounter}" class="media-image" style="background-image: url('https://res.cloudinary.com/bbazukun123/image/upload/w_auto:50:${screen.width*2}/q_auto/v1560892787/Personal%20Website/adventure/${d.id}/${m.link}')"></div>`;
+                        `<div id="media-${tempCounter}" class="media-image" style="background-image: url('https://res.cloudinary.com/bbazukun123/image/upload/w_auto:50:${Math.min(1920, Math.max(300, screen.width*2))}/q_auto/v1560892787/Personal%20Website/adventure/${d.id}/${m.link}')"></div>`;
 
                 }
                 else if(m.type === "video"){
