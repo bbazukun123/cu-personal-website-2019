@@ -6,3 +6,4 @@ src/images/
 dist/images/
 .cache/
 .netlify/
+CloudinaryImages

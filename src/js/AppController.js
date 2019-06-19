@@ -137,24 +137,76 @@ export default class AppController{
         
     }
 
-    setupListeners(){
+    mediaChange(mq){
 
-        // media query change
-        this.mediaChange = function(mq) {
+        /* //CLOSURE
 
-            if (mq.matches) {
-                this.deviceType = "desktop";
-                this.routes.find(r => r.name === "portfolio").defaultRoute = true;
-                this.viewElem.appendChild(document.getElementById("about-t"));
-                //console.log("Desktop Screen");
-            } else {
-                this.deviceType = "mobile";
-                this.routes.find(r => r.name === "desk").defaultRoute = true;
-                this.supViewElem.appendChild(document.getElementById("about-t"));
-                //console.log("Mobile Screen");
+        function updateAboutClosure(){
+
+            const viewElem = this.viewElem;
+            const supViewElem = this.supViewElem;
+
+            function aboutPlacement(pos){
+
+                console.log("Inside: " + viewElem);
+            
+                if(pos === 1)
+                    this.viewElem.appendChild(document.getElementById("about-t"));
+                else if(pos === 2)
+                    this.supViewElem.appendChild(document.getElementById("about-t"));
+
             }
 
+            return aboutPlacement;
+
         }
+
+        const updateAboutPlacement = updateAboutClosure(); */
+
+        if (mq.matches) {
+
+            if(this.deviceType){
+
+                if(window.location.hash.replace("#","") === "desk")             window.location.hash= "#portfolio";
+
+                window.location.reload();
+            } 
+
+            this.deviceType = "desktop";
+            console.log("TEST: " + this.deviceType);
+            this.viewElem.appendChild(document.getElementById("about-t"));
+            //console.log("Desktop Screen");
+            /* if(window.location.hash.replace("#","") === "about"){
+
+                document.getElementById("about-t").classList.remove("sup-view-active");
+                this.supViewElem.classList.remove("roll-in");
+                this.backdrop.classList.remove("active");
+            } */
+
+            
+                /* this.routeChanged(this.routes); */
+
+        } else {
+
+            if(this.deviceType){
+                window.location.reload();
+            }
+
+            this.deviceType = "mobile";
+            console.log("TEST: " + this.deviceType);
+            this.supViewElem.appendChild(document.getElementById("about-t"));
+            /* this.routeChanged(this.routes); */
+            //console.log("Mobile Screen");
+            /* if(this.deviceType){
+                this.routeChanged(this.routes);
+                updateNav(window.location.hash.replace("#",""));
+                window.location.reload();
+            } */
+        }
+
+    }
+
+    setupListeners(){
 
         document.onfullscreenchange = function (e){
 
@@ -170,8 +222,15 @@ export default class AppController{
         }
 
         const mq = window.matchMedia("screen and (min-width: 1024px) and (orientation: landscape)");
-        mq.addListener(this.mediaChange);
+        mq.addListener(this.mediaChange.bind(this));
         this.mediaChange(mq);
+
+        if(this.deviceType === "desktop")
+            this.routes.find(r => r.name === "portfolio").defaultRoute = true;
+        else
+            this.routes.find(r => r.name === "desk").defaultRoute = true;
+
+        
 
         Array.from(document.querySelectorAll(".content-list")).forEach(cl => {
             

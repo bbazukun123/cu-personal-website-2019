@@ -28,6 +28,7 @@ body{
 
     //Full Viewport Hack
     height: calc(var(--vh, 1vh) * 100);
+    position: fixed;
 }
 
 a{
@@ -537,7 +538,7 @@ i{
     pointer-events: none;
 }
 
-@media only screen and (max-width: 1024px) and (orientation: landscape) {
+@media only screen and (max-width: 900px) and (orientation: landscape) {
 
     .landscape-dialog{
         display: flex;
@@ -793,6 +794,261 @@ i{
 
 }
 
+@media only screen and (min-height: 900px) and (orientation: portrait){
+    
+    #desk-container{
+
+        .content-wrapper{
+            transform: scale(1.25);
+        }
+
+        h1{
+            font-size: 4rem;
+        }
+    }
+
+    /* .toolkit-card,
+    .detail-card{
+
+        h1{
+            padding: 0 8rem;
+            margin: 4rem; 
+        }
+
+        h3{
+            font-size: 1.6rem;
+        }
+
+        .detail-gallery{
+            transform: scale(0.9);
+        }
+
+        .media-control{
+            padding: 0 1.8rem;
+        }
+
+    }
+
+    .key-header{
+
+        h3{
+            padding: 1.5rem;
+        }
+
+
+    } */
+
+    .content-item{
+
+        & > div:first-child{
+            padding: 1.5rem 1.8rem !important;
+
+            h2{
+                font-size: 1.8rem !important;
+            }
+
+            h4{
+                font-size: 1.2rem !important;
+            }
+        }
+
+        & > div:last-child{
+            padding-left: 0.8rem;
+            height: 4rem !important;
+
+            button{
+                width: 6rem !important;
+                font-size: 1.2rem;
+                padding: 0.5rem 0;
+            }
+        }
+    }
+
+    .portfolio-item{
+
+        & > div:last-child{
+
+            padding-left: 0rem;
+
+            h5{
+                padding-left: 2rem !important;
+                font-size: 1rem;
+            }
+
+            button{
+                padding: 0.6rem;
+                width: 4.5rem !important;
+            }
+
+        }
+
+    }
+
+    .adventure-item{
+
+        & > div:first-child{
+
+            height: 15rem !important;
+
+        }
+
+        & > div:last-child{
+
+            h3{
+                flex: 1;
+                text-align: left;
+                padding-left: 1.2rem;
+            }
+
+        }
+    }
+
+    .experience-item{
+
+        & > div:last-child{
+
+            h5:first-child{
+                width: 14rem !important;
+                font-size: 1.2rem;
+            }
+
+            h4{
+                font-size: 1.2rem;
+            }
+
+        }
+
+    }
+
+    #education-about{
+
+        padding: 1.2rem !important;
+        
+        .milestone{
+            width: 50px !important;
+            height: calc(50px + 6.4px) !important;
+
+        }
+
+        .education-item{
+
+            padding-right: 1.5rem !important;
+
+            h3:first-child{
+                width: 12rem !important;
+                margin: 0.9rem 0 1.2rem 0 !important;
+                padding: 0.5rem 0 !important;
+
+                &::before{
+                    transform: translateX(-2.5rem) !important;
+                }
+            }
+
+            h2{
+                font-size: 2rem;
+            }
+
+            div{
+                margin-top: 1rem !important;
+                height: 6rem !important;
+
+                button{
+                    width: 6.5rem !important;
+                    padding: 0.6rem !important;
+                }
+
+            }
+            
+        }
+
+        &::before{
+            transform: translateX(0.2rem);
+        }
+
+    }
+
+    #connect-about{
+
+        h1{
+            margin: 1rem 1.5rem 0 1.5rem;
+        }
+
+        .contact-panel{
+
+            height: 4rem !important;
+
+            h4{
+                padding-left: 1.8rem;
+                font-size: 1.4rem;
+            }
+
+            button{
+                font-size: 1.4rem;
+                width: 6rem !important;
+            }
+
+        }
+    
+        .avatar{
+            height: 20rem !important;
+    
+            div{
+                transform: scale(1.6);
+            }
+        }
+
+        .social-media{
+            height: 4rem !important;
+
+            button{
+                font-size: 1.4rem;
+            }
+        }
+
+    }
+
+    .controller-box{
+        height: 4.5rem !important;
+        font-size: 1.6rem !important;
+
+        .selector-btn{
+            line-height: 2.5 !important;
+        }
+    }
+
+    .detail-content{
+        padding: 0 5rem;
+    }
+
+    .toolkit-card,
+    .detail-card{
+
+        h1{
+            padding: 0 8rem;
+            margin: 4rem; 
+        }
+
+        .detail-gallery{
+            transform: scale(0.9);
+        }
+
+        .media-control{
+            padding: 0 1.8rem;
+        }
+
+    }
+
+    .toolkit-header,
+    .detail-header{
+        padding-left: 1.5rem !important;
+    }
+
+    .key-header{
+        padding-left: 2.5rem !important;
+    }
+
+}
+
 @media only screen and (min-width: 1024px) and (orientation: landscape) {
 
     #fullscreen-msg{
@@ -936,7 +1192,7 @@ i{
                 padding: 0.5rem 0 !important;
 
                 &::before{
-                    transform: translateX(-1.9rem) !important;
+                    transform: translateX(-2rem) !important;
                 }
             }
 
@@ -990,6 +1246,25 @@ i{
 
     html{
         font-size: 1.2rem
+    }
+
+    .monitor{
+
+        h2{
+            font-size: 1.2rem;
+        }
+        
+    }
+
+    #desk-container{
+
+        .content-wrapper{
+            transform: scale(1.2);
+        }
+
+        /* h1{
+            font-size: 4rem;
+        } */
     }
 
     .view{
