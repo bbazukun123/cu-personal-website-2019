@@ -20,6 +20,13 @@ function syncContent(){
 
 }
 
+function syncDownloadables(){
+
+    return gulp.src("src/downloadables/**/*")
+        .pipe(gulp.dest("dist/downloadables"));
+
+}
+
 //Copy & minify HTML view components from src to dist
 function buildViews(){
 
@@ -76,13 +83,18 @@ function watchImages(){
     return gulp.watch("src/images/**/*", syncImages);
 }
 
+function watchDownloadables(){
+    return gulp.watch("src/downloadables/**/*", syncDownloadables);
+}
+
 exports.syncViews = syncViews;
 exports.syncContent = syncContent;
 exports.syncImages = syncImages;
+exports.syncDownloadables = syncDownloadables;
 exports.cleanViews = cleanViews;
 exports.cleanContent = cleanContent;
 exports.cleanImages = cleanImages;
 exports.cleanAll = cleanAll;
 exports.buildViews = buildViews;
 exports.buildContent = buildContent;
-exports.default = parallel(watchHTML,watchImages,watchContent);
+exports.default = parallel(watchHTML,watchImages,watchContent,watchDownloadables);

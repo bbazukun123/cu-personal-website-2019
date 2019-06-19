@@ -1,7 +1,7 @@
 [
     {
         "title":"UX / UI",
-        "desc":"The UX / UI toolkit has always my go-to for all of the digital projects so far. This provides me with the ability to explicitly understand projects and their target users, as well as the ability to handcraft my own assets and experiences accordingly. Ultimately, it allows the design process to be much more meaningful and impactful.<br><br>The toolkit is dynamic and constantly updates over time to accommodate new technologies and methodologies.",
+        "desc":"The UX / UI toolkit has always been my go-to for all of my digital projects. This provides me with the ability to thoroughly understand projects and their target users, as well as the ability to produce my own graphical assets and user-centered designs accordingly. Ultimately, it allows the design process to be much more meaningful and impactful.<br><br>The toolkit is dynamic and constantly updates over time to accommodate new technologies and methodologies.",
         "color":"success",
         "toolkit":[
             {
@@ -68,7 +68,7 @@
     },
     {
         "title":"Developer",
-        "desc":"Due to the growing demand in the technical knowledge in recent projects, I decided to become a self-taught developer. With a fair amount of existing knowhows from doing game development in the past, I was able to quickly pickup the essential languages and fundamental concepts for web development.<br><br>As web development became my passion, I'm striving to learn more about the rapidly evolving web technologies, and to continuously build upon this toolkit.",
+        "desc":"Recent projects I have been involved in demanded progressive technical knowledge. With my constant strive for self-improvement and curiosity for learning, I became a self-taught developer. My strong background and experience in game development allowed me to rapidly acquire and grasp the essential skills and fundamental concepts for web development.<br><br>As web development is now my passion, I'm striving to learn more about the rapidly evolving web technologies, and to continuously build upon this toolkit.",
         "color":"danger",
         "toolkit":[
             {
@@ -115,7 +115,7 @@
     },
     {
         "title":"Business",
-        "desc":"The business toolkit is essential in commercial projects. It also covers various management tools which makes it perfect for team-based projects in fast-paced environments.<br><br>The business analytical tools greatly compliments the UX / UI toolkit in the design process. In addition to understanding the users, they provide me with the mean to understand the company, its stakeholders, and its standing that can influence the outcome of the project.",
+        "desc":"The business toolkit is essential in commercial projects. It also covers various management tools which makes it perfect for team-based projects in fast-paced environments.<br><br>The business analytical tools greatly compliment the UX / UI toolkit in the design process. In addition to understanding the users, they provide me with the means to understand the company, its stakeholders, and its standing that can influence the outcome of the project.",
         "color":"warning",
         "toolkit":[
             {
