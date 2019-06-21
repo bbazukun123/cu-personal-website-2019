@@ -1128,7 +1128,7 @@ i{
     .nav{
         //display: none;
         position: fixed;
-        height: 40%;
+        height: 18rem;
         width: 6rem;
         right: 0;
         top: 50%;
@@ -1291,12 +1291,26 @@ i{
         #portfolio-container,
         #about-t{
             transform: translateX(-2rem);
+
+            h1{
+                padding-top: 1rem;
+            }
         }
 
     }
 
+    /* .main-content{
+        h1{
+            padding-top: 1rem;
+        }
+    } */
+
     .content-group{
-        padding: 1.5rem 2rem 6rem 2rem;
+        //padding: 1.5rem 2rem 6rem 2rem;
+
+        .content-box{
+            margin-bottom: 0.8rem;
+        }
 
         .experience-item{
 
@@ -1311,9 +1325,9 @@ i{
 
     }
 
-    .nav{
-        height: 35%;
-    }
+    /* .nav{
+        height: 18rem;
+    } */
 
     .toolkit-card,
     .detail-card{
