@@ -12,7 +12,7 @@ This repo contains codes and assets for my new [Personal Website](https://chanod
 
 ## Notes
 
-- The website is currently being recoded in the new update to better compartmentalise, optimise and improve comprehensability.
+- The codes currently exhibits a range of styles due to the progressive learning along the way since I was a complete beginner at web development at the beginning of the project. The website is currently being recoded to better compartmentalise, optimise and improve comprehensability.
 - As the website has only been launched quite recently, any reports on problems/bugs or feedbacks will be very much appreciated. Please kindly email me at [bzkwork1993@gmail.com](mailto:bzkwork1993@gmail.com). Cheers! :)
 
 
