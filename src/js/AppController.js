@@ -27,21 +27,19 @@ export default class AppController{
     //Initialising the application's base content and assign a listener to the hash changes of the URL ------------------------------------------
     init(){
 
-        this.renderViews(this.routes);
+        //Render base content
+        this.renderViews(this.routes); 
 
-        window.addEventListener("hashchange", (e) => {
-
-            this.routeChanged(this.routes);
-
-        });
-
+        //Mobile full viewport hack (due to spaces taken by browser's URL bar & stuff) - Need revisit in the future***
         if(navigator.userAgent.match(/iPhone|iPod|iPad|Android|BlackBerry|Opera Mini|IEMobile|Windows Phone|webOS|playbook|silk/i) /* || (window.innerWidth <= 800 && window.innerHeight <= 600) */){
         
             let vh = window.innerHeight * 0.01;
             document.documentElement.style.setProperty('--vh', `${vh}px`);
 
             (function() {
+
                 var throttle = function(type, name, obj) {
+
                     obj = obj || window;
                     var running = false;
                     var func = function() {
@@ -53,15 +51,18 @@ export default class AppController{
                         });
                     };
                     obj.addEventListener(type, func);
+
                 };
 
                 throttle("resize", "optimizedResize");
+
             })();
 
             window.addEventListener("optimizedResize", (e) => {
+
                 let vh = window.innerHeight * 0.01;
                 document.documentElement.style.setProperty('--vh', `${vh}px`);
-                //alert("Resized");
+
             });
 
         }
@@ -72,15 +73,15 @@ export default class AppController{
     //Render the base screens' content ------------------------------------------
     renderViews(r){
 
+        //Remove fullscreen message and fullscreen toggle on iOS devices as requestfullscreen is disabled
         if(navigator.userAgent.match(/iPhone|iPod|iPad/i)){
+
             document.getElementById("fullscreen-msg").style.display = "none";
             document.getElementById("fullscreen-toggle").style.display = "none";
+
         }
 
         this.orderedData = [r.length];
-
-        //Sort route base on assigned view position
-        //const orderedRoutes = r.sort((a,b) => a.viewPos - b.viewPos);
 
         //Grab base HTML for main screens, including about screen (** use map instead of foreach to return an array of promises **)
         Promise.all(r.map(async route => {
@@ -137,77 +138,47 @@ export default class AppController{
         
     }
 
+    //Move about container accordingly between desktop and mobile responsive displays ------------------------------------------
     mediaChange(mq){
-
-        /* //CLOSURE
-
-        function updateAboutClosure(){
-
-            const viewElem = this.viewElem;
-            const supViewElem = this.supViewElem;
-
-            function aboutPlacement(pos){
-
-                console.log("Inside: " + viewElem);
-            
-                if(pos === 1)
-                    this.viewElem.appendChild(document.getElementById("about-t"));
-                else if(pos === 2)
-                    this.supViewElem.appendChild(document.getElementById("about-t"));
-
-            }
-
-            return aboutPlacement;
-
-        }
-
-        const updateAboutPlacement = updateAboutClosure(); */
 
         if (mq.matches) {
 
             if(this.deviceType){
 
-                if(window.location.hash.replace("#","") === "desk")             window.location.hash= "#portfolio";
+                if(window.location.hash.replace("#","") === "desk")
+                    window.location.hash= "#portfolio";
 
                 window.location.reload();
+
             } 
 
             this.deviceType = "desktop";
-            console.log("TEST: " + this.deviceType);
             this.viewElem.appendChild(document.getElementById("about-t"));
-            //console.log("Desktop Screen");
-            /* if(window.location.hash.replace("#","") === "about"){
-
-                document.getElementById("about-t").classList.remove("sup-view-active");
-                this.supViewElem.classList.remove("roll-in");
-                this.backdrop.classList.remove("active");
-            } */
-
-            
-                /* this.routeChanged(this.routes); */
 
         } else {
 
-            if(this.deviceType){
+            //Due to the complex mess I have put into the structure, reload is used as a hacky solution to go from desktop to mobile - NEED TO FIX THIS!!!
+            if(this.deviceType)
                 window.location.reload();
-            }
-
+            
             this.deviceType = "mobile";
-            console.log("TEST: " + this.deviceType);
             this.supViewElem.appendChild(document.getElementById("about-t"));
-            /* this.routeChanged(this.routes); */
-            //console.log("Mobile Screen");
-            /* if(this.deviceType){
-                this.routeChanged(this.routes);
-                updateNav(window.location.hash.replace("#",""));
-                window.location.reload();
-            } */
+
         }
 
     }
 
+    //Setup all the key listeners ------------------------------------------
     setupListeners(){
 
+        //Listen to hash change of the URL to route the SPA accordingly
+        window.addEventListener("hashchange", (e) => {
+
+            this.routeChanged(this.routes);
+
+        });
+
+        //Listen to fullscreen toggle to swap the fullscreen toggle button icon accordingly
         document.onfullscreenchange = function (e){
 
             if(document.fullscreenElement){
@@ -221,6 +192,7 @@ export default class AppController{
 
         }
 
+        //Listen to media query changes + set default route according to the display type
         const mq = window.matchMedia("screen and (min-width: 1024px) and (orientation: landscape)");
         mq.addListener(this.mediaChange.bind(this));
         this.mediaChange(mq);
@@ -230,8 +202,7 @@ export default class AppController{
         else
             this.routes.find(r => r.name === "desk").defaultRoute = true;
 
-        
-
+        //Listen to the end of transitions of the content panels to update scroll position and scroll shadows
         Array.from(document.querySelectorAll(".content-list")).forEach(cl => {
             
             if(cl.parentElement.parentElement.id === "portfolio-content"){
@@ -241,20 +212,11 @@ export default class AppController{
 
                     //Hacky Solution, Please find a way to fix this propperly!!! ***********
                     setTimeout(() => {
+
                         this.updateScrollCard(document.querySelector("#portfolio-content > div"));  
-
-                       /*  document.querySelector("#portfolio-content > div").scrollTop = 0; */
-
-                        /* document.querySelector("#portfolio-content > div").scroll({
-                            top: 0,
-                            behavior: "smooth"
-                        }); */
-
                         document.getElementById("portfolio-controller").style.pointerEvents = "unset";
-                        /* document.querySelector("#portfolio-content > div").scrollTop = 0;  */
+
                     }, 1);
-
-
                     
                 });
 
@@ -264,29 +226,23 @@ export default class AppController{
                 cl.addEventListener("faded", e => {
 
                     const logsScroll = document.querySelector("#logs-content > div");
-
                     this.updateScrollCard(logsScroll);  
                     logsScroll.scrollTop = 0;
-
                     document.getElementById("logs-controller").style.pointerEvents = "unset";
         
                 });
         
-
             }
             else if(cl.parentElement.parentElement.id === "about-content"){
 
                 cl.addEventListener("faded", e => {
 
                     const aboutScroll = document.querySelector("#about-content > div");
-
                     this.updateScrollCard(aboutScroll);  
                     aboutScroll.scrollTop = 0;
-
                     document.getElementById("about-controller").style.pointerEvents = "unset";
         
                 });
-        
 
             }
 
@@ -298,20 +254,16 @@ export default class AppController{
     setupButtons(){
 
         //Grab button elements
-        //this.portfolioBtns = document.querySelector(".portfolio-selector-items");
-        //this.logsBtns = document.querySelector(".logs-selector-items");
-        //this.aboutBtns = document.querySelector(".about-selector-items");
         this.toggles = document.querySelectorAll(".toggle-btn");
         this.detailBtns = document.querySelectorAll(".detail-btn");
 
         document.getElementById("fullscreen-toggle").addEventListener("click", e => {
 
-            if(!document.fullscreenElement){
+            if(!document.fullscreenElement)
                 document.querySelector("body").requestFullscreen();
-            }
-            else{
+            else
                 document.exitFullscreen();
-            }
+
         })
 
         Array.from(document.querySelectorAll(".selector-btn")).forEach(btn => {
@@ -321,14 +273,7 @@ export default class AppController{
                 const controllerElem = e.target.parentElement;
 
                 controllerElem.style.pointerEvents = "none";
-
-                /*
-                setTimeout(() => {
-                    controllerElem.style.pointerEvents = "unset";
-                }, 250); */
-
                 controllerElem.querySelector(".selected").classList.remove("selected");
-
                 e.target.classList.add("selected");
 
                 switch(controllerElem.id){
@@ -344,30 +289,23 @@ export default class AppController{
                         break;
                     default:
                         break;
+
                 }
 
             })
 
         });
 
-        
-
-        //Setup buttons on portfolio screen
-
-        //Setup buttons on logs screen
-
+        //Setup toggle buttons
         this.toggles.forEach(btn => {
 
             btn.addEventListener("click", e => {
 
                 let outputElem = btn.parentElement.nextElementSibling;
-                console.log(outputElem);
                 
                 if(outputElem.classList.contains("hidden")){
 
                     outputElem.style.height = outputElem.scrollHeight + "px";
-                    //outputElem.style.height = "96px";
-                    //outputElem.style.height = null;
 
                     const expand = ["transitionend", e => {
 
@@ -378,7 +316,6 @@ export default class AppController{
                     }];
 
                     outputElem.addEventListener(...expand);
-
                     outputElem.classList.remove("hidden");
                     e.target.classList.add("toggled");
 
@@ -416,66 +353,6 @@ export default class AppController{
 
             });
         })
-
-        /* this.upgradeToggles.forEach(btn => {
-
-            btn.addEventListener("click", e => {
-
-                let outputElem = document.getElementById(e.target.id.replace("-btn",""));
-                
-                if(outputElem.classList.contains("hidden")){
-
-                    outputElem.style.height = outputElem.scrollHeight + "px";
-
-                    const expand = ["transitionend", e => {
-
-                        outputElem.removeEventListener(...expand);
-                        outputElem.style.height = null;
-                        this.updateScrollCard(document.querySelector("#logs-content > div"));
-
-                    }];
-
-                    outputElem.addEventListener(...expand);
-
-                    outputElem.classList.remove("hidden");
-                    e.target.classList.add("toggled");
-
-                }
-                else{
-
-                    const transitionExtract = outputElem.style.transition;
-                    outputElem.style.transition = "";
-
-                    requestAnimationFrame(() => {
-
-                        outputElem.style.height = outputElem.scrollHeight + "px";
-                        outputElem.style.transition = transitionExtract;
-
-                        requestAnimationFrame(() => {
-
-                            outputElem.style.height = 0 + "px";
-
-                        });
-
-                    });
-
-                    const collapse = ["transitionend", e => {
-
-                        outputElem.removeEventListener(...collapse);
-                        outputElem.classList.add("hidden");
-                        this.updateScrollCard(document.querySelector("#logs-content > div"));
-
-                    }];
-
-                    outputElem.addEventListener(...collapse);  
-                    e.target.classList.remove("toggled");          
-
-                }
-
-            });
-        }) */
-
-        //Setup buttons on about screen
         
         //Setup more info, detail & diary action buttons for list elements
         this.detailBtns.forEach(btn => {
@@ -495,10 +372,8 @@ export default class AppController{
 
                 if(e.target.classList.contains("detail-back"))
                     this.hideDetail();
-                else if(e.target.classList.contains("toolkit-back")){
+                else if(e.target.classList.contains("toolkit-back"))
                     this.hideToolkit();
-                    //this.viewElem.classList.remove("disabled");
-                }
 
             });
 
@@ -508,21 +383,18 @@ export default class AppController{
         document.getElementById("ux-screen").addEventListener("click",e => {
 
             this.showToolkit(e.target.id);
-            //this.viewElem.classList.add("disabled");
 
         })
 
         document.getElementById("dev-screen").addEventListener("click",e => {
 
             this.showToolkit(e.target.id);
-            //this.viewElem.classList.add("disabled");
 
         })
 
         document.getElementById("business-screen").addEventListener("click",e => {
 
             this.showToolkit(e.target.id);
-            //this.viewElem.classList.add("disabled");
 
         })
 
@@ -546,7 +418,9 @@ export default class AppController{
         cardLists.forEach(list => {
 
             list.parentElement.addEventListener("scroll",(e) => {
+
                 this.updateScrollCard(e.target);
+
             });
 
             this.updateScrollCard(list.parentElement);
@@ -563,30 +437,30 @@ export default class AppController{
             if(window.location.hash.length > 0 ){
 
                 if(this.loadingScreenElem){
+
                     this.loadingScreenElem.classList.add("loaded");
                     this.loadingScreenElem.classList.add("entered");
 
                     if(this.deviceType === "desktop"){
+
                         [document.getElementById("portfolio-container"),
                         document.getElementById("logs-container")].forEach(con => {
+
                             con.style.display = "none";
                             con.style.opacity = "0";
+
                         });
 
                     }
                     
                 }
 
-
                 for(let i = 0, length = r.length; i < length; i++){
                     
                     const route = r[i];
                     
-                    if(route.isActiveRoute(window.location.hash.replace("#",""))){
-
+                    if(route.isActiveRoute(window.location.hash.replace("#","")))
                         this.updateView(route);
-
-                    }
 
                 }
                 
@@ -595,17 +469,21 @@ export default class AppController{
 
                 const loadedEvent = ["loaded", e => {
 
-                    this.loadingScreenElem.removeEventListener(...loadedEvent);
-        
                     console.log("Done Loading Imgs");
+
+                    this.loadingScreenElem.removeEventListener(...loadedEvent);
                     this.loadingScreenElem.classList.add("loaded");
 
                     if(this.deviceType === "desktop"){
+
                         [document.getElementById("portfolio-container"),
                         document.getElementById("logs-container")].forEach(con => {
+
                             con.style.display = "none";
                             con.style.opacity = "0";
+
                         });
+
                     }
 
                     for (let i = 0, length = r.length; i < length; i++){
@@ -614,7 +492,6 @@ export default class AppController{
 
                         if(route.defaultRoute)
                             this.updateView(route);
-                            //window.location.hash = "#" + route.name;
     
                     }
                     
@@ -628,26 +505,26 @@ export default class AppController{
         }
         else{
             if(this.loadingScreenElem){
+
                 this.loadingScreenElem.classList.add("loaded");
                 this.loadingScreenElem.classList.add("entered");
 
                 if(this.deviceType === "desktop"){
+
                     [document.getElementById("portfolio-container"),
                     document.getElementById("logs-container")].forEach(con => {
+
                         con.style.display = "none";
                         con.style.opacity = "0";
+
                     });
+
                 }
+
             }
 
             this.showAbout();
 
-            /* if(this.deviceType === "desktop"){
-                this.updateView(route);
-            }
-            else{
-                this.showAbout();
-            } */
         }
     }
 
@@ -690,58 +567,48 @@ export default class AppController{
 
             if(!document.querySelector(".sup-view-active")){
 
-                /* if(window.location.hash.length === 0)
-                    window.location.hash = "#" + r.name; */
-
                 const viewClasses = this.viewElem.classList;
 
                 if(viewClasses[1] !== `view-${r.viewPos}`){
-                    
 
                     if(this.deviceType === "desktop"){
 
                         const activeContainer = [document.getElementById("portfolio-container"),
                         document.getElementById("logs-container"),
                         document.getElementById("about-t")].find(con => window.getComputedStyle(con).display === "block");
-
                         const targetContainer= document.getElementById(`${r.name}-container`);
             
                         if(activeContainer){
             
                             const desktopFade = ["transitionend", e => {
-                                console.log(targetContainer);
+
                                 e.target.removeEventListener(...desktopFade);
                                 
                                 //EXTREMELY SLOPPY FIX. PLEASE FIND OUT WHY!!!!
                                 if(e.target.id !== "about-content"){
+
                                     e.target.style.display = "none";
                                     targetContainer.style.display = "block";
+
                                     setTimeout(() => {
-                                        
+
                                         targetContainer.style.opacity = "1";
+
                                     }, 1);
+
                                 }
-                                
             
                             }];
             
                             activeContainer.addEventListener(...desktopFade);
-
                             activeContainer.style.opacity = "0";
                             
                         }
                         
                     }
-                    else{
+                    else
                         viewClasses.replace(viewClasses[1],`view-${r.viewPos}`);
-                    }
-                    
-                    /* if(activeContainer){
-                        console.log(activeContainer);
-                        setTimeout(() => {
-                            activeContainer.style.display = "none";
-                        }, 250);
-                    } */
+
                 }
 
                 if(!viewClasses.contains("animate"))
@@ -751,7 +618,6 @@ export default class AppController{
             else{
 
                 document.querySelector(".sup-view-active").classList.remove("sup-view-active");
-
                 this.supViewElem.classList.remove("roll-in");
                 this.backdrop.classList.remove("active");
 
@@ -773,18 +639,17 @@ export default class AppController{
 
             });
 
-
-        }
-
-        
+        }      
 
     }
 
-    //Roll in the about screen ------------------------------------------
+    //Roll in/show the about screen ------------------------------------------
     showAbout(){
 
         if(this.deviceType !== "desktop"){
+
             const routeClasses = document.getElementById("about-t").classList;
+
             if(!routeClasses.contains("sup-view-active")){
 
                 routeClasses.add("sup-view-active");
@@ -792,32 +657,37 @@ export default class AppController{
                 this.backdrop.classList.add("active");
 
             }
+
             updateNav("about.html");
+
         }
         else{
 
             const activeContainer = [document.getElementById("portfolio-container"),
             document.getElementById("logs-container")].find(con => window.getComputedStyle(con).display === "block");
-
             const targetContainer= document.getElementById("about-t");
 
             if(activeContainer){
 
                 const desktopFade = ["transitionend", e => {
+
                     console.log(targetContainer);
+
                     e.target.removeEventListener(...desktopFade);
-
                     e.target.style.display = "none";
-
                     targetContainer.style.display = "block";
+
                     setTimeout(() => {
+
                         targetContainer.style.opacity = "1";
+
                     }, 1);
 
                 }];
 
                 activeContainer.addEventListener(...desktopFade);
                 activeContainer.style.opacity = "0";
+                
             }
 
             const desktopNav = document.getElementById("desktop-nav");

@@ -45,7 +45,8 @@ export default class ContentManager{
                     console.log(header);
                     portfolioFragment.appendChild(item);
                 });
- */
+                */
+                
                 let portfolioOutput = "";
                 
                 data.forEach(p=>
@@ -116,21 +117,6 @@ export default class ContentManager{
                             </div>
                         </div>`
                 );
-                /* data.forEach(a =>
-                    advOutput +=
-                        `<div class="content-item adventure-item">
-                            <div class="card-photo" style="background-image: url(./images/adventure/${a.id}/${a.cover})">
-                                <div class="p-2 text-light text-drop-shadow">
-                                    <h2>${a.title}</h2>
-                                    <h4>${a.desc}</h4>
-                                </div>
-                            </div>
-                            <div class="cta-panel adventure-panel">
-                                <h4 class="p-2">${a.month}</h4>
-                                <button id="adventure-${a.id}" class="btn btn-sm detail-btn btn-light mx-1">Diary</button>
-                            </div>
-                        </div>`
-                ); */
 
                 advOutput += "</div>"; 
                 this.logsElem.innerHTML += advOutput;
@@ -400,8 +386,6 @@ export default class ContentManager{
         //Accumulate portfolio image links
         this.contentData[0].forEach(d => {
 
-            console.log(d.content.media[0].type);
-
             if(d.content.media[0].type === "image")
                 linkList.push(`portfolio/${d.id}/${d.content.media[0].link}`);
         
@@ -453,6 +437,7 @@ export default class ContentManager{
     //Update portfolio card content based on input of field type filter
     updatePortfolio(inField){
 
+        //Define filter transition sequence
         const hide = item => {
 
             if(!item.classList.contains("hidden")){
@@ -642,8 +627,6 @@ export default class ContentManager{
     //Switch the about card content between the experience, education, & contact tabs
     updateAbout(tab){
 
-        console.log(tab);
-
         //Define transition sequence between tabs
         const fade = (inElem,outElem) => {
 
@@ -658,8 +641,6 @@ export default class ContentManager{
                 inElem.classList.remove("fade"); 
 
                 document.querySelector("#about-content .content-list").dispatchEvent(new Event("faded"));
-
-                /* document.getElementById("about-controller").style.pointerEvents = "unset"; */
 
             }];
 
@@ -723,7 +704,7 @@ export default class ContentManager{
             let tempCounter = 1;
             
             d.content.media.forEach(m => {
-                console.log(screen.width);
+
                 if(m.type === "image"){
                     detailContent += 
                         `<div id="media-${tempCounter}" class="media-image" style="background-image: url('https://res.cloudinary.com/bbazukun123/image/upload/w_auto:50:${Math.min(1920, Math.max(300, screen.width*2))}/q_auto/v1560892787/Personal%20Website/portfolio/${d.id}/${m.link}')"></div>`;
@@ -974,9 +955,6 @@ export default class ContentManager{
     //Update toolkit pop-up card to match the content of the select toolkit
     updateToolkit(id){
 
-        console.log("Toolkit elm = " + this.toolkitElem +", and height = "+ this.toolkitElem.scrollTop);
-
-
         if(id === "ux-screen"){
 
             this.toolkitElem.firstElementChild.classList.add("active");
@@ -989,9 +967,6 @@ export default class ContentManager{
 
             this.toolkitElem.lastElementChild.classList.add("active");
         }
-
-        /* console.log(this.toolkitElem.firstElementChild.scrollTop); */
-        /* this.toolkitElem.parentElement = 0; */
 
     }
     

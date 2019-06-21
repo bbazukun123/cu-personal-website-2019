@@ -8,10 +8,12 @@ export default function updateNav(pageName){
     
     //Manually defining navigation bar state for each screen
     const pageNavData = {
+
         desk: ["bottom","logs","about","portfolio"],
         logs: ["bottom","null","null","desk"],
         portfolio: ["bottom","desk","null","null"],
         about: ["bottom","null","desk","null"]
+        
     };
 
     //Grab relevant navigation state according to the inputted page number
@@ -31,6 +33,7 @@ export default function updateNav(pageName){
 
     //Fade out navigation bar & update navigation bar content as soon as fade finishes (0.25s hard coded timing)
     navElem.classList.add("fade");
+
     setTimeout(() => {
 
         if(navItems[0] === "bottom")
@@ -41,14 +44,15 @@ export default function updateNav(pageName){
         for(let i = 1; i < navItems.length; i++){
 
             if(navItems[i] != "null"){
+
                 navBtnElem[i-1].style.visibility = "unset";
                 navBtnElem[i-1].setAttribute("href", `#${navItems[i]}`);
                 navTextElem[i-1].innerText = navItems[i]
+
             } 
-            else{
+            else
                 navBtnElem[i-1].style.visibility = "hidden";
-                //navBtnElem[i-1].classList.add("hidden");
-            }
+
         }
 
     }, 250);

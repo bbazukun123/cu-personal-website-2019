@@ -2,8 +2,6 @@ node_modules
 pw2019.code-workspace
 src/scss/bootstrap/
 src/js/ext_modules/
-src/images/
-dist/images/
 .cache/
 .netlify/
 CloudinaryImages
